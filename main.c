@@ -6,7 +6,7 @@
 /*   By: nkellum <nkellum@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/03 15:10:14 by nkellum           #+#    #+#             */
-/*   Updated: 2019/05/21 20:39:10 by nkellum          ###   ########.fr       */
+/*   Updated: 2019/05/24 17:06:47 by nkellum          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int list_dir_recursive(char *dirname)
 {
 	struct dirent *pDirent;
 	DIR *pDir;
-	char path[ft_strlen(dirname) + 255]; // 255 more chars for subdirectory name
+	char path[ft_strlen(dirname) + 1024]; // 255 more chars for subdirectory path
 
 	pDir = opendir(dirname);
 	if (pDir == NULL)
@@ -48,6 +48,7 @@ int list_dir_recursive(char *dirname)
 			printf("%s ", pDirent->d_name); // list entries normally
 	}
 	printf("\n");
+	closedir(pDir);
 	pDir = opendir(dirname); // resetting pDir to first file entry for new loop
 	ft_strcpy(path, dirname); // set path to the current directory path
 	while ((pDirent = readdir(pDir)) != NULL)
@@ -73,16 +74,6 @@ int list_dir_recursive(char *dirname)
 
 int main (int argc, char **argv)
 {
-	DIR *pDir;
-
-	if(argc < 2)
-		pDir = opendir("."); // if no directory specified, list this directory
-	else
-		pDir = opendir(argv[1]);
-	if (pDir == NULL) {
-	    printf("Cannot open directory: %s\n", strerror(errno));
-	    return 1;
-	}
 	list_dir_recursive((argc < 2) ? "." : argv[1]);
         return 0;
 }
