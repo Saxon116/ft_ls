@@ -6,7 +6,7 @@
 /*   By: nkellum <nkellum@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/03 15:10:14 by nkellum           #+#    #+#             */
-/*   Updated: 2019/05/24 17:06:47 by nkellum          ###   ########.fr       */
+/*   Updated: 2019/05/24 17:56:16 by nkellum          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int list_dir_recursive(char *dirname)
 {
 	struct dirent *pDirent;
 	DIR *pDir;
-	char path[ft_strlen(dirname) + 1024]; // 255 more chars for subdirectory path
+	char path[ft_strlen(dirname) + 255]; // 255 more chars for subdirectory path
 
 	pDir = opendir(dirname);
 	if (pDir == NULL)
