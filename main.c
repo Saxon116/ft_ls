@@ -6,7 +6,7 @@
 /*   By: nkellum <nkellum@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/03 15:10:14 by nkellum           #+#    #+#             */
-/*   Updated: 2019/05/24 17:56:16 by nkellum          ###   ########.fr       */
+/*   Updated: 2019/05/26 11:10:42 by nkellum          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ int list_dir_recursive(char *dirname)
 		}
 	}
 	closedir(pDir);
+	return 0;
 }
 
 
