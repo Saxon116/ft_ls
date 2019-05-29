@@ -6,24 +6,12 @@
 /*   By: nkellum <nkellum@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/03 15:10:14 by nkellum           #+#    #+#             */
-/*   Updated: 2019/05/29 18:13:39 by nkellum          ###   ########.fr       */
+/*   Updated: 2019/05/29 20:15:39 by nkellum          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-void list_dir(DIR *pDir)
-{
-	struct dirent *pDirent;
-
-	while ((pDirent = readdir(pDir)) != NULL)
-	{
-		if(pDirent->d_name[0] != '.')
-			printf("%s ", pDirent->d_name);
-	}
-	printf("\n");
-	closedir(pDir);
-}
 
 int get_day(char *date)
 {
@@ -54,6 +42,26 @@ char *permissions(mode_t perm)
     return modeval;
 }
 
+void	lstdel(t_entry **lst)
+{
+	t_entry *current;
+	t_entry *next;
+
+	current = *lst;
+	while (current)
+	{
+		next = current->next;
+		free(current->name);
+		free(current->rights);
+		free(current->user);
+		free(current->group);
+		free(current->date_month_modified);
+		free(current->date_time_modified);
+		free(current);
+		current = next;
+	}
+	*lst = NULL;
+}
 
  t_entry *add_new_entry(char *path, char *entry_name, int is_folder)
 {
@@ -79,54 +87,46 @@ char *permissions(mode_t perm)
 	ft_strsub(ctime(&pstat->st_mtimespec.tv_sec), 11, 5);
 	entry->date_accessed = pstat->st_mtimespec.tv_sec;
 	entry->next = NULL;
+	free(pstat);
 	return entry;
 }
 
-int list_dir_recursive(char *dirname)
+t_entry *fill_list(DIR *pDir, struct dirent *pDirent, char *path, char *dirname)
 {
-	struct dirent	*pDirent;
-
- 	t_entry	*list_start;
+	t_entry	*list_start;
 	t_entry	*list_current;
-	DIR *pDir;
-	char path[ft_strlen(dirname) + 255]; // 255 more chars for subdirectory path
 
 	list_current = NULL;
-	ft_strcpy(path, dirname); // set path to the current directory path
-	pDir = opendir(dirname);
-	if (pDir == NULL)
-	{
-	    	printf("Cannot open %s directory: %s\n", dirname, strerror(errno));
-	    	return 1;
-	}
-	printf("%s:\n", dirname);
+	list_start = NULL;
 	while ((pDirent = readdir(pDir)) != NULL)
 	{
-		if(pDirent->d_name[0] != '.')
-		{ // ignore hidden entries
-			//printf("%s ", pDirent->d_name); // list entries normally
-		if(dirname[ft_strlen(dirname) - 1] != '/')
-			ft_strcat(path, "/");
-		ft_strcat(path, pDirent->d_name);
-		if(!list_current)
+		if(pDirent->d_name[0] != '.') // ignore hidden entries
 		{
-			list_current = add_new_entry(path, pDirent->d_name,
-				pDirent->d_type == DT_DIR);
-			list_start = list_current;
+			if(dirname[ft_strlen(dirname) - 1] != '/')
+				ft_strcat(path, "/");
+			ft_strcat(path, pDirent->d_name);
+			if(!list_current)
+			{
+				list_current = add_new_entry(path, pDirent->d_name,
+					pDirent->d_type == DT_DIR);
+				list_start = list_current;
+			}
+			else
+			{
+				list_current->next = add_new_entry(path, pDirent->d_name,
+					pDirent->d_type == DT_DIR);
+				list_current = list_current->next;
+			}
+			ft_bzero(path + ft_strlen(dirname),
+			ft_strlen(pDirent->d_name) +
+			dirname[ft_strlen(dirname) - 1] != '/');
 		}
-		else
-		{
-			list_current->next = add_new_entry(path, pDirent->d_name,
-				pDirent->d_type == DT_DIR);
-			list_current = list_current->next;
-		}
-		//printf("user is %s ", add_new_entry(path, pDirent->d_name)->user);
-		ft_bzero(path + ft_strlen(dirname),
-		ft_strlen(pDirent->d_name) +
-		dirname[ft_strlen(dirname) - 1] != '/');
 	}
-	}
-	list_current = list_start;
+	return list_start;
+}
+
+void display_entries(t_entry *list_current)
+{
 	while(list_current)
 	{
 		printf("%c%s %d %s %s %d %s %d %s %s\n",
@@ -137,10 +137,34 @@ int list_dir_recursive(char *dirname)
 		list_current->name);
 		list_current = list_current->next;
 	}
+}
+
+int list_dir_recursive(char *dirname)
+{
+	struct dirent *pDirent;
+	t_entry	*list_start;
+	t_entry	*list_current;
+
+	DIR *pDir;
+	char path[ft_strlen(dirname) + 255]; // 255 more chars for subdirectory path
+
+	pDirent = NULL;
+	list_current = NULL;
+	list_start = NULL;
+	ft_strcpy(path, dirname); // set path to the current directory path
+	pDir = opendir(dirname);
+	if (pDir == NULL)
+	{
+	    	printf("Cannot open %s directory: %s\n", dirname, strerror(errno));
+	    	return 1;
+	}
+	printf("%s:\n", dirname);
+	list_start = fill_list(pDir, pDirent, path, dirname);
+	display_entries(list_start);
+	lstdel(&list_start);
 	printf("\n");
 	closedir(pDir);
 	pDir = opendir(dirname); // resetting pDir to first file entry for new loop
-
 	while ((pDirent = readdir(pDir)) != NULL)
 	{
 		if(pDirent->d_name[0] != '.')
@@ -163,8 +187,9 @@ int list_dir_recursive(char *dirname)
 }
 
 
+
 int main (int argc, char **argv)
 {
 	list_dir_recursive((argc < 2) ? "." : argv[1]);
-        return 0;
+    return 0;
 }
