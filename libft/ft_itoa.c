@@ -3,76 +3,79 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkellum <nkellum@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/11/22 15:16:36 by nkellum           #+#    #+#             */
-/*   Updated: 2018/11/23 15:00:35 by nkellum          ###   ########.fr       */
+/*   Created: 2018/11/28 23:23:26 by jmondino          #+#    #+#             */
+/*   Updated: 2018/11/30 21:33:12 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdio.h>
 
-static int	numlength(int n)
+static int		size(int n)
 {
-	int i;
-	int neg;
+	int		count;
 
-	i = 0;
-	neg = 0;
-	if (n == 0 || n == -0)
-		return (1);
+	count = 0;
 	if (n < 0)
 	{
 		n = -n;
-		neg = 1;
+		count++;
 	}
-	while (n > 0)
-	{
-		n /= 10;
-		i++;
-	}
-	if (neg)
-		return (-i);
-	else
-		return (i);
+	while (n /= 10)
+		count++;
+	return (count + 1);
 }
 
-static void	isnegative(int *length, int *isneg, int *n)
+static char		*rev(char *str)
 {
-	if (numlength(*n) < 0)
-	{
-		*length = -*length;
-		*length += 1;
-		*isneg = 1;
-		*n = -*n;
-	}
-}
-
-char		*ft_itoa(int n)
-{
-	char	*numstr;
-	int		isneg;
-	int		length;
 	int		i;
+	int		j;
+	char	stock;
+
+	i = 0;
+	j = 0;
+	if (*str == '-')
+		str++;
+	while (str[i])
+		i++;
+	i--;
+	while (j < i)
+	{
+		stock = str[i];
+		str[i] = str[j];
+		str[j] = stock;
+		i--;
+		j++;
+	}
+	return (str);
+}
+
+char			*ft_itoa(int n)
+{
+	char	*s;
+	int		i;
+	int		temp;
 
 	if (n == -2147483648)
 		return (ft_strdup("-2147483648"));
-	if (n == 0 || n == -0)
-		return (ft_strdup("0"));
-	length = numlength(n);
-	isnegative(&length, &isneg, &n);
-	i = length - 1;
-	if ((numstr = malloc(length + 1)) == NULL)
-		return (0);
-	numstr[length] = '\0';
-	if (isneg)
-		numstr[0] = '-';
-	while (n > 0)
+	if (!(s = (char *)malloc(sizeof(char) * (size(n)) + 1)))
+		return (NULL);
+	i = 0;
+	temp = size(n);
+	if (n < 0)
 	{
-		numstr[i] = (n % 10) + '0';
-		n /= 10;
-		i--;
+		s[i] = '-';
+		n = -n;
+		i++;
 	}
-	return (numstr);
+	while (i < temp)
+	{
+		s[i] = n % 10 + '0';
+		n = n / 10;
+		i++;
+	}
+	s[i] = '\0';
+	rev(s);
+	return (s);
 }

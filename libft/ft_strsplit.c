@@ -3,101 +3,84 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strsplit.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkellum <nkellum@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/11/21 21:17:27 by nkellum           #+#    #+#             */
-/*   Updated: 2018/11/26 13:12:45 by nkellum          ###   ########.fr       */
+/*   Created: 2018/11/27 16:14:29 by jmondino          #+#    #+#             */
+/*   Updated: 2018/11/30 21:27:11 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdio.h>
 
-static int		num_of_words(char *s, char c)
+static size_t		ft_len(char const *s, char c)
 {
-	int words;
-	int i;
-	int isword;
+	size_t	count;
 
-	i = 0;
-	isword = 0;
-	words = 0;
-	while (s[i])
+	count = 0;
+	if (s)
 	{
-		if (s[i] == c)
-			isword = 0;
-		else if (!isword)
+		while (*s == c)
+			s++;
+		while (*s != c && *s)
 		{
-			words++;
-			isword = 1;
+			count++;
+			s++;
 		}
-		i++;
 	}
-	return (words);
+	return (count);
 }
 
-static int		wordindex(char *s, char c, int n)
+static size_t		ft_words(char const *s, char c)
 {
-	int words;
-	int i;
-	int isword;
+	size_t	count;
+	size_t	bool;
 
-	i = 0;
-	isword = 0;
-	words = -1;
-	while (s[i])
+	count = 0;
+	bool = 0;
+	if (s)
 	{
-		if (s[i] == c)
-			isword = 0;
-		else if (!isword)
+		while (*s)
 		{
-			words++;
-			isword = 1;
+			if (*s == c)
+			{
+				s++;
+				bool = 0;
+			}
+			else
+			{
+				if (bool == 0)
+					count++;
+				bool = 1;
+				s++;
+			}
 		}
-		if (words == n)
-			return (i);
-		i++;
 	}
-	return (-1);
+	return (count);
 }
 
-static int		wordlen(char *s, char c, int n)
+char				**ft_strsplit(char const *s, char c)
 {
-	int i;
-	int length;
+	char	**tab;
+	char	*str;
+	size_t	i;
+	size_t	j;
 
-	length = 0;
-	i = wordindex(s, c, n);
-	while (s[i + length] != c && s[i + length])
-		length++;
-	return (length);
-}
-
-char			**ft_strsplit(char const *s, char c)
-{
-	char	**array;
-	int		i;
-	int		j;
-
+	if (!(tab = (char **)malloc(sizeof(char *) * (ft_words(s, c)) + 1)))
+		return (NULL);
+	str = (char *)s;
 	i = 0;
-	j = 0;
-	if (!s || (array = malloc(sizeof(char *) *
-	num_of_words((char *)s, c) + 1)) == NULL)
-		return (0);
-	while (i < num_of_words((char *)s, c))
+	while (i < ft_words(s, c))
 	{
-		if ((array[i] = malloc(sizeof(char) *
-		wordlen((char *)s, c, i) + 1)) == NULL)
-			return (0);
+		if (!(tab[i] = (char *)malloc(sizeof(char) * (ft_len(str, c)) + 1)))
+			return (NULL);
 		j = 0;
-		while (j < wordlen((char *)s, c, i))
-		{
-			array[i][j] = s[wordindex((char *)s, c, i) + j];
-			j++;
-		}
-		array[i][j] = '\0';
+		while (*str == c)
+			str++;
+		while (*str != c && *str)
+			tab[i][j++] = *str++;
+		tab[i][j] = '\0';
 		i++;
 	}
-	array[i] = 0;
-	return (array);
+	tab[i] = NULL;
+	return (tab);
 }

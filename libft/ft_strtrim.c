@@ -3,35 +3,63 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strtrim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkellum <nkellum@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/11/21 16:13:55 by nkellum           #+#    #+#             */
-/*   Updated: 2018/11/27 12:39:05 by nkellum          ###   ########.fr       */
+/*   Created: 2018/11/27 14:14:31 by jmondino          #+#    #+#             */
+/*   Updated: 2018/12/05 15:39:11 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strtrim(char const *s)
+static size_t	ft_nospaces(char const *s)
 {
-	int start;
-	int end;
-	int length;
+	size_t	i;
+	size_t	count;
 
-	if (!s)
+	i = 0;
+	count = 0;
+	while (s[i] == ' ' || s[i] == '\n' || s[i] == '\t')
+		i++;
+	if (s[i] == '\0')
 		return (0);
-	length = ft_strlen(s);
-	start = 0;
-	end = length - 1;
-	while (s[start] == ' ' || s[start] == '\n' || s[start] == '\t')
-		start++;
-	while (s[end] == ' ' || s[end] == '\n' || s[end] == '\t')
-		end--;
-	if (start == 0 && end == (length - 1))
-		return (ft_strdup((char *)s));
-	if (start > end)
-		return (ft_strdup("\0"));
-	if (ft_strsub(s, start, end - start + 1))
-		return (ft_strsub(s, start, end - start + 1));
+	while (s[i])
+	{
+		count++;
+		i++;
+	}
+	while (s[i - 1] == ' ' || s[i - 1] == '\n' || s[i - 1] == '\t')
+	{
+		count--;
+		i--;
+	}
+	return (count);
+}
+
+char			*ft_strtrim(char const *s)
+{
+	char	*str;
+	size_t	i;
+	size_t	j;
+
+	if (s)
+	{
+		if (!(str = (char *)malloc(sizeof(char) * ft_nospaces(s) + 1)))
+			return (NULL);
+		i = 0;
+		j = 0;
+		while (s[i] == ' ' || s[i] == '\n' || s[i] == '\t')
+			i++;
+		while (s[i])
+			str[j++] = s[i++];
+		while (s[i - 1] == ' ' || s[i - 1] == '\n' || s[i - 1] == '\t')
+		{
+			str[j] = '\0';
+			j--;
+			i--;
+		}
+		str[j] = '\0';
+		return (str);
+	}
 	return (NULL);
 }

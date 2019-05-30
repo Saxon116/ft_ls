@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstnew.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkellum <nkellum@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/11/27 15:00:56 by nkellum           #+#    #+#             */
-/*   Updated: 2018/11/27 15:14:50 by nkellum          ###   ########.fr       */
+/*   Created: 2018/11/29 18:30:19 by jmondino          #+#    #+#             */
+/*   Updated: 2019/05/22 20:17:50 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,25 +14,20 @@
 
 t_list	*ft_lstnew(void const *content, size_t content_size)
 {
-	t_list *t;
+	t_list	*lst;
 
-	if ((t = malloc(sizeof(t_list))) == NULL)
-		return (0);
-	if (content == NULL)
+	if (!(lst = (t_list *)malloc(sizeof(t_list))))
+		return (NULL);
+	if (content)
 	{
-		t->content = NULL;
-		t->content_size = 0;
+		lst->content = ft_strdup((const char *)content);
+		lst->content_size = content_size;
 	}
 	else
 	{
-		if ((t->content = malloc(content_size)) == NULL)
-		{
-			free(t);
-			return (0);
-		}
-		ft_memcpy(t->content, content, content_size);
-		t->content_size = content_size;
+		lst->content = NULL;
+		lst->content_size = 0;
 	}
-	t->next = NULL;
-	return (t);
+	lst->next = NULL;
+	return (lst);
 }

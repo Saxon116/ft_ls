@@ -3,37 +3,35 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkellum <nkellum@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/11/13 14:59:06 by nkellum           #+#    #+#             */
-/*   Updated: 2018/11/30 13:03:56 by nkellum          ###   ########.fr       */
+/*   Created: 2018/11/21 15:20:51 by jmondino          #+#    #+#             */
+/*   Updated: 2019/01/23 13:52:05 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_atoi(const char *str)
-{
-	int num;
-	int isneg;
-	int i;
+#include "libft.h"
 
-	i = 0;
-	isneg = 0;
-	num = 0;
-	while (str[i] == '\t' || str[i] == '\n' || str[i] == '\v' ||
-str[i] == '\f' || str[i] == '\r' || str[i] == ' ')
-		i++;
-	if (str[i] == '-')
-		isneg = 1;
-	if (str[i] == '-' || str[i] == '+')
-		i++;
-	while ((str[i] >= 48) && (str[i] <= 57))
+int		ft_atoi(const char *str)
+{
+	long	nega;
+	long	nb;
+
+	nega = 1;
+	nb = 0;
+	while (*str == ' ' || *str == '\n' || *str == '\t' ||
+			*str == '\r' || *str == '\f' || *str == '\v')
+		str++;
+	if (*str == '-' || *str == '+')
 	{
-		num *= 10;
-		num += ((int)str[i] - 48);
-		i++;
+		if (*str == '-')
+			nega = -1;
+		str++;
 	}
-	if (isneg)
-		return (-num);
-	else
-		return (num);
+	while (*str >= '0' && *str <= '9')
+	{
+		nb = nb * 10 + *str - '0';
+		str++;
+	}
+	return ((int)(nb * nega));
 }
