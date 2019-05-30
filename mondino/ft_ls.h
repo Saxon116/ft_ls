@@ -6,7 +6,7 @@
 /*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/20 16:58:28 by jmondino          #+#    #+#             */
-/*   Updated: 2019/05/30 17:39:15 by nkellum          ###   ########.fr       */
+/*   Updated: 2019/05/30 18:11:58 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,13 +59,13 @@ void    	lstdel(t_entry **lst);
 void		ft_parseargs(char **av, t_shit *pShit);
 void		ft_fillpShit(char *flags, char **newav, int index, t_shit *pShit);
 void 		print_spaces(int num);
-void 		display_entries(t_entry *list_start);
+void 		display_entries_l(t_entry *list_start);
 char		*ft_checkflags(char *str);
 char 		*permissions(mode_t perm);
 char		**ft_isfile(char **newav, int index);
 char		**ft_isdir(char **newav, int index);
 int			ft_existent(char *str, int here);
-int 		list_dir_recursive(char *dirname);
+int 		list_dir_recursive(char *dirname, t_shit *pShit);
 int 		get_day(char *date);
 int 		num_length(long long num);
 int 		*get_offsets(t_entry *list_start);

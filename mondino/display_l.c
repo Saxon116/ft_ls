@@ -6,7 +6,7 @@
 /*   By: nkellum <nkellum@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/30 12:02:12 by nkellum           #+#    #+#             */
-/*   Updated: 2019/05/30 17:32:36 by nkellum          ###   ########.fr       */
+/*   Updated: 2019/05/30 18:10:23 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int *get_offsets(t_entry *list_start)
 	return offsets;
 }
 
-void display_entries(t_entry *list_start)
+void display_entries_l(t_entry *list_start)
 {
 	t_entry *list_current;
 	int *offsets;

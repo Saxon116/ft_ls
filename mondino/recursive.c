@@ -6,7 +6,7 @@
 /*   By: nkellum <nkellum@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/03 15:10:14 by nkellum           #+#    #+#             */
-/*   Updated: 2019/05/30 17:40:27 by nkellum          ###   ########.fr       */
+/*   Updated: 2019/05/30 18:25:10 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,7 @@ t_entry *fill_list(DIR *pDir, struct dirent *pDirent, char *path, char *dirname)
 
 
 
-int list_dir_recursive(char *dirname)
+int list_dir_recursive(char *dirname, t_shit *pShit)
 {
 	struct dirent *pDirent;
 	t_entry	*list_start;
@@ -147,35 +147,36 @@ int list_dir_recursive(char *dirname)
 	list_start = NULL;
 	ft_strcpy(path, dirname); // set path to the current directory path
 	pDir = opendir(dirname);
-	if (pDir == NULL)
-	{
-	    	printf("Cannot open %s directory: %s\n", dirname, strerror(errno));
-	    	return 1;
-	}
-	printf("%s:\n", dirname);
+	if (ft_strcmp(dirname, "./"))
+		printf("%s:\n", dirname);
 	list_start = fill_list(pDir, pDirent, path, dirname);
-	display_entries(list_start);
+	if (ft_iscinstr(pShit->flags, 'l'))
+		display_entries_l(list_start);
+	else
+		printf("display normaly\n");
 	lstdel(&list_start);
-	printf("\n");
 	closedir(pDir);
-	// pDir = opendir(dirname); // resetting pDir to first file entry for new loop
-	// while ((pDirent = readdir(pDir)) != NULL)
-	// {
-	// 	if(pDirent->d_name[0] != '.')
-	// 	{
-	// 		if(pDirent->d_type == DT_DIR) // if entry is a directory
-	// 		{
-	// 			printf("\n");
-	// 			if(dirname[ft_strlen(dirname) - 1] != '/')
-	// 				ft_strcat(path, "/");
-	// 			ft_strcat(path, pDirent->d_name); // add subdirectory name to full path
-	// 			list_dir_recursive(path); // list contents of subdirectory
-	// 			ft_bzero(path + ft_strlen(dirname),
-	// 			ft_strlen(pDirent->d_name) +
-	// 			dirname[ft_strlen(dirname) - 1] != '/'); // reset path for next subdirectory
-	// 		}
-	// 	}
-	// }
-	// closedir(pDir);
+	if (ft_iscinstr(pShit->flags, 'R'))
+	{
+		pDir = opendir(dirname); // resetting pDir to first file entry for new loop
+		while ((pDirent = readdir(pDir)) != NULL)
+		{
+			if(pDirent->d_name[0] != '.')
+			{
+				if(pDirent->d_type == DT_DIR) // if entry is a directory
+				{
+					printf("\n");
+					if(dirname[ft_strlen(dirname) - 1] != '/')
+						ft_strcat(path, "/");
+					ft_strcat(path, pDirent->d_name); // add subdirectory name to full path
+					list_dir_recursive(path, pShit); // list contents of subdirectory
+					ft_bzero(path + ft_strlen(dirname),
+							 ft_strlen(pDirent->d_name) +
+							 dirname[ft_strlen(dirname) - 1] != '/'); // reset path for next subdirectory
+				}
+			}
+		}
+	closedir(pDir);
+	}
 	return 0;
 }
