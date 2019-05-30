@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   recursive.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nkellum <nkellum@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/03 15:10:14 by nkellum           #+#    #+#             */
-/*   Updated: 2019/05/30 17:24:02 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/05/30 17:40:27 by nkellum          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,23 @@ void	lstdel(t_entry **lst)
 	*lst = NULL;
 }
 
-t_entry *add_new_entry(char *path, char *entry_name, int is_folder)
+char *get_link_path(char *path)
+{
+	char *buf;
+
+	if((buf = malloc(1024)) == NULL)
+		return 0;
+	ssize_t len = readlink(path, buf, 1023);
+	if(len != -1)
+	{
+  		buf[len] = '\0';
+		return buf;
+	}
+	else
+		return ft_strdup("");
+}
+
+ t_entry *add_new_entry(char *path, char *entry_name, int type)
 {
 	t_entry	*entry;
 	struct stat	*pstat;
@@ -62,7 +78,8 @@ t_entry *add_new_entry(char *path, char *entry_name, int is_folder)
 	if((entry = malloc(sizeof(t_entry))) == NULL)
 		return 0;
 	lstat(path, pstat);
-	entry->is_folder = is_folder;
+	entry->type = type;
+	entry->link_path = get_link_path(path);
 	entry->name = ft_strdup(entry_name);
 	entry->rights = permissions(pstat->st_mode);
 	entry->hard_links = pstat->st_nlink;
@@ -97,13 +114,13 @@ t_entry *fill_list(DIR *pDir, struct dirent *pDirent, char *path, char *dirname)
 			if(!list_current)
 			{
 				list_current = add_new_entry(path, pDirent->d_name,
-					pDirent->d_type == DT_DIR);
+					pDirent->d_type);
 				list_start = list_current;
 			}
 			else
 			{
 				list_current->next = add_new_entry(path, pDirent->d_name,
-					pDirent->d_type == DT_DIR);
+					pDirent->d_type);
 				list_current = list_current->next;
 			}
 			ft_bzero(path + ft_strlen(dirname),
@@ -113,6 +130,8 @@ t_entry *fill_list(DIR *pDir, struct dirent *pDirent, char *path, char *dirname)
 	}
 	return list_start;
 }
+
+
 
 int list_dir_recursive(char *dirname)
 {
@@ -128,33 +147,35 @@ int list_dir_recursive(char *dirname)
 	list_start = NULL;
 	ft_strcpy(path, dirname); // set path to the current directory path
 	pDir = opendir(dirname);
-	if (ft_strcmp(dirname, "./"))
-		printf("%s:\n", dirname);
+	if (pDir == NULL)
+	{
+	    	printf("Cannot open %s directory: %s\n", dirname, strerror(errno));
+	    	return 1;
+	}
+	printf("%s:\n", dirname);
 	list_start = fill_list(pDir, pDirent, path, dirname);
-	//display_entries(list_start);
+	display_entries(list_start);
 	lstdel(&list_start);
 	printf("\n");
 	closedir(pDir);
-	/*
-	pDir = opendir(dirname); // resetting pDir to first file entry for new loop
-	 while ((pDirent = readdir(pDir)) != NULL)
-	 {
-	 	if(pDirent->d_name[0] != '.')
-	 	{
-	 		if(pDirent->d_type == DT_DIR) // if entry is a directory
-	 		{
-	 			printf("\n");
-	 			if(dirname[ft_strlen(dirname) - 1] != '/')
-	 				ft_strcat(path, "/");
-	 			ft_strcat(path, pDirent->d_name); // add subdirectory name to full path
-	 			list_dir_recursive(path); // list contents of subdirectory
-	 			ft_bzero(path + ft_strlen(dirname),
-	 			ft_strlen(pDirent->d_name) +
-	 			dirname[ft_strlen(dirname) - 1] != '/'); // reset path for next subdirectory
-	 		}
-	 	}
-	 }
-	 closedir(pDir);
-	*/
-	 return 0;
+	// pDir = opendir(dirname); // resetting pDir to first file entry for new loop
+	// while ((pDirent = readdir(pDir)) != NULL)
+	// {
+	// 	if(pDirent->d_name[0] != '.')
+	// 	{
+	// 		if(pDirent->d_type == DT_DIR) // if entry is a directory
+	// 		{
+	// 			printf("\n");
+	// 			if(dirname[ft_strlen(dirname) - 1] != '/')
+	// 				ft_strcat(path, "/");
+	// 			ft_strcat(path, pDirent->d_name); // add subdirectory name to full path
+	// 			list_dir_recursive(path); // list contents of subdirectory
+	// 			ft_bzero(path + ft_strlen(dirname),
+	// 			ft_strlen(pDirent->d_name) +
+	// 			dirname[ft_strlen(dirname) - 1] != '/'); // reset path for next subdirectory
+	// 		}
+	// 	}
+	// }
+	// closedir(pDir);
+	return 0;
 }

@@ -2,8 +2,6 @@ NAME = ft_ls
 
 SRC = main.c shit.c parse.c display.c recursive.c
 
-OBJ = $(SRC:.c=.o)
-
 FLAGS = -Wextra -Wall -Werror
 
 ifndef VERBOSE
@@ -12,16 +10,16 @@ endif
 
 all:$(NAME)
 
-$(NAME): $(OBJ)
-	gcc $(FLAGS) -o $(NAME) $(OBJ) libft/libft.a
+$(NAME): $(SRC)
+	make -C libft
+	gcc $(FLAGS) -o $(NAME) $(SRC) libft/libft.a
 	echo "\033[32m$(NAME) compiled.\033[0m"
 
 clean:
-	/bin/rm -f $(OBJ)
-	echo "\033[32mAll .o have been erased.\033[0m"
+	make -C libft clean
 
 fclean: clean
-	/bin/rm -f $(NAME)
-	echo "\033[32m$(NAME) erased.\033[0m"
+	make -C libft fclean
+	rm -f ft_ls
 
 re: fclean all

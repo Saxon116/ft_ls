@@ -6,7 +6,7 @@
 /*   By: nkellum <nkellum@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/30 12:02:12 by nkellum           #+#    #+#             */
-/*   Updated: 2019/05/30 12:55:13 by nkellum          ###   ########.fr       */
+/*   Updated: 2019/05/30 17:32:36 by nkellum          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,14 +73,23 @@ void display_entries(t_entry *list_start)
 	list_current = list_start;
 	while(list_current)
 	{
-		printf("%c%s  ", list_current->is_folder ? 'd' : '-', list_current->rights);
+		if(list_current->type == DT_REG)
+			printf("-");
+		if(list_current->type == DT_DIR)
+			printf("d");
+		if(list_current->type == DT_LNK)
+			printf("l");
+		printf("%s  ", list_current->rights);
 		print_spaces(offsets[0] - (num_length(list_current->hard_links)));
 		printf("%d %s  %s  ", list_current->hard_links, list_current->user, list_current->group);
 		print_spaces(offsets[1] - (num_length(list_current->size)));
 		printf("%d %s", list_current->size, list_current->date_month_modified);
 		print_spaces(offsets[2] - (num_length(list_current->date_day_modified)));
-		printf(" %d %s %s\n", list_current->date_day_modified,
+		printf(" %d %s %s", list_current->date_day_modified,
 		list_current->date_time_modified, list_current->name);
+		if(list_current->type == DT_LNK)
+			printf(" -> %s", list_current->link_path);
+		printf("\n");
 		list_current = list_current->next;
 	}
 	free(offsets);

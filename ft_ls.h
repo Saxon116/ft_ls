@@ -6,7 +6,7 @@
 /*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/20 16:58:28 by jmondino          #+#    #+#             */
-/*   Updated: 2019/05/30 17:18:57 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/05/30 17:39:15 by nkellum          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@
 # include <dirent.h>
 # include <stdlib.h>
 # include <string.h>
-# include <sys/types.h> 
-# include <sys/stat.h> 
+# include <sys/types.h>
+# include <sys/stat.h>
 # include <unistd.h>
 # include <errno.h>
 # include <pwd.h>
@@ -36,22 +36,22 @@ typedef struct 		s_shit
 	char			**dirs;
 }					t_shit;
 
-typedef struct  s_entry
+typedef struct 	s_entry
 {
-    int             type;
-	int				is_folder;
-    char            *name;
-    char            *rights;
-    int             hard_links;
-    char            *user;
-    char            *group;
-    int             size;
-    char            *date_month_modified;
-    int             date_day_modified;
-    char            *date_time_modified;
-    long            date_accessed;
-    struct s_entry  *next;
-}					t_entry;
+	int				type;
+	char			*name;
+	char			*rights;
+	int				hard_links;
+	char			*user;
+	char			*group;
+	int				size;
+	char			*date_month_modified;
+	int				date_day_modified;
+	char			*date_time_modified;
+	long			date_accessed;
+	char			*link_path;
+	struct s_entry	*next;
+}				t_entry;
 
 void		ft_asciiorder(char **tab);
 void		ft_revtab(char **tab);
@@ -69,7 +69,7 @@ int 		list_dir_recursive(char *dirname);
 int 		get_day(char *date);
 int 		num_length(long long num);
 int 		*get_offsets(t_entry *list_start);
-t_shit		*initstru(int ac, char **av);
+t_shit		*initstru(void);
 t_entry 	*fill_list(DIR *pDir, struct dirent *pDirent, char *path, char *dirname);
 t_entry 	*add_new_entry(char *path, char *entry_name, int is_folder);
 

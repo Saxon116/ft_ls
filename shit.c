@@ -6,7 +6,7 @@
 /*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/20 16:51:04 by jmondino          #+#    #+#             */
-/*   Updated: 2019/05/30 17:13:19 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/05/30 17:39:20 by nkellum          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void    ft_fillpShit(char *flags, char **newav, int index, t_shit *pShit)
     }
 }
 
-t_shit      *initstru(int ac, char **av)
+t_shit      *initstru(void)
 {
     t_shit      *pShit;
 
