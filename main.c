@@ -6,7 +6,7 @@
 /*   By: nkellum <nkellum@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/03 15:10:14 by nkellum           #+#    #+#             */
-/*   Updated: 2019/05/29 20:15:39 by nkellum          ###   ########.fr       */
+/*   Updated: 2019/05/30 12:55:02 by nkellum          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void	lstdel(t_entry **lst)
 		return 0;
 	if((entry = malloc(sizeof(t_entry))) == NULL)
 		return 0;
-	stat(path, pstat);
+	lstat(path, pstat);
 	entry->is_folder = is_folder;
 	entry->name = ft_strdup(entry_name);
 	entry->rights = permissions(pstat->st_mode);
@@ -82,7 +82,7 @@ void	lstdel(t_entry **lst)
 	entry->group = ft_strdup(getgrgid(pstat->st_gid)->gr_name);
 	entry->date_day_modified = get_day(ctime(&pstat->st_mtimespec.tv_sec));
 	entry->date_month_modified =
-	ft_strsub(ctime(&pstat->st_mtimespec.tv_sec), 3, 4);
+	ft_strsub(ctime(&pstat->st_mtimespec.tv_sec), 4, 3);
 	entry->date_time_modified =
 	ft_strsub(ctime(&pstat->st_mtimespec.tv_sec), 11, 5);
 	entry->date_accessed = pstat->st_mtimespec.tv_sec;
@@ -125,19 +125,7 @@ t_entry *fill_list(DIR *pDir, struct dirent *pDirent, char *path, char *dirname)
 	return list_start;
 }
 
-void display_entries(t_entry *list_current)
-{
-	while(list_current)
-	{
-		printf("%c%s %d %s %s %d %s %d %s %s\n",
-		list_current->is_folder ? 'd' : '-', list_current->rights,
-		list_current->hard_links, list_current->user, list_current->group,
-		list_current->size, list_current->date_month_modified,
-		list_current->date_day_modified, list_current->date_time_modified,
-		list_current->name);
-		list_current = list_current->next;
-	}
-}
+
 
 int list_dir_recursive(char *dirname)
 {
@@ -164,25 +152,25 @@ int list_dir_recursive(char *dirname)
 	lstdel(&list_start);
 	printf("\n");
 	closedir(pDir);
-	pDir = opendir(dirname); // resetting pDir to first file entry for new loop
-	while ((pDirent = readdir(pDir)) != NULL)
-	{
-		if(pDirent->d_name[0] != '.')
-		{
-			if(pDirent->d_type == DT_DIR) // if entry is a directory
-			{
-				printf("\n");
-				if(dirname[ft_strlen(dirname) - 1] != '/')
-					ft_strcat(path, "/");
-				ft_strcat(path, pDirent->d_name); // add subdirectory name to full path
-				list_dir_recursive(path); // list contents of subdirectory
-				ft_bzero(path + ft_strlen(dirname),
-				ft_strlen(pDirent->d_name) +
-				dirname[ft_strlen(dirname) - 1] != '/'); // reset path for next subdirectory
-			}
-		}
-	}
-	closedir(pDir);
+	// pDir = opendir(dirname); // resetting pDir to first file entry for new loop
+	// while ((pDirent = readdir(pDir)) != NULL)
+	// {
+	// 	if(pDirent->d_name[0] != '.')
+	// 	{
+	// 		if(pDirent->d_type == DT_DIR) // if entry is a directory
+	// 		{
+	// 			printf("\n");
+	// 			if(dirname[ft_strlen(dirname) - 1] != '/')
+	// 				ft_strcat(path, "/");
+	// 			ft_strcat(path, pDirent->d_name); // add subdirectory name to full path
+	// 			list_dir_recursive(path); // list contents of subdirectory
+	// 			ft_bzero(path + ft_strlen(dirname),
+	// 			ft_strlen(pDirent->d_name) +
+	// 			dirname[ft_strlen(dirname) - 1] != '/'); // reset path for next subdirectory
+	// 		}
+	// 	}
+	// }
+	// closedir(pDir);
 	return 0;
 }
 

@@ -1,6 +1,6 @@
 NAME = ft_ls
 
-SRC = main.c
+SRC = main.c display.c
 
 FLAGS = -Wextra -Wall -Werror
 

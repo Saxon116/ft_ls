@@ -6,7 +6,7 @@
 /*   By: nkellum <nkellum@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/20 16:58:28 by nkellum           #+#    #+#             */
-/*   Updated: 2019/05/29 17:51:29 by nkellum          ###   ########.fr       */
+/*   Updated: 2019/05/30 12:03:07 by nkellum          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,5 +42,6 @@ typedef struct 	s_entry
 	struct s_entry	*next;
 }				t_entry;
 
+void display_entries(t_entry *list_current);
 
 #endif
