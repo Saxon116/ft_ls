@@ -17,6 +17,7 @@ $(NAME): $(SRC)
 
 clean:
 	make -C libft clean
+	echo "\033[32mObjects files deleted.\033[0m"
 
 fclean: clean
 	make -C libft fclean

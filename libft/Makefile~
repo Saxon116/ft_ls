@@ -6,7 +6,7 @@
 #    By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/21 22:22:11 by jmondino          #+#    #+#              #
-#    Updated: 2019/05/30 17:51:11 by jmondino         ###   ########.fr        #
+#    Updated: 2019/05/30 17:45:00 by nkellum          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,7 +38,7 @@ $(NAME): $(SRC)
 	@gcc -Wall -Wextra -Werror -c $(SRC)
 	@ar rc $(NAME) $(OBJ)
 	@ranlib $(NAME)
-	@echo "${_CYAN}Libft Compiled.${_END}"
+	@echo "${_CYAN}Compiled Libft${_END}"
 	@make clean
 
 
