@@ -2,7 +2,7 @@ NAME = ft_ls
 
 SRC = main.c shit.c parse.c display_l.c display.c recursive.c
 
-FLAGS = -Wextra -Wall -Werror
+FLAGS = -Wextra -Wall -Werror -g
 
 ifndef VERBOSE
 .SILENT:

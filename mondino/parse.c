@@ -6,7 +6,7 @@
 /*   By: jmondino <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/23 14:09:09 by jmondino          #+#    #+#             */
-/*   Updated: 2019/05/31 17:54:03 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/05/31 18:31:23 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,13 +101,16 @@ char	**ft_isfile(char **newav, int index, t_shit *pShit)
 int		ft_existent(char *str, int here, t_shit *pShit)
 {
 	DIR				*pDir;
-	struct	dirent	*pDirent;
+	struct	stat	*pStat;
 
+	if((pStat = malloc(sizeof(struct stat))) == NULL)
+        return 0;
 	if (here == 1)
 	{
-		if ((pDir = opendir(str)) == NULL)
+		if ((pDir = opendir(str)) == NULL)                        // have to correct this part
 		{
-			if (errno == ENOENT)
+			lstat(str, pStat);
+			if (!(pStat->st_dev))
 			{
 				printf ("ft_ls: %s: No such file or directory\n", str);
 				pShit->error++;
