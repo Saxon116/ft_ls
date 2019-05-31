@@ -6,7 +6,7 @@
 /*   By: nkellum <nkellum@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/03 15:10:14 by nkellum           #+#    #+#             */
-/*   Updated: 2019/05/30 18:25:10 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/05/31 17:07:34 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ char *get_link_path(char *path)
 		return ft_strdup("");
 }
 
- t_entry *add_new_entry(char *path, char *entry_name, int type)
+ t_entry 	*add_new_entry(char *path, char *entry_name, int type)
 {
 	t_entry	*entry;
 	struct stat	*pstat;
@@ -87,6 +87,7 @@ char *get_link_path(char *path)
 	entry->user = ft_strdup(getpwuid(pstat->st_uid)->pw_name);
 	entry->group = ft_strdup(getgrgid(pstat->st_gid)->gr_name);
 	entry->date_day_modified = get_day(ctime(&pstat->st_mtimespec.tv_sec));
+	entry->block_size = pstat->st_blocks;
 	entry->date_month_modified =
 	ft_strsub(ctime(&pstat->st_mtimespec.tv_sec), 4, 3);
 	entry->date_time_modified =
@@ -97,7 +98,7 @@ char *get_link_path(char *path)
 	return entry;
 }
 
-t_entry *fill_list(DIR *pDir, struct dirent *pDirent, char *path, char *dirname)
+t_entry 	*fill_list(DIR *pDir, struct dirent *pDirent, char *path, char *dirname)
 {
 	t_entry	*list_start;
 	t_entry	*list_current;
@@ -132,8 +133,38 @@ t_entry *fill_list(DIR *pDir, struct dirent *pDirent, char *path, char *dirname)
 }
 
 
+t_entry 	*fill_list_a(DIR *pDir, struct dirent *pDirent, char *path, char *dirname)
+{
+	t_entry	*list_start;
+	t_entry	*list_current;
+	
+	list_current = NULL;
+	list_start = NULL;
+	while ((pDirent = readdir(pDir)) != NULL)
+	{
+		if(dirname[ft_strlen(dirname) - 1] != '/')
+			ft_strcat(path, "/");
+		ft_strcat(path, pDirent->d_name);
+		if(!list_current)
+		{
+			list_current = add_new_entry(path, pDirent->d_name,
+										 pDirent->d_type);
+			list_start = list_current;
+		}
+		else
+		{
+			list_current->next = add_new_entry(path, pDirent->d_name,
+											   pDirent->d_type);
+			list_current = list_current->next;
+		}
+		ft_bzero(path + ft_strlen(dirname),
+				 ft_strlen(pDirent->d_name) +
+				 dirname[ft_strlen(dirname) - 1] != '/');
+	}
+	return list_start;
+}
 
-int list_dir_recursive(char *dirname, t_shit *pShit)
+void	list_dir_recursive(char *dirname, t_shit *pShit)
 {
 	struct dirent *pDirent;
 	t_entry	*list_start;
@@ -147,13 +178,14 @@ int list_dir_recursive(char *dirname, t_shit *pShit)
 	list_start = NULL;
 	ft_strcpy(path, dirname); // set path to the current directory path
 	pDir = opendir(dirname);
-	if (ft_strcmp(dirname, "./"))
-		printf("%s:\n", dirname);
-	list_start = fill_list(pDir, pDirent, path, dirname);
-	if (ft_iscinstr(pShit->flags, 'l'))
-		display_entries_l(list_start);
+	if (ft_iscinstr(pShit->flags, 'a'))
+		list_start = fill_list_a(pDir, pDirent, path, dirname);
 	else
-		printf("display normaly\n");
+		list_start = fill_list(pDir, pDirent, path, dirname);
+	if (ft_iscinstr(pShit->flags, 'l'))
+		display_entries_l(list_start, pShit, dirname);
+	else
+		ft_print_dir_name(pShit, dirname);
 	lstdel(&list_start);
 	closedir(pDir);
 	if (ft_iscinstr(pShit->flags, 'R'))
@@ -161,12 +193,13 @@ int list_dir_recursive(char *dirname, t_shit *pShit)
 		pDir = opendir(dirname); // resetting pDir to first file entry for new loop
 		while ((pDirent = readdir(pDir)) != NULL)
 		{
-			if(pDirent->d_name[0] != '.')
+			if (pDirent->d_name[0] != '.')
 			{
-				if(pDirent->d_type == DT_DIR) // if entry is a directory
+				if (pDirent->d_type == DT_DIR) // if entry is a directory
 				{
+					pShit->subdir++;
 					printf("\n");
-					if(dirname[ft_strlen(dirname) - 1] != '/')
+					if (dirname[ft_strlen(dirname) - 1] != '/')
 						ft_strcat(path, "/");
 					ft_strcat(path, pDirent->d_name); // add subdirectory name to full path
 					list_dir_recursive(path, pShit); // list contents of subdirectory
@@ -178,5 +211,4 @@ int list_dir_recursive(char *dirname, t_shit *pShit)
 		}
 	closedir(pDir);
 	}
-	return 0;
 }

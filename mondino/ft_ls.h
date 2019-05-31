@@ -6,7 +6,7 @@
 /*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/20 16:58:28 by jmondino          #+#    #+#             */
-/*   Updated: 2019/05/30 18:11:58 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/05/31 17:21:35 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ typedef struct 		s_shit
 	char			*flags;
 	char			**files;
 	char			**dirs;
+	int				subdir;
+	int				error;
 }					t_shit;
 
 typedef struct 	s_entry
@@ -45,6 +47,7 @@ typedef struct 	s_entry
 	char			*user;
 	char			*group;
 	int				size;
+	int				block_size;
 	char			*date_month_modified;
 	int				date_day_modified;
 	char			*date_time_modified;
@@ -59,18 +62,23 @@ void    	lstdel(t_entry **lst);
 void		ft_parseargs(char **av, t_shit *pShit);
 void		ft_fillpShit(char *flags, char **newav, int index, t_shit *pShit);
 void 		print_spaces(int num);
-void 		display_entries_l(t_entry *list_start);
+void 		display_entries_l(t_entry *list_start, t_shit *pShit, char *dirname);
+void		ft_display(t_shit *pShit);
+void 		list_dir_recursive(char *dirname, t_shit *pShit);
+void		ft_print_dir_name(t_shit *pShit, char *dirname);
+void		ft_total(t_entry *list_start, t_shit *pShit, char *dirname);
 char		*ft_checkflags(char *str);
 char 		*permissions(mode_t perm);
-char		**ft_isfile(char **newav, int index);
-char		**ft_isdir(char **newav, int index);
-int			ft_existent(char *str, int here);
-int 		list_dir_recursive(char *dirname, t_shit *pShit);
+char		**ft_isfile(char **newav, int index, t_shit *pShit);
+char		**ft_isdir(char **newav, int index, t_shit *pShit);
+int			ft_existent(char *str, int here, t_shit *pShit);
 int 		get_day(char *date);
 int 		num_length(long long num);
 int 		*get_offsets(t_entry *list_start);
 t_shit		*initstru(void);
 t_entry 	*fill_list(DIR *pDir, struct dirent *pDirent, char *path, char *dirname);
+t_entry     *fill_list_a(DIR *pDir, struct dirent *pDirent, char *path, char *dirname);
 t_entry 	*add_new_entry(char *path, char *entry_name, int is_folder);
+
 
 #endif

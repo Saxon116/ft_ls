@@ -6,7 +6,7 @@
 /*   By: nkellum <nkellum@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/30 12:02:12 by nkellum           #+#    #+#             */
-/*   Updated: 2019/05/30 18:10:23 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/05/31 17:21:02 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,11 +64,12 @@ int *get_offsets(t_entry *list_start)
 	return offsets;
 }
 
-void display_entries_l(t_entry *list_start)
+void display_entries_l(t_entry *list_start, t_shit *pShit, char *dirname)
 {
-	t_entry *list_current;
-	int *offsets;
+	t_entry 	*list_current;
+	int 		*offsets;
 
+	ft_total(list_start, pShit, dirname);
 	offsets = get_offsets(list_start);
 	list_current = list_start;
 	while(list_current)
@@ -93,4 +94,25 @@ void display_entries_l(t_entry *list_start)
 		list_current = list_current->next;
 	}
 	free(offsets);
+}
+
+void	ft_total(t_entry *list_start, t_shit *pShit, char *dirname)
+{
+	t_entry 	*browse;
+	int			total;
+	int			i;
+
+	total = 0;
+	i = 0;
+	browse = list_start;
+	if (pShit->error != 0 || pShit->subdir != 0 || pShit->dirs[1] || pShit->files[0])
+		printf("%s:\n", dirname);
+	while (browse)
+	{
+		total += browse->block_size;
+		browse = browse->next;
+		i++;
+	}
+	if (i != 0)
+		printf("total %d\n", total);
 }

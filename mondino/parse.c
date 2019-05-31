@@ -6,7 +6,7 @@
 /*   By: jmondino <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/23 14:09:09 by jmondino          #+#    #+#             */
-/*   Updated: 2019/05/30 16:59:53 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/05/31 17:54:03 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,11 @@ void	ft_parseargs(char **av, t_shit *pShit)
 	{
 		if (!(ft_strcmp(av[i],  "--")) || av[i][0] != '-')
 			bool = 1;
-		if (av[i][0] == '-' && bool == 0)
+		if ((av[i][0] == '-' && av[i][1]) && bool == 0)
 			tmp = ft_strjoin(tmp, ft_checkflags(av[i]));
 		else
-			newav[j++] = av[i];
+			if (ft_strcmp(av[i], "--"))
+				newav[j++] = av[i];
 	}
 	newav[j] = NULL;
 	if (newav[0])
@@ -39,7 +40,7 @@ void	ft_parseargs(char **av, t_shit *pShit)
 	ft_fillpShit(tmp, newav, j, pShit);
 }
 
-char	**ft_isdir(char **newav, int index)
+char	**ft_isdir(char **newav, int index, t_shit *pShit)
 {
 	char	**tab;
 	int		i;
@@ -55,7 +56,7 @@ char	**ft_isdir(char **newav, int index)
 	{
 		if (ft_strcmp(newav[i],  "--"))
 		{
-			if (ft_existent(newav[i], 0))
+			if (ft_existent(newav[i], 0, pShit))
 			{
 				tab[j] = (char *)malloc(sizeof(char) * ft_strlen(newav[i]));
 				tab[j] = newav[i];
@@ -68,7 +69,7 @@ char	**ft_isdir(char **newav, int index)
 	return (tab);
 }
 
-char	**ft_isfile(char **newav, int index)
+char	**ft_isfile(char **newav, int index, t_shit *pShit)
 {
 	char	**tab;
 	int		i;
@@ -84,7 +85,7 @@ char	**ft_isfile(char **newav, int index)
 	{
 		if (ft_strcmp(newav[i],  "--"))
 		{
-			if (ft_existent(newav[i], 1))
+			if (ft_existent(newav[i], 1, pShit))
 			{
 				tab[j] = (char *)malloc(sizeof(char) * ft_strlen(newav[i]));
 				tab[j] = newav[i];
@@ -97,9 +98,10 @@ char	**ft_isfile(char **newav, int index)
 	return (tab);
 }
 
-int		ft_existent(char *str, int here)
+int		ft_existent(char *str, int here, t_shit *pShit)
 {
-	DIR		*pDir;
+	DIR				*pDir;
+	struct	dirent	*pDirent;
 
 	if (here == 1)
 	{
@@ -108,6 +110,7 @@ int		ft_existent(char *str, int here)
 			if (errno == ENOENT)
 			{
 				printf ("ft_ls: %s: No such file or directory\n", str);
+				pShit->error++;
 				return (0);
 			}
 			return (1);
