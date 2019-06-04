@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   display.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmondino <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/31 14:03:11 by jmondino          #+#    #+#             */
-/*   Updated: 2019/05/31 15:42:54 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/06/04 02:58:42 by nkellum          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,5 +53,5 @@ void	ft_print_dir_name(t_shit *pShit, char *dirname)
 
 void	ft_print_column()
 {
-	
+	// test git pull pour jmondino
 }
