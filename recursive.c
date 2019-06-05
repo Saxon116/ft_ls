@@ -6,7 +6,7 @@
 /*   By: nkellum <nkellum@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/03 15:10:14 by nkellum           #+#    #+#             */
-/*   Updated: 2019/05/31 17:07:34 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/06/04 03:39:52 by nkellum          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,13 +86,13 @@ char *get_link_path(char *path)
 	entry->size = pstat->st_size;
 	entry->user = ft_strdup(getpwuid(pstat->st_uid)->pw_name);
 	entry->group = ft_strdup(getgrgid(pstat->st_gid)->gr_name);
-	entry->date_day_modified = get_day(ctime(&pstat->st_mtimespec.tv_sec));
+	entry->date_day_modified = get_day(ctime(&pstat->st_mtim.tv_sec));
 	entry->block_size = pstat->st_blocks;
 	entry->date_month_modified =
-	ft_strsub(ctime(&pstat->st_mtimespec.tv_sec), 4, 3);
+	ft_strsub(ctime(&pstat->st_mtim.tv_sec), 4, 3);
 	entry->date_time_modified =
-	ft_strsub(ctime(&pstat->st_mtimespec.tv_sec), 11, 5);
-	entry->date_accessed = pstat->st_mtimespec.tv_sec;
+	ft_strsub(ctime(&pstat->st_mtim.tv_sec), 11, 5);
+	entry->date_accessed = pstat->st_mtim.tv_sec;
 	entry->next = NULL;
 	free(pstat);
 	return entry;
@@ -137,7 +137,7 @@ t_entry 	*fill_list_a(DIR *pDir, struct dirent *pDirent, char *path, char *dirna
 {
 	t_entry	*list_start;
 	t_entry	*list_current;
-	
+
 	list_current = NULL;
 	list_start = NULL;
 	while ((pDirent = readdir(pDir)) != NULL)
@@ -168,13 +168,11 @@ void	list_dir_recursive(char *dirname, t_shit *pShit)
 {
 	struct dirent *pDirent;
 	t_entry	*list_start;
-	t_entry	*list_current;
 
 	DIR *pDir;
 	char path[ft_strlen(dirname) + 255]; // 255 more chars for subdirectory path
 
 	pDirent = NULL;
-	list_current = NULL;
 	list_start = NULL;
 	ft_strcpy(path, dirname); // set path to the current directory path
 	pDir = opendir(dirname);
@@ -185,7 +183,7 @@ void	list_dir_recursive(char *dirname, t_shit *pShit)
 	if (ft_iscinstr(pShit->flags, 'l'))
 		display_entries_l(list_start, pShit, dirname);
 	else
-		ft_print_dir_name(pShit, dirname);
+		ft_print_dir_name(list_start, pShit, dirname);
 	lstdel(&list_start);
 	closedir(pDir);
 	if (ft_iscinstr(pShit->flags, 'R'))

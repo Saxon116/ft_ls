@@ -6,7 +6,7 @@
 /*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/20 16:58:28 by jmondino          #+#    #+#             */
-/*   Updated: 2019/05/31 18:31:30 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/06/04 03:36:34 by nkellum          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 # include <uuid/uuid.h>
 # include <grp.h>
 # include <time.h>
+#include <sys/ioctl.h>
 # include "libft/libft.h"
 
 # define OP(x) x == 'a' || x == 'r' || x == 'l' || x == 'R' || x == 't'
@@ -65,7 +66,7 @@ void 		print_spaces(int num);
 void 		display_entries_l(t_entry *list_start, t_shit *pShit, char *dirname);
 void		ft_display(t_shit *pShit);
 void 		list_dir_recursive(char *dirname, t_shit *pShit);
-void		ft_print_dir_name(t_shit *pShit, char *dirname);
+void		ft_print_dir_name(t_entry *list_start, t_shit *pShit, char *dirname);
 void		ft_total(t_entry *list_start, t_shit *pShit, char *dirname);
 char		*ft_checkflags(char *str);
 char 		*permissions(mode_t perm);
