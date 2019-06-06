@@ -6,7 +6,7 @@
 /*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/31 14:03:11 by jmondino          #+#    #+#             */
-/*   Updated: 2019/06/05 16:10:20 by nkellum          ###   ########.fr       */
+/*   Updated: 2019/06/06 12:02:01 by nkellum          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ int num_of_columns(t_entry *list_start, int terminal_width)
 	}
 	i = 0;
 	spaces += longest_entries[i] + 2;
-	while(spaces < terminal_width - 2)
+	while(spaces < terminal_width)
 	{
 		i++;
 		spaces += longest_entries[i] + 2;
@@ -148,7 +148,6 @@ int longest_in_column(char **str_array, int start, int end)
 	i = start;
 	while(str_array[i] && i < end)
 	{
-
 		if(ft_strlen(str_array[i]) > longest_name)
 			longest_name = ft_strlen(str_array[i]);
 		i++;
