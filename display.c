@@ -135,7 +135,7 @@ char **array_from_list(t_entry *list_start)
 		i++;
 		list_start = list_start->next;
 	}
-	array[i] = '\0';
+	array[i] = NULL;
 	return (array);
 }
 
@@ -161,7 +161,7 @@ int *get_column_widths(char **str_array, int num_of_columns, int list_size)
 	int per_column;
 	int i;
 
-	per_column = list_size / num_of_columns;
+	per_column = list_size / num_of_columns + 1;
 	i = 0;
 	if((column_widths = malloc(sizeof(int) * list_size)) == NULL)
 		return 0;
@@ -178,15 +178,20 @@ void print_rows(char **str_array, int *column_widths, int columns, int per_colum
 {
 	int i;
 	int j;
+	int length;
 
 	i = 0;
 	j = 0;
+	length = 0;
+	while(str_array[length])
+		length++;
 	while(i < per_column)
 	{
 		j = 0;
 		while(j < columns)
 		{
-			if(str_array[i + (j * (per_column))])
+			if(str_array[i + (j * (per_column))]
+			&& i + (j * (per_column)) < length)
 			{
 				printf("%s  ", str_array[i + (j * (per_column))]);
 				print_spaces(column_widths[j] -
@@ -197,6 +202,7 @@ void print_rows(char **str_array, int *column_widths, int columns, int per_colum
 		printf("\n");
 		i++;
 	}
+
 }
 
 void	ft_print_column(t_entry *list_start)
@@ -227,7 +233,7 @@ void	ft_print_column(t_entry *list_start)
 		// list_size / columns);
 		int *column_widths = get_column_widths(array_from_list(list_start),
 		columns, list_size);
-		print_rows(array_from_list(list_start), column_widths, columns, list_size / columns);
+		print_rows(array_from_list(list_start), column_widths, columns, list_size / columns + 1);
 	}
 	else
 	{
