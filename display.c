@@ -139,14 +139,14 @@ char **array_from_list(t_entry *list_start)
 	return (array);
 }
 
-int longest_in_column(char **str_array, int start, int end)
+int longest_in_column(char **str_array, int start, int end, int list_size)
 {
 	int i;
 	unsigned int longest_name;
 
 	longest_name = 0;
 	i = start;
-	while(str_array[i] && i < end)
+	while(i < list_size && str_array[i] && i < end)
 	{
 		if(ft_strlen(str_array[i]) > longest_name)
 			longest_name = ft_strlen(str_array[i]);
@@ -168,9 +168,11 @@ int *get_column_widths(char **str_array, int num_of_columns, int list_size)
 	while(i < num_of_columns)
 	{
 		column_widths[i] = longest_in_column(str_array,
-			 i * per_column, i * per_column + per_column);
+			 i * per_column, i * per_column + per_column, list_size);
 		i++;
 	}
+
+
 	return (column_widths);
 }
 
@@ -211,6 +213,7 @@ void	ft_print_column(t_entry *list_start)
 	unsigned int list_size;
 	unsigned int terminal_width;
 	int columns;
+	char **str_array;
 	t_entry *list_current;
 	struct winsize w;
 
@@ -220,6 +223,7 @@ void	ft_print_column(t_entry *list_start)
 	list_size = get_list_size(list_start);
 	columns = num_of_columns(list_start, terminal_width);
 	list_current = list_start;
+	str_array = array_from_list(list_start);
 	while(list_current)
 	{
 		all_names_length += ft_strlen(list_current->name);
@@ -227,18 +231,16 @@ void	ft_print_column(t_entry *list_start)
 	}
 	if(all_names_length + list_size * 2  > terminal_width)
 	{
-		// printf("yeah... we're gonna need %d columns\n",
-		// columns);
-		// printf("elements/columns = %d\n",
-		// list_size / columns);
-		int *column_widths = get_column_widths(array_from_list(list_start),
+		int *column_widths = get_column_widths(str_array,
 		columns, list_size);
-		print_rows(array_from_list(list_start), column_widths, columns, list_size / columns + 1);
+		print_rows(str_array, column_widths, columns, list_size / columns + 1);
 	}
 	else
 	{
 		print_normally(list_start);
 	}
+
+
 }
 
 void	ft_print_dir_name(t_entry *list_start, t_shit *pShit, char *dirname)
