@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmondino <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/23 14:09:09 by jmondino          #+#    #+#             */
-/*   Updated: 2019/05/31 18:31:23 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/06/12 22:11:52 by nkellum          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ char	**ft_isdir(char **newav, int index, t_shit *pShit)
 
 	if (newav == NULL)
 		return (NULL);
-	if (!(tab = malloc(index * sizeof(char *))))
+	if (!(tab = malloc((index + 1) * sizeof(char *))))
 		return (NULL);
 	//printf("%ld\n", index * sizeof(char *));
 	i = 0;
@@ -65,7 +65,7 @@ char	**ft_isdir(char **newav, int index, t_shit *pShit)
 		}
 		i++;
 	}
-	tab[j] = '\0';
+	tab[j] = NULL;
 	return (tab);
 }
 
@@ -77,7 +77,7 @@ char	**ft_isfile(char **newav, int index, t_shit *pShit)
 
 	if (newav == NULL)
 		return (NULL);
-	if (!(tab = malloc(index * sizeof(char *))))
+	if (!(tab = malloc((index + 1) * sizeof(char *))))
 		return (NULL);
 	i = 0;
 	j = 0;

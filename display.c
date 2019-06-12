@@ -6,7 +6,7 @@
 /*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/31 14:03:11 by jmondino          #+#    #+#             */
-/*   Updated: 2019/06/06 12:02:01 by nkellum          ###   ########.fr       */
+/*   Updated: 2019/06/12 22:01:10 by nkellum          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ int num_of_columns(t_entry *list_start, int terminal_width)
 		i++;
 		spaces += longest_entries[i] + 2;
 	}
-	return (i);
+	return (i == 0 ? 1 : i);
 }
 
 char **array_from_list(t_entry *list_start)
@@ -161,7 +161,7 @@ int *get_column_widths(char **str_array, int num_of_columns, int list_size)
 	int per_column;
 	int i;
 
-	per_column = list_size / num_of_columns + 1;
+	per_column = list_size / (num_of_columns == 0 ? 1 : num_of_columns) + 1;
 	i = 0;
 	if((column_widths = malloc(sizeof(int) * list_size)) == NULL)
 		return 0;
@@ -171,8 +171,6 @@ int *get_column_widths(char **str_array, int num_of_columns, int list_size)
 			 i * per_column, i * per_column + per_column, list_size);
 		i++;
 	}
-
-
 	return (column_widths);
 }
 
@@ -239,8 +237,6 @@ void	ft_print_column(t_entry *list_start)
 	{
 		print_normally(list_start);
 	}
-
-
 }
 
 void	ft_print_dir_name(t_entry *list_start, t_shit *pShit, char *dirname)
@@ -255,5 +251,5 @@ void	ft_print_dir_name(t_entry *list_start, t_shit *pShit, char *dirname)
 		if (pShit->subdir != 0 || pShit->dirs[1] || pShit->files[0]
 		|| pShit->error != 0)
 			printf("%s:\n", dirname);
-	print_normally(list_start);
+	ft_print_column(list_start);
 }

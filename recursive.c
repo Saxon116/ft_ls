@@ -6,7 +6,7 @@
 /*   By: nkellum <nkellum@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/03 15:10:14 by nkellum           #+#    #+#             */
-/*   Updated: 2019/06/04 03:39:52 by nkellum          ###   ########.fr       */
+/*   Updated: 2019/06/12 21:51:01 by nkellum          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,30 +71,27 @@ char *get_link_path(char *path)
  t_entry 	*add_new_entry(char *path, char *entry_name, int type)
 {
 	t_entry	*entry;
-	struct stat	*pstat;
+	struct stat	pstat;
 
-	if((pstat = malloc(sizeof(struct stat))) == NULL)
-		return 0;
 	if((entry = malloc(sizeof(t_entry))) == NULL)
 		return 0;
-	lstat(path, pstat);
+	lstat(path, &pstat);
 	entry->type = type;
 	entry->link_path = get_link_path(path);
 	entry->name = ft_strdup(entry_name);
-	entry->rights = permissions(pstat->st_mode);
-	entry->hard_links = pstat->st_nlink;
-	entry->size = pstat->st_size;
-	entry->user = ft_strdup(getpwuid(pstat->st_uid)->pw_name);
-	entry->group = ft_strdup(getgrgid(pstat->st_gid)->gr_name);
-	entry->date_day_modified = get_day(ctime(&pstat->st_mtim.tv_sec));
-	entry->block_size = pstat->st_blocks;
+	entry->rights = permissions(pstat.st_mode);
+	entry->hard_links = pstat.st_nlink;
+	entry->size = pstat.st_size;
+	entry->user = ft_strdup(getpwuid(pstat.st_uid)->pw_name);
+	entry->group = ft_strdup(getgrgid(pstat.st_gid)->gr_name);
+	entry->date_day_modified = get_day(ctime(&pstat.st_mtimespec.tv_sec));
+	entry->block_size = pstat.st_blocks;
 	entry->date_month_modified =
-	ft_strsub(ctime(&pstat->st_mtim.tv_sec), 4, 3);
+	ft_strsub(ctime(&pstat.st_mtimespec.tv_sec), 4, 3);
 	entry->date_time_modified =
-	ft_strsub(ctime(&pstat->st_mtim.tv_sec), 11, 5);
-	entry->date_accessed = pstat->st_mtim.tv_sec;
+	ft_strsub(ctime(&pstat.st_mtimespec.tv_sec), 11, 5);
+	entry->date_accessed = pstat.st_mtimespec.tv_sec;
 	entry->next = NULL;
-	free(pstat);
 	return entry;
 }
 
