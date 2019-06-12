@@ -255,5 +255,5 @@ void	ft_print_dir_name(t_entry *list_start, t_shit *pShit, char *dirname)
 		if (pShit->subdir != 0 || pShit->dirs[1] || pShit->files[0]
 		|| pShit->error != 0)
 			printf("%s:\n", dirname);
-	ft_print_column(list_start);
+	print_normally(list_start);
 }

@@ -48,8 +48,9 @@ char	**ft_isdir(char **newav, int index, t_shit *pShit)
 
 	if (newav == NULL)
 		return (NULL);
-	if (!(tab = (char **)malloc(sizeof(char *) * index)))
+	if (!(tab = malloc(index * sizeof(char *))))
 		return (NULL);
+	//printf("%ld\n", index * sizeof(char *));
 	i = 0;
 	j = 0;
 	while (newav[i])
@@ -58,14 +59,13 @@ char	**ft_isdir(char **newav, int index, t_shit *pShit)
 		{
 			if (ft_existent(newav[i], 0, pShit))
 			{
-				tab[j] = (char *)malloc(sizeof(char) * ft_strlen(newav[i]));
-				tab[j] = newav[i];
+				tab[j] = ft_strdup(newav[i]);
 				j++;
 			}
 		}
 		i++;
 	}
-	tab[j] = NULL;
+	tab[j] = '\0';
 	return (tab);
 }
 
@@ -77,7 +77,7 @@ char	**ft_isfile(char **newav, int index, t_shit *pShit)
 
 	if (newav == NULL)
 		return (NULL);
-	if (!(tab = (char **)malloc(sizeof(char *) * index)))
+	if (!(tab = malloc(index * sizeof(char *))))
 		return (NULL);
 	i = 0;
 	j = 0;
@@ -87,8 +87,7 @@ char	**ft_isfile(char **newav, int index, t_shit *pShit)
 		{
 			if (ft_existent(newav[i], 1, pShit))
 			{
-				tab[j] = (char *)malloc(sizeof(char) * ft_strlen(newav[i]));
-				tab[j] = newav[i];
+				tab[j] = ft_strdup(newav[i]);
 				j++;
 			}
 		}

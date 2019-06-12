@@ -111,7 +111,10 @@ t_entry 	*fill_list(DIR *pDir, struct dirent *pDirent, char *path, char *dirname
 		{
 			if(dirname[ft_strlen(dirname) - 1] != '/')
 				ft_strcat(path, "/");
+
 			ft_strcat(path, pDirent->d_name);
+
+
 			if(!list_current)
 			{
 				list_current = add_new_entry(path, pDirent->d_name,
@@ -129,6 +132,7 @@ t_entry 	*fill_list(DIR *pDir, struct dirent *pDirent, char *path, char *dirname
 			dirname[ft_strlen(dirname) - 1] != '/');
 		}
 	}
+
 	return list_start;
 }
 
@@ -176,6 +180,8 @@ void	list_dir_recursive(char *dirname, t_shit *pShit)
 	list_start = NULL;
 	ft_strcpy(path, dirname); // set path to the current directory path
 	pDir = opendir(dirname);
+  if(pDir == NULL)
+    return ;
 	if (ft_iscinstr(pShit->flags, 'a'))
 		list_start = fill_list_a(pDir, pDirent, path, dirname);
 	else
@@ -200,6 +206,7 @@ void	list_dir_recursive(char *dirname, t_shit *pShit)
 					if (dirname[ft_strlen(dirname) - 1] != '/')
 						ft_strcat(path, "/");
 					ft_strcat(path, pDirent->d_name); // add subdirectory name to full path
+
 					list_dir_recursive(path, pShit); // list contents of subdirectory
 					ft_bzero(path + ft_strlen(dirname),
 							 ft_strlen(pDirent->d_name) +
