@@ -84,13 +84,13 @@ char *get_link_path(char *path)
 	entry->size = pstat.st_size;
 	entry->user = ft_strdup(getpwuid(pstat.st_uid)->pw_name);
 	entry->group = ft_strdup(getgrgid(pstat.st_gid)->gr_name);
-	entry->date_day_modified = get_day(ctime(&pstat.st_mtimespec.tv_sec));
+	entry->date_day_modified = get_day(ctime(&pstat.st_mtim.tv_sec));
 	entry->block_size = pstat.st_blocks;
 	entry->date_month_modified =
-	ft_strsub(ctime(&pstat.st_mtimespec.tv_sec), 4, 3);
+	ft_strsub(ctime(&pstat.st_mtim.tv_sec), 4, 3);
 	entry->date_time_modified =
-	ft_strsub(ctime(&pstat.st_mtimespec.tv_sec), 11, 5);
-	entry->date_accessed = pstat.st_mtimespec.tv_sec;
+	ft_strsub(ctime(&pstat.st_mtim.tv_sec), 11, 5);
+	entry->date_accessed = pstat.st_mtim.tv_sec;
 	entry->next = NULL;
 	return entry;
 }

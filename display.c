@@ -127,7 +127,7 @@ char **array_from_list(t_entry *list_start)
 	int i;
 
 	i = 0;
-	if((array = malloc(get_list_size(list_start) * sizeof(char*))) == NULL)
+	if((array = malloc((get_list_size(list_start) + 1) * sizeof(char*))) == NULL)
 		return 0;
 	while(list_start)
 	{
@@ -190,8 +190,8 @@ void print_rows(char **str_array, int *column_widths, int columns, int per_colum
 		j = 0;
 		while(j < columns)
 		{
-			if(str_array[i + (j * (per_column))]
-			&& i + (j * (per_column)) < length)
+			if(i + (j * (per_column)) < length
+			&& str_array[i + (j * (per_column))])
 			{
 				printf("%s  ", str_array[i + (j * (per_column))]);
 				print_spaces(column_widths[j] -

@@ -69,6 +69,9 @@ void    ft_fillpShit(char *flags, char **newav, int index, t_shit *pShit)
     pShit->dirs = ft_isdir(newav, index, pShit);
     if (newav[0] == NULL)
     {
+				free(pShit->dirs);
+				if (!(pShit->dirs = malloc(2 * sizeof(char *))))
+					return ;
         pShit->dirs[0] = ft_strdup("./");
         pShit->dirs[1] = NULL;
     }
@@ -88,8 +91,8 @@ t_shit      *initstru(void)
     pShit->flags = NULL;
     pShit->files = NULL;
     pShit->dirs = NULL;
-	pShit->subdir = 0;
-	pShit->error = 0;
+		pShit->subdir = 0;
+		pShit->error = 0;
     return (pShit);
 }
 
