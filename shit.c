@@ -6,14 +6,45 @@
 /*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/20 16:51:04 by jmondino          #+#    #+#             */
-/*   Updated: 2019/06/04 03:05:44 by nkellum          ###   ########.fr       */
+/*   Updated: 2019/06/17 17:58:20 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// ceci est un test pour saxon116
-// n'importe quoi
-
 #include "ft_ls.h"
+
+void	ft_timeorder(char **tab)
+{
+	int			j;
+	int			i;
+	char		*tmp;
+	struct stat pStat;
+	struct stat pStat2;
+
+	i = 0;
+	if (!(ft_strcmp(tab[0], "./ft_ls")))
+		i++;
+	while (tab[i])
+	{
+		lstat(tab[i], &pStat);
+		j = i + 1;
+		while (tab[j])
+		{
+			lstat(tab[j], &pStat2);
+			printf("tab[%d] = [%s] | time %ld\n", i, tab[i], pStat.st_mtime);
+			printf("tab[%d] = [%s] | time %ld\n", j, tab[j], pStat2.st_mtime);
+			printf("%ld\n\n", pStat.st_mtime - pStat2.st_mtime);
+			if (pStat.st_mtime < pStat2.st_mtime)
+			{
+				tmp = tab[i];
+				tab[i] = tab[j];
+				tab[j] = tmp;
+				lstat(tab[i], &pStat);
+			}
+			j++;
+		}
+		i++;
+	}
+}
 
 void	ft_asciiorder(char **tab)
 {
@@ -69,9 +100,9 @@ void    ft_fillpShit(char *flags, char **newav, int index, t_shit *pShit)
     pShit->dirs = ft_isdir(newav, index, pShit);
     if (newav[0] == NULL)
     {
-				free(pShit->dirs);
-				if (!(pShit->dirs = malloc(2 * sizeof(char *))))
-					return ;
+		free(pShit->dirs);
+		if (!(pShit->dirs = malloc(2 * sizeof(char *))))
+			return ;
         pShit->dirs[0] = ft_strdup("./");
         pShit->dirs[1] = NULL;
     }
@@ -85,14 +116,14 @@ void    ft_fillpShit(char *flags, char **newav, int index, t_shit *pShit)
 t_shit      *initstru(void)
 {
     t_shit      *pShit;
-
+	
     if ((pShit = malloc(sizeof(t_shit))) == NULL)
         return (NULL);
     pShit->flags = NULL;
     pShit->files = NULL;
     pShit->dirs = NULL;
-		pShit->subdir = 0;
-		pShit->error = 0;
+	pShit->subdir = 0;
+	pShit->error = 0;
     return (pShit);
 }
 

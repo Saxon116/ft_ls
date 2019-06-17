@@ -6,7 +6,7 @@
 /*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/20 16:58:28 by jmondino          #+#    #+#             */
-/*   Updated: 2019/06/04 03:36:34 by nkellum          ###   ########.fr       */
+/*   Updated: 2019/06/17 16:49:57 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ typedef struct 	s_entry
 	char			*date_time_modified;
 	long			date_accessed;
 	char			*link_path;
+	long			mtime;
 	struct s_entry	*next;
 }				t_entry;
 
@@ -68,6 +69,10 @@ void		ft_display(t_shit *pShit);
 void 		list_dir_recursive(char *dirname, t_shit *pShit);
 void		ft_print_dir_name(t_entry *list_start, t_shit *pShit, char *dirname);
 void		ft_total(t_entry *list_start, t_shit *pShit, char *dirname);
+void		ft_swap(t_entry *a, t_entry *b);
+void		ft_rev_list(t_entry **list);
+void		ft_fill(t_entry *fill, t_entry *src);
+void		ft_timeorder(char **tab);
 char		*ft_checkflags(char *str);
 char 		*permissions(mode_t perm);
 char		**ft_isfile(char **newav, int index, t_shit *pShit);
@@ -80,6 +85,8 @@ t_shit		*initstru(void);
 t_entry 	*fill_list(DIR *pDir, struct dirent *pDirent, char *path, char *dirname);
 t_entry     *fill_list_a(DIR *pDir, struct dirent *pDirent, char *path, char *dirname);
 t_entry 	*add_new_entry(char *path, char *entry_name, int is_folder);
-
+t_entry     *ft_tri_ascii(t_entry *list, t_shit *pShit);
+t_entry     *ft_tri_date(t_entry *list, t_shit *pShit);
+t_entry     *fill_tmp(void);
 
 #endif

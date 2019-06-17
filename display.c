@@ -6,7 +6,7 @@
 /*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/31 14:03:11 by jmondino          #+#    #+#             */
-/*   Updated: 2019/06/12 22:01:10 by nkellum          ###   ########.fr       */
+/*   Updated: 2019/06/17 12:07:18 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -234,9 +234,7 @@ void	ft_print_column(t_entry *list_start)
 		print_rows(str_array, column_widths, columns, list_size / columns + 1);
 	}
 	else
-	{
 		print_normally(list_start);
-	}
 }
 
 void	ft_print_dir_name(t_entry *list_start, t_shit *pShit, char *dirname)
