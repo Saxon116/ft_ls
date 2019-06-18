@@ -6,7 +6,7 @@
 /*   By: nkellum <nkellum@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/03 15:10:14 by nkellum           #+#    #+#             */
-/*   Updated: 2019/06/18 16:29:52 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/06/18 16:40:22 by nkellum          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ t_entry 	*add_new_entry2(char *entry_name)
 	entry->date_time_modified =
 	ft_strsub(ctime(&pstat.st_mtimespec.tv_sec), 11, 5);
 	entry->date_accessed = pstat.st_mtimespec.tv_sec;
-	entry->mtime = pstat.st_mtime;	
+	entry->mtime = pstat.st_mtime;
 	entry->next = NULL;
 	return (entry);
 }
@@ -114,8 +114,8 @@ t_entry 	*add_new_entry(char *path, char *entry_name, int type)
 	entry->rights = permissions(pstat.st_mode);
 	entry->hard_links = pstat.st_nlink;
 	entry->size = pstat.st_size;
-	entry->user = ft_strdup(getpwuid(pstat.st_uid)->pw_name);
-	entry->group = ft_strdup(getgrgid(pstat.st_gid)->gr_name);
+	entry->user = ft_strdup(getpwuid(pstat.st_uid) == NULL ? "" : getpwuid(pstat.st_uid)->pw_name);
+	entry->group = ft_strdup(getgrgid(pstat.st_gid) == NULL ? "" : getgrgid(pstat.st_gid)->gr_name);
 	entry->date_day_modified = get_day(ctime(&pstat.st_mtimespec.tv_sec));
 	entry->block_size = pstat.st_blocks;
 	entry->date_month_modified =

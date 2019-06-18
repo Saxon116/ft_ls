@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   display.c                                          :+:      :+:    :+:   */
+/*   display_l.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nkellum <nkellum@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/30 12:02:12 by nkellum           #+#    #+#             */
-/*   Updated: 2019/06/18 16:39:19 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/06/18 16:41:05 by nkellum          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,6 @@ void display_entries_l(t_entry *list_start, t_shit *pShit, char *dirname)
 
 void	ft_total(t_entry *list_start, t_shit *pShit, char *dirname)
 {
-	struct stat pStat;
 	t_entry 	*browse;
 	int			total;
 	int			i;
