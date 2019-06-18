@@ -6,7 +6,7 @@
 /*   By: nkellum <nkellum@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/03 15:10:14 by nkellum           #+#    #+#             */
-/*   Updated: 2019/06/18 15:01:02 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/06/18 15:05:54 by nkellum          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ void	lstdel(t_entry **lst)
 	while (current)
 	{
 		next = current->next;
+		free(current->link_path);
 		free(current->name);
 		free(current->rights);
 		free(current->user);
@@ -65,7 +66,10 @@ char *get_link_path(char *path)
 		return buf;
 	}
 	else
+	{
+		free(buf);
 		return ft_strdup("");
+	}
 }
 
 t_entry 	*add_new_entry(char *path, char *entry_name, int type)

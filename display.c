@@ -6,7 +6,7 @@
 /*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/31 14:03:11 by jmondino          #+#    #+#             */
-/*   Updated: 2019/06/18 14:59:10 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/06/18 15:28:07 by nkellum          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	ft_display(t_shit *pShit)
 
 	i = 0;
 	if (ft_iscinstr(pShit->flags, 'l'))
-		
+
 	while (pShit->files[i])
     {
         printf("%s ", pShit->files[i]);
@@ -204,8 +204,8 @@ void print_rows(char **str_array, int *column_widths, int columns, int per_colum
 		printf("\n");
 		i++;
 	}
-
 }
+
 
 void	ft_print_column(t_entry *list_start)
 {
@@ -234,9 +234,17 @@ void	ft_print_column(t_entry *list_start)
 		int *column_widths = get_column_widths(str_array,
 		columns, list_size);
 		print_rows(str_array, column_widths, columns, list_size / columns + 1);
+		free(column_widths);
 	}
 	else
 		print_normally(list_start);
+	int i = 0;
+	while(str_array[i])
+	{
+		free(str_array[i]);
+		i++;
+	}
+	free(str_array);
 }
 
 void	ft_print_dir_name(t_entry *list_start, t_shit *pShit, char *dirname)
