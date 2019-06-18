@@ -6,7 +6,7 @@
 /*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/20 16:58:28 by jmondino          #+#    #+#             */
-/*   Updated: 2019/06/17 16:49:57 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/06/18 16:25:00 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 # include <uuid/uuid.h>
 # include <grp.h>
 # include <time.h>
-#include <sys/ioctl.h>
+# include <sys/ioctl.h>
 # include "libft/libft.h"
 
 # define OP(x) x == 'a' || x == 'r' || x == 'l' || x == 'R' || x == 't'
@@ -88,5 +88,6 @@ t_entry 	*add_new_entry(char *path, char *entry_name, int is_folder);
 t_entry     *ft_tri_ascii(t_entry *list, t_shit *pShit);
 t_entry     *ft_tri_date(t_entry *list, t_shit *pShit);
 t_entry     *fill_tmp(void);
+t_entry     *add_new_entry2(char *entry_name);
 
 #endif

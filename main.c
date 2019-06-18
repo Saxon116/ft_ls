@@ -6,7 +6,7 @@
 /*   By: nkellum <nkellum@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/03 15:10:14 by nkellum           #+#    #+#             */
-/*   Updated: 2019/06/18 15:23:58 by nkellum          ###   ########.fr       */
+/*   Updated: 2019/06/18 15:53:21 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	free_pShit(t_shit *pShit)
 	int i = 0;
 	free(pShit->flags);
 	i = 0;
-	while(pShit->files[i])
+	while (pShit->files[i])
 	{
 		free(pShit->files[i]);
 		i++;
