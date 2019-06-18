@@ -6,7 +6,7 @@
 /*   By: nkellum <nkellum@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/03 15:10:14 by nkellum           #+#    #+#             */
-/*   Updated: 2019/06/18 16:40:22 by nkellum          ###   ########.fr       */
+/*   Updated: 2019/06/18 18:23:06 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -332,19 +332,23 @@ void	ft_fill(t_entry *fill, t_entry *src)
 	fill->mtime = src->mtime;
 }
 
-void	list_dir_recursive(char *dirname, t_shit *pShit)
+void	list_dir_recursive(char *dirname, char *name, t_shit *pShit)
 {
 	struct dirent *pDirent;
 	t_entry	*list_start;
 	DIR *pDir;
-	char path[ft_strlen(dirname) + 255]; // 255 more chars for subdirectory path
+	char path[ft_strlen(dirname) + 255];
 
 	pDirent = NULL;
 	list_start = NULL;
-	ft_strcpy(path, dirname); // set path to the current directory path
+	ft_strcpy(path, dirname);
 	pDir = opendir(dirname);
-	if(pDir == NULL)
+	if	(pDir == NULL)
+	{
+		printf("%s:\n", path);
+		printf("ft_ls: %s: Permission denied\n", name);
 		return ;
+	}
 	if (ft_iscinstr(pShit->flags, 'a'))
 		list_start = fill_list_a(pDir, pDirent, path, dirname);
 	else
@@ -360,23 +364,22 @@ void	list_dir_recursive(char *dirname, t_shit *pShit)
 	closedir(pDir);
 	if (ft_iscinstr(pShit->flags, 'R'))
 	{
-		pDir = opendir(dirname); // resetting pDir to first file entry for new loop
+		pDir = opendir(dirname);
 		while ((pDirent = readdir(pDir)) != NULL)
 		{
 			if (pDirent->d_name[0] != '.')
 			{
-				if (pDirent->d_type == DT_DIR) // if entry is a directory
+				if (pDirent->d_type == DT_DIR)
 				{
 					pShit->subdir++;
 					printf("\n");
 					if (dirname[ft_strlen(dirname) - 1] != '/')
 						ft_strcat(path, "/");
-					ft_strcat(path, pDirent->d_name); // add subdirectory name to full path
-
-					list_dir_recursive(path, pShit); // list contents of subdirectory
+					ft_strcat(path, pDirent->d_name);
+					list_dir_recursive(path, pDirent->d_name, pShit);
 					ft_bzero(path + ft_strlen(dirname),
 							 ft_strlen(pDirent->d_name) +
-							 dirname[ft_strlen(dirname) - 1] != '/'); // reset path for next subdirectory
+							 dirname[ft_strlen(dirname) - 1] != '/');
 				}
 			}
 		}

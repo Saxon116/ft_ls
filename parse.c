@@ -6,7 +6,7 @@
 /*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/23 14:09:09 by jmondino          #+#    #+#             */
-/*   Updated: 2019/06/17 17:10:56 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/06/18 18:34:20 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,15 +37,14 @@ void	ft_parseargs(char **av, t_shit *pShit)
 	newav[j] = NULL;
 	if (newav[0])
 	{
+		ft_asciiorder(newav);
 		if (ft_iscinstr(tmp, 't'))
 			ft_timeorder(newav);
-		else
-			ft_asciiorder(newav);
 	}
 	ft_fillpShit(tmp, newav, j, pShit);
 }
 
-char	**ft_isdir(char **newav, int index, t_shit *pShit)
+char	**ft_isdir(char **newav, int index)
 {
 	char	**tab;
 	int		i;
@@ -61,7 +60,7 @@ char	**ft_isdir(char **newav, int index, t_shit *pShit)
 	{
 		if (ft_strcmp(newav[i],  "--"))
 		{
-			if (ft_existent(newav[i], 0, pShit))
+			if (ft_existent2(newav[i]))
 			{
 				tab[j] = ft_strdup(newav[i]);
 				j++;
@@ -89,7 +88,7 @@ char	**ft_isfile(char **newav, int index, t_shit *pShit)
 	{
 		if (ft_strcmp(newav[i],  "--"))
 		{
-			if (ft_existent(newav[i], 1, pShit))
+			if (ft_existent(newav[i], pShit))
 			{
 				tab[j] = ft_strdup(newav[i]);
 				j++;
@@ -101,31 +100,30 @@ char	**ft_isfile(char **newav, int index, t_shit *pShit)
 	return (tab);
 }
 
-int		ft_existent(char *str, int here, t_shit *pShit)
+int		ft_existent(char *str, t_shit *pShit)
 {
-	DIR				*pDir;
-	struct	stat	*pStat;
-
-	if((pStat = malloc(sizeof(struct stat))) == NULL)
-        return 0;
-	if (here == 1)
+	struct	stat	pStat;
+	
+	if (lstat(str, &pStat))
 	{
-		if ((pDir = opendir(str)) == NULL)                        // have to correct this part
-		{
-			lstat(str, pStat);
-			if (!(pStat->st_dev))
-			{
-				printf ("ft_ls: %s: No such file or directory\n", str);
-				pShit->error++;
-				return (0);
-			}
-			return (1);
-		}
+		printf ("ft_ls: %s: No such file or directory\n", str);
+		pShit->error++;
 		return (0);
 	}
-	if ((pDir = opendir(str)) == NULL)
+	if (S_ISREG(pStat.st_mode))
+		return (1);
+	return (0);
+}
+
+int		ft_existent2(char *str)
+{
+	struct	stat	pStat;
+
+	if (lstat(str, &pStat))
 		return (0);
-	return (1);
+	if (S_ISDIR(pStat.st_mode))
+		return (1);
+	return (0);
 }
 
 char	*ft_checkflags(char *str)

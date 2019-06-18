@@ -6,7 +6,7 @@
 /*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/20 16:58:28 by jmondino          #+#    #+#             */
-/*   Updated: 2019/06/18 16:25:00 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/06/18 18:03:04 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@
 typedef struct 		s_shit
 {
 	char			*flags;
+	char			*inex;
 	char			**files;
 	char			**dirs;
 	int				subdir;
@@ -66,7 +67,7 @@ void		ft_fillpShit(char *flags, char **newav, int index, t_shit *pShit);
 void 		print_spaces(int num);
 void 		display_entries_l(t_entry *list_start, t_shit *pShit, char *dirname);
 void		ft_display(t_shit *pShit);
-void 		list_dir_recursive(char *dirname, t_shit *pShit);
+void 		list_dir_recursive(char *dirname, char *name, t_shit *pShit);
 void		ft_print_dir_name(t_entry *list_start, t_shit *pShit, char *dirname);
 void		ft_total(t_entry *list_start, t_shit *pShit, char *dirname);
 void		ft_swap(t_entry *a, t_entry *b);
@@ -76,8 +77,9 @@ void		ft_timeorder(char **tab);
 char		*ft_checkflags(char *str);
 char 		*permissions(mode_t perm);
 char		**ft_isfile(char **newav, int index, t_shit *pShit);
-char		**ft_isdir(char **newav, int index, t_shit *pShit);
-int			ft_existent(char *str, int here, t_shit *pShit);
+char		**ft_isdir(char **newav, int index);
+int			ft_existent(char *str, t_shit *pShit);
+int			ft_existent2(char *str);
 int 		get_day(char *date);
 int 		num_length(long long num);
 int 		*get_offsets(t_entry *list_start);

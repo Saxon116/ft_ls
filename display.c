@@ -6,7 +6,7 @@
 /*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/31 14:03:11 by jmondino          #+#    #+#             */
-/*   Updated: 2019/06/18 16:34:16 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/06/18 18:37:36 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,14 +31,15 @@ void	ft_display(t_shit *pShit)
     }
     if (i != 0)
     {
-        printf("\n");
+		if (!ft_iscinstr(pShit->flags, 'l'))
+			printf("\n");
         if (pShit->dirs[0])
             printf("\n");
     }
     i = 0;
     while (pShit->dirs[i])
     {
-        list_dir_recursive(pShit->dirs[i], pShit);
+        list_dir_recursive(pShit->dirs[i], pShit->dirs[i], pShit);
         i++;
         if (pShit->dirs[i])
             printf("\n");
@@ -47,12 +48,16 @@ void	ft_display(t_shit *pShit)
 
 void print_normally(t_entry *list_start)
 {
-	while(list_start)
+	t_entry		*browse;
+
+	browse = list_start;
+	while (browse)
 	{
-		printf("%s  ", list_start->name);
-		list_start = list_start->next;
+		printf("%s  ", browse->name);
+		browse = browse->next;
 	}
-	printf("\n");
+	if (list_start)
+		printf("\n");
 }
 
 int get_list_size(t_entry *list_start)
