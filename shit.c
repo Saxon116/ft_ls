@@ -6,7 +6,7 @@
 /*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/20 16:51:04 by jmondino          #+#    #+#             */
-/*   Updated: 2019/06/17 17:58:20 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/06/18 14:52:04 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,6 @@ void	ft_timeorder(char **tab)
 		while (tab[j])
 		{
 			lstat(tab[j], &pStat2);
-			printf("tab[%d] = [%s] | time %ld\n", i, tab[i], pStat.st_mtime);
-			printf("tab[%d] = [%s] | time %ld\n", j, tab[j], pStat2.st_mtime);
-			printf("%ld\n\n", pStat.st_mtime - pStat2.st_mtime);
 			if (pStat.st_mtime < pStat2.st_mtime)
 			{
 				tmp = tab[i];

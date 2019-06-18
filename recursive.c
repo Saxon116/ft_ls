@@ -6,7 +6,7 @@
 /*   By: nkellum <nkellum@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/03 15:10:14 by nkellum           #+#    #+#             */
-/*   Updated: 2019/06/17 16:29:14 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/06/18 15:01:02 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,7 +192,7 @@ t_entry		*ft_tri_ascii(t_entry *list, t_shit *pShit)
 	}
 	if (ft_iscinstr(pShit->flags, 'r'))
 		ft_rev_list(&list);
-	return fresh;
+	return (fresh);
 }
 
 t_entry		*ft_tri_date(t_entry *list, t_shit *pShit)
@@ -274,6 +274,7 @@ t_entry		*fill_tmp(void)
 	tmp->block_size = 0;
 	tmp->date_month_modified = NULL;
 	tmp->date_day_modified = 0;
+	tmp->date_time_modified = NULL;
 	tmp->date_accessed = 0;
 	tmp->link_path = NULL;
 	tmp->next = NULL;
@@ -293,6 +294,7 @@ void	ft_fill(t_entry *fill, t_entry *src)
 	fill->block_size = src->block_size;
 	fill->date_month_modified = src->date_month_modified;
 	fill->date_day_modified = src->date_day_modified;
+	fill->date_time_modified = src->date_time_modified;
 	fill->date_accessed = src->date_accessed;
 	fill->link_path = src->link_path;
 	fill->mtime = src->mtime;
@@ -315,10 +317,9 @@ void	list_dir_recursive(char *dirname, t_shit *pShit)
 		list_start = fill_list_a(pDir, pDirent, path, dirname);
 	else
 		list_start = fill_list(pDir, pDirent, path, dirname);
+	list_start = ft_tri_ascii(list_start, pShit);
 	if (ft_iscinstr(pShit->flags, 't'))
 		list_start = ft_tri_date(list_start, pShit);
-	else
-		list_start = ft_tri_ascii(list_start, pShit);
 	if (ft_iscinstr(pShit->flags, 'l'))
 		display_entries_l(list_start, pShit, dirname);
 	else
