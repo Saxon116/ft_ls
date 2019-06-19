@@ -6,7 +6,7 @@
 /*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/20 16:58:28 by jmondino          #+#    #+#             */
-/*   Updated: 2019/06/19 18:20:16 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/06/19 21:44:01 by nkellum          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,5 +106,20 @@ t_entry     *ft_tri_ascii(t_entry *list, t_shit *pShit);
 t_entry     *ft_tri_date(t_entry *list, t_shit *pShit);
 t_entry     *fill_tmp(void);
 t_entry     *add_new_entry2(char *entry_name);
+void		print_return(t_shit *pShit);
+void		ft_print_column(t_entry *list_start);
+int			get_list_size(t_entry *list_start);
+int			num_of_columns(t_entry *list_start, int terminal_width);
+char		**array_from_list(t_entry *list_start);
+int			*get_column_widths(char **str_array, int num_of_columns, int list_size);
+void		print_normally(t_entry *list_start);
+int			longest_in_column(char **str_array, int start, int end, int list_size);
+
+
+
+
+
+
+
 
 #endif
