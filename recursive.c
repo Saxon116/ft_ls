@@ -6,7 +6,7 @@
 /*   By: nkellum <nkellum@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/03 15:10:14 by nkellum           #+#    #+#             */
-/*   Updated: 2019/06/18 18:23:06 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/06/19 13:10:45 by nkellum          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -224,6 +224,7 @@ t_entry		*ft_tri_ascii(t_entry *list, t_shit *pShit)
 	}
 	if (ft_iscinstr(pShit->flags, 'r'))
 		ft_rev_list(&list);
+	fresh = list;
 	return (fresh);
 }
 
@@ -257,26 +258,27 @@ t_entry		*ft_tri_date(t_entry *list, t_shit *pShit)
 	}
 	if (ft_iscinstr(pShit->flags, 'r'))
 		ft_rev_list(&list);
+	fresh = list;
 	return fresh;
 }
 
 void	ft_rev_list(t_entry **list)
 {
 	t_entry		*current;
-	t_entry		*start;
+	t_entry		*prev;
 	t_entry		*next;
 
 	current = *list;
-	start = NULL;
+	prev = NULL;
 	next = NULL;
 	while (current != NULL)
 	{
 		next = current->next;
-		current->next = start;
-		start = current;
+		current->next = prev;
+		prev = current;
 		current = next;
 	}
-	*list = start;
+	*list = prev;
 }
 
 void	ft_swap(t_entry *a, t_entry *b)

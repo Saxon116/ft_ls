@@ -6,7 +6,7 @@
 /*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/31 14:03:11 by jmondino          #+#    #+#             */
-/*   Updated: 2019/06/18 18:37:36 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/06/19 13:06:42 by nkellum          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,15 +186,17 @@ int *get_column_widths(char **str_array, int num_of_columns, int list_size)
 	return (column_widths);
 }
 
-void print_rows(char **str_array, int *column_widths, int columns, int per_column)
+void print_rows(char **str_array, int *column_widths, int columns, t_entry *list_start)
 {
 	int i;
 	int j;
 	int length;
+	int per_column;
 
 	i = 0;
 	j = 0;
 	length = 0;
+	per_column = get_list_size(list_start) / columns + 1;
 	while(str_array[length])
 		length++;
 	while(i < per_column)
@@ -243,7 +245,7 @@ void	ft_print_column(t_entry *list_start)
 	{
 		int *column_widths = get_column_widths(str_array,
 		columns, list_size);
-		print_rows(str_array, column_widths, columns, list_size / columns + 1);
+		print_rows(str_array, column_widths, columns, list_start);
 		free(column_widths);
 	}
 	else
