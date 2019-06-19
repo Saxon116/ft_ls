@@ -6,7 +6,7 @@
 /*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/31 14:03:11 by jmondino          #+#    #+#             */
-/*   Updated: 2019/06/19 16:38:23 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/06/19 16:59:11 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,10 @@ void	print_color_l(char *entry, int type, char *rights)
 	}
 	if (type == DT_LNK)
 		printf(MAGENTA"%s", entry);
+	if (type == DT_UNKNOW)
+		printf("%s", entry);
+	if (type == DT_FIFO)
+		printf("")
 	printf(RESET);
 }
 
