@@ -6,7 +6,7 @@
 /*   By: nkellum <nkellum@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/03 15:10:14 by nkellum           #+#    #+#             */
-/*   Updated: 2019/06/19 15:12:38 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/06/19 17:50:30 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -345,9 +345,11 @@ void	list_dir_recursive(char *dirname, char *name, t_shit *pShit)
 	list_start = NULL;
 	ft_strcpy(path, dirname);
 	pDir = opendir(dirname);
-	if	(pDir == NULL)
+	if (pDir == NULL)
 	{
-		printf("%s:\n", path);
+		if (ft_strcmp(dirname, "./") && (pShit->dirs[1] || pShit->files[0]
+										 || pShit->error != 0))
+			printf("%s:\n", path);
 		printf(RESET"ft_ls: %s: Permission denied\n", name);
 		return ;
 	}

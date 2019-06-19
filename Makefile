@@ -1,6 +1,6 @@
 NAME = ft_ls
 
-SRC = main.c shit.c parse.c display_l.c display.c recursive.c
+SRC = src/main.c src/shit.c src/parse.c src/display_l.c src/display.c src/recursive.c
 
 FLAGS = -Wextra -Wall -Werror -g
 

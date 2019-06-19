@@ -6,15 +6,15 @@
 /*   By: nkellum <nkellum@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/30 12:02:12 by nkellum           #+#    #+#             */
-/*   Updated: 2019/06/19 16:33:09 by nkellum          ###   ########.fr       */
+/*   Updated: 2019/06/19 18:09:37 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-int	num_length(long long num)
+int		num_length(long long num)
 {
-	int i;
+	int			i;
 
 	i = 0;
 	if (num < 0)
@@ -28,22 +28,10 @@ int	num_length(long long num)
 	return (i);
 }
 
-void print_spaces(int num)
+int 	*get_offsets(t_entry *list_start)
 {
-	int i;
-
-	i = 0;
-	while (i < num)
-	{
-		printf(" ");
-		i++;
-	}
-}
-
-int *get_offsets(t_entry *list_start)
-{
-	int *offsets;
-	t_entry *list_current;
+	int 		*offsets;
+	t_entry 	*list_current;
 
 	if ((offsets = malloc(sizeof(int) * 3)) == NULL)
 		return 0;
@@ -64,7 +52,23 @@ int *get_offsets(t_entry *list_start)
 	return (offsets);
 }
 
-void display_entries_l(t_entry *list_start, t_shit *pShit, char *dirname)
+void	print_type(t_entry *list_current)
+{
+	if (list_current->type == DT_REG)
+		printf("-");
+	if (list_current->type == DT_DIR)
+		printf("d");
+	if (list_current->type == DT_LNK)
+		printf("l");
+	if (list_current->type == DT_BLK)
+		printf("b");
+	if (list_current->type == DT_CHR)
+		printf("c");
+	if (list_current->type == DT_SOCK)
+		printf("s");
+}
+
+void 	display_entries_l(t_entry *list_start, t_shit *pShit, char *dirname)
 {
 	t_entry 	*list_current;
 	int 		*offsets;
@@ -74,12 +78,7 @@ void display_entries_l(t_entry *list_start, t_shit *pShit, char *dirname)
 	list_current = list_start;
 	while (list_current)
 	{
-		if (list_current->type == DT_REG)
-			printf("-");
-		if (list_current->type == DT_DIR)
-			printf("d");
-		if (list_current->type == DT_LNK)
-			printf("l");
+		print_type(list_current);
 		printf("%s  ", list_current->rights);
 		print_spaces(offsets[0] - (num_length(list_current->hard_links)));
 		printf("%d %s  %s  ", list_current->hard_links, list_current->user, list_current->group);
