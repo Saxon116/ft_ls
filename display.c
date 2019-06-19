@@ -6,7 +6,7 @@
 /*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/31 14:03:11 by jmondino          #+#    #+#             */
-/*   Updated: 2019/06/19 15:22:04 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/06/19 16:20:58 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,7 @@ void	ft_display(t_shit *pShit)
 			display_entries_l(files_lst, pShit, pShit->files[i]);
 		}
 		else
-			print_color_args(pShit->files[i]);
-		//printf("%s ", pShit->files[i]);
+			printf("%s ", pShit->files[i]);
         i++;
     }
     if (i != 0)
@@ -47,17 +46,14 @@ void	ft_display(t_shit *pShit)
     }
 }
 
-void	print_color_args(char *entry)
+void	print_color_l(char *entry, int type)
 {
-	struct stat pStat;
-
-	lstat(entry, &pStat);
-	if (S_ISDIR(pStat.st_mode))
-		printf(BOLDCYAN"%s:\n", entry);
-	if (S_ISREG(pStat.st_mode))
-		printf(RESET"%s  ", entry);
-	if (S_ISLNK(pStat.st_mode))
-		printf(MAGENTA"%s  ", entry);
+	if (type == DT_DIR)
+		printf(BOLDCYAN"%s", entry);
+	if (type == DT_REG)
+		printf(RESET"%s", entry);
+	if (type == DT_LNK)
+		printf(MAGENTA"%s", entry);
 }
 
 void	print_color(char *entry, int type)
@@ -78,7 +74,6 @@ void print_normally(t_entry *list_start)
 	while (browse)
 	{
 		print_color(browse->name, browse->type);
-		//printf("%s  ", browse->name);
 		browse = browse->next;
 	}
 	if (list_start)
@@ -125,7 +120,6 @@ int num_of_columns(t_entry *list_start, int terminal_width)
 	a = 0;
 	n = get_list_size(list_start);
 	spaces = 0;
-	//printf("0        1         2         3         4         5         6         7         8         9\n");
 	while(list_current)
 	{
 		longest_entries[i] = ft_strlen(list_current->name);
@@ -237,7 +231,6 @@ void print_rows(char **str_array, int *column_widths, int columns, t_entry *list
 				while (ft_strcmp(browse->name, str_array[i + (j * (per_column))]))
 					browse = browse->next;
 				print_color(str_array[i + (j * (per_column))], browse->type);
-				//printf("%s  ", str_array[i + (j * (per_column))]);
 				print_spaces(column_widths[j] -
 				ft_strlen(str_array[i + (j * (per_column))]));
 				browse = list_start;

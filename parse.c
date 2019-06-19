@@ -6,7 +6,7 @@
 /*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/23 14:09:09 by jmondino          #+#    #+#             */
-/*   Updated: 2019/06/18 18:34:20 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/06/19 16:00:10 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ int		ft_existent(char *str, t_shit *pShit)
 		pShit->error++;
 		return (0);
 	}
-	if (S_ISREG(pStat.st_mode))
+	if (S_ISREG(pStat.st_mode) || S_ISLNK(pStat.st_mode))
 		return (1);
 	return (0);
 }
@@ -118,11 +118,19 @@ int		ft_existent(char *str, t_shit *pShit)
 int		ft_existent2(char *str)
 {
 	struct	stat	pStat;
+	char			*link;
 
 	if (lstat(str, &pStat))
 		return (0);
 	if (S_ISDIR(pStat.st_mode))
 		return (1);
+	if (S_ISLNK(pStat.st_mode))
+	{
+		link = get_link_path(str);
+		lstat(link, &pStat);
+		if (S_ISDIR(pStat.st_mode))
+			return (1);
+	}
 	return (0);
 }
 
