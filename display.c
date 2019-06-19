@@ -6,7 +6,7 @@
 /*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/31 14:03:11 by jmondino          #+#    #+#             */
-/*   Updated: 2019/06/19 16:31:57 by nkellum          ###   ########.fr       */
+/*   Updated: 2019/06/19 16:38:23 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,12 @@ void	ft_display(t_shit *pShit)
 
 void	print_color_l(char *entry, int type, char *rights)
 {
+	printf(RESET);
 	if (type == DT_DIR)
 		printf(BOLDCYAN"%s", entry);
 	if (type == DT_REG)
 	{
-		if(ft_iscinstr(rights, 'x'))
+		if (ft_iscinstr(rights, 'x'))
 			printf(GREEN"%s", entry);
 		else
 			printf(RESET"%s", entry);
@@ -64,11 +65,12 @@ void	print_color_l(char *entry, int type, char *rights)
 
 void	print_color(char *entry, int type, char *rights)
 {
+	printf(RESET);
 	if (type == DT_DIR)
 		printf(BOLDCYAN"%s  ", entry);
 	if (type == DT_REG)
 	{
-		if(ft_iscinstr(rights, 'x'))
+		if (ft_iscinstr(rights, 'x'))
 			printf(GREEN"%s  ", entry);
 		else
 			printf(RESET"%s  ", entry);
