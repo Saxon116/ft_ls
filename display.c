@@ -6,7 +6,7 @@
 /*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/31 14:03:11 by jmondino          #+#    #+#             */
-/*   Updated: 2019/06/19 13:06:42 by nkellum          ###   ########.fr       */
+/*   Updated: 2019/06/19 15:22:04 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ void	ft_display(t_shit *pShit)
 			display_entries_l(files_lst, pShit, pShit->files[i]);
 		}
 		else
-			printf("%s ", pShit->files[i]);
+			print_color_args(pShit->files[i]);
+		//printf("%s ", pShit->files[i]);
         i++;
     }
     if (i != 0)
@@ -46,6 +47,29 @@ void	ft_display(t_shit *pShit)
     }
 }
 
+void	print_color_args(char *entry)
+{
+	struct stat pStat;
+
+	lstat(entry, &pStat);
+	if (S_ISDIR(pStat.st_mode))
+		printf(BOLDCYAN"%s:\n", entry);
+	if (S_ISREG(pStat.st_mode))
+		printf(RESET"%s  ", entry);
+	if (S_ISLNK(pStat.st_mode))
+		printf(MAGENTA"%s  ", entry);
+}
+
+void	print_color(char *entry, int type)
+{
+	if (type == DT_DIR)
+		printf(BOLDCYAN"%s  ", entry);
+	if (type == DT_REG)
+		printf(RESET"%s  ", entry);
+	if (type == DT_LNK)
+		printf(MAGENTA"%s  ", entry);
+}
+
 void print_normally(t_entry *list_start)
 {
 	t_entry		*browse;
@@ -53,7 +77,8 @@ void print_normally(t_entry *list_start)
 	browse = list_start;
 	while (browse)
 	{
-		printf("%s  ", browse->name);
+		print_color(browse->name, browse->type);
+		//printf("%s  ", browse->name);
 		browse = browse->next;
 	}
 	if (list_start)
@@ -65,7 +90,7 @@ int get_list_size(t_entry *list_start)
 	int size;
 
 	size = 0;
-	while(list_start)
+	while (list_start)
 	{
 		size++;
 		list_start = list_start->next;
@@ -78,9 +103,9 @@ int get_longest_name(t_entry *list_start)
 	unsigned int longest_name;
 
 	longest_name = 0;
-	while(list_start)
+	while (list_start)
 	{
-		if(ft_strlen(list_start->name) > longest_name)
+		if( ft_strlen(list_start->name) > longest_name)
 			longest_name = ft_strlen(list_start->name);
 		list_start = list_start->next;
 	}
@@ -158,9 +183,9 @@ int longest_in_column(char **str_array, int start, int end, int list_size)
 
 	longest_name = 0;
 	i = start;
-	while(i < list_size && str_array[i] && i < end)
+	while (i < list_size && str_array[i] && i < end)
 	{
-		if(ft_strlen(str_array[i]) > longest_name)
+		if (ft_strlen(str_array[i]) > longest_name)
 			longest_name = ft_strlen(str_array[i]);
 		i++;
 	}
@@ -175,9 +200,9 @@ int *get_column_widths(char **str_array, int num_of_columns, int list_size)
 
 	per_column = list_size / (num_of_columns == 0 ? 1 : num_of_columns) + 1;
 	i = 0;
-	if((column_widths = malloc(sizeof(int) * list_size)) == NULL)
+	if ((column_widths = malloc(sizeof(int) * list_size)) == NULL)
 		return 0;
-	while(i < num_of_columns)
+	while (i < num_of_columns)
 	{
 		column_widths[i] = longest_in_column(str_array,
 			 i * per_column, i * per_column + per_column, list_size);
@@ -192,24 +217,30 @@ void print_rows(char **str_array, int *column_widths, int columns, t_entry *list
 	int j;
 	int length;
 	int per_column;
+	t_entry *browse;
 
+	browse = list_start;
 	i = 0;
 	j = 0;
 	length = 0;
 	per_column = get_list_size(list_start) / columns + 1;
-	while(str_array[length])
+	while (str_array[length])
 		length++;
-	while(i < per_column)
+	while (i < per_column)
 	{
 		j = 0;
-		while(j < columns)
+		while (j < columns)
 		{
-			if(i + (j * (per_column)) < length
+			if (i + (j * (per_column)) < length
 			&& str_array[i + (j * (per_column))])
 			{
-				printf("%s  ", str_array[i + (j * (per_column))]);
+				while (ft_strcmp(browse->name, str_array[i + (j * (per_column))]))
+					browse = browse->next;
+				print_color(str_array[i + (j * (per_column))], browse->type);
+				//printf("%s  ", str_array[i + (j * (per_column))]);
 				print_spaces(column_widths[j] -
 				ft_strlen(str_array[i + (j * (per_column))]));
+				browse = list_start;
 			}
 			j++;
 		}
@@ -236,12 +267,12 @@ void	ft_print_column(t_entry *list_start)
 	columns = num_of_columns(list_start, terminal_width);
 	list_current = list_start;
 	str_array = array_from_list(list_start);
-	while(list_current)
+	while (list_current)
 	{
 		all_names_length += ft_strlen(list_current->name);
 		list_current = list_current->next;
 	}
-	if(all_names_length + list_size * 2  > terminal_width)
+	if (all_names_length + list_size * 2  > terminal_width)
 	{
 		int *column_widths = get_column_widths(str_array,
 		columns, list_size);
@@ -251,7 +282,7 @@ void	ft_print_column(t_entry *list_start)
 	else
 		print_normally(list_start);
 	int i = 0;
-	while(str_array[i])
+	while (str_array[i])
 	{
 		free(str_array[i]);
 		i++;
@@ -265,11 +296,11 @@ void	ft_print_dir_name(t_entry *list_start, t_shit *pShit, char *dirname)
 	{
 		if (ft_strcmp(dirname, "./") && (pShit->dirs[1] || pShit->files[0]
 		|| pShit->error != 0))
-			printf("%s:\n", dirname);
+			printf(RESET"%s:\n", dirname);
 	}
 	else
 		if (pShit->subdir != 0 || pShit->dirs[1] || pShit->files[0]
 		|| pShit->error != 0)
-			printf("%s:\n", dirname);
+			printf(RESET"%s:\n", dirname);
 	ft_print_column(list_start);
 }
