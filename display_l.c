@@ -6,7 +6,7 @@
 /*   By: nkellum <nkellum@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/30 12:02:12 by nkellum           #+#    #+#             */
-/*   Updated: 2019/06/19 16:07:06 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/06/19 16:33:09 by nkellum          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,22 +75,22 @@ void display_entries_l(t_entry *list_start, t_shit *pShit, char *dirname)
 	while (list_current)
 	{
 		if (list_current->type == DT_REG)
-			printf(RESET"-");
+			printf("-");
 		if (list_current->type == DT_DIR)
-			printf(RESET"d");
+			printf("d");
 		if (list_current->type == DT_LNK)
-			printf(RESET"l");
-		printf(RESET"%s  ", list_current->rights);
+			printf("l");
+		printf("%s  ", list_current->rights);
 		print_spaces(offsets[0] - (num_length(list_current->hard_links)));
-		printf(RESET"%d %s  %s  ", list_current->hard_links, list_current->user, list_current->group);
+		printf("%d %s  %s  ", list_current->hard_links, list_current->user, list_current->group);
 		print_spaces(offsets[1] - (num_length(list_current->size)));
-		printf(RESET"%d %s", list_current->size, list_current->date_month_modified);
+		printf("%d %s", list_current->size, list_current->date_month_modified);
 		print_spaces(offsets[2] - (num_length(list_current->date_day_modified)));
-		printf(RESET" %d %s ", list_current->date_day_modified,
+		printf(" %d %s ", list_current->date_day_modified,
 			   list_current->date_time_modified);
-		print_color_l(list_current->name, list_current->type);
+		print_color_l(list_current->name, list_current->type, list_current->rights);
 		if (list_current->type == DT_LNK)
-			printf(RESET" -> %s", list_current->link_path);
+			printf(" -> %s", list_current->link_path);
 		printf("\n");
 		list_current = list_current->next;
 	}
@@ -108,7 +108,7 @@ void	ft_total(t_entry *list_start, t_shit *pShit, char *dirname)
 	total = 0;
 	i = 0;
 	browse = list_start;
-	if ((pShit->error != 0 || pShit->subdir != 0 || pShit->dirs[1] 
+	if ((pShit->error != 0 || pShit->subdir != 0 || pShit->dirs[1]
 		 || pShit->files[0]) && (!S_ISREG(pStat.st_mode)))
 		printf("%s:\n", dirname);
 	while (browse)

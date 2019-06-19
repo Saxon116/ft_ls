@@ -6,7 +6,7 @@
 /*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/31 14:03:11 by jmondino          #+#    #+#             */
-/*   Updated: 2019/06/19 16:20:58 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/06/19 16:31:57 by nkellum          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,24 +46,36 @@ void	ft_display(t_shit *pShit)
     }
 }
 
-void	print_color_l(char *entry, int type)
+void	print_color_l(char *entry, int type, char *rights)
 {
 	if (type == DT_DIR)
 		printf(BOLDCYAN"%s", entry);
 	if (type == DT_REG)
-		printf(RESET"%s", entry);
+	{
+		if(ft_iscinstr(rights, 'x'))
+			printf(GREEN"%s", entry);
+		else
+			printf(RESET"%s", entry);
+	}
 	if (type == DT_LNK)
 		printf(MAGENTA"%s", entry);
+	printf(RESET);
 }
 
-void	print_color(char *entry, int type)
+void	print_color(char *entry, int type, char *rights)
 {
 	if (type == DT_DIR)
 		printf(BOLDCYAN"%s  ", entry);
 	if (type == DT_REG)
-		printf(RESET"%s  ", entry);
+	{
+		if(ft_iscinstr(rights, 'x'))
+			printf(GREEN"%s  ", entry);
+		else
+			printf(RESET"%s  ", entry);
+	}
 	if (type == DT_LNK)
 		printf(MAGENTA"%s  ", entry);
+	printf(RESET);
 }
 
 void print_normally(t_entry *list_start)
@@ -73,7 +85,7 @@ void print_normally(t_entry *list_start)
 	browse = list_start;
 	while (browse)
 	{
-		print_color(browse->name, browse->type);
+		print_color(browse->name, browse->type, browse->rights);
 		browse = browse->next;
 	}
 	if (list_start)
@@ -230,7 +242,7 @@ void print_rows(char **str_array, int *column_widths, int columns, t_entry *list
 			{
 				while (ft_strcmp(browse->name, str_array[i + (j * (per_column))]))
 					browse = browse->next;
-				print_color(str_array[i + (j * (per_column))], browse->type);
+				print_color(str_array[i + (j * (per_column))], browse->type, browse->rights);
 				print_spaces(column_widths[j] -
 				ft_strlen(str_array[i + (j * (per_column))]));
 				browse = list_start;

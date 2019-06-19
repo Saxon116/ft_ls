@@ -6,7 +6,7 @@
 /*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/20 16:58:28 by jmondino          #+#    #+#             */
-/*   Updated: 2019/06/19 16:06:49 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/06/19 16:26:15 by nkellum          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,8 +92,8 @@ void		ft_swap(t_entry *a, t_entry *b);
 void		ft_rev_list(t_entry **list);
 void		ft_fill(t_entry *fill, t_entry *src);
 void		ft_timeorder(char **tab);
-void    	print_color(char *entry, int type);
-void    	print_color_l(char *entry, int type);
+void    	print_color(char *entry, int type, char *rights);
+void    	print_color_l(char *entry, int type, char *rights);
 char		*ft_checkflags(char *str);
 char 		*permissions(mode_t perm);
 char		**ft_isfile(char **newav, int index, t_shit *pShit);
