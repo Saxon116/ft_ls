@@ -6,7 +6,7 @@
 /*   By: nkellum <nkellum@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/30 12:02:12 by nkellum           #+#    #+#             */
-/*   Updated: 2019/06/20 16:50:53 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/06/20 17:21:06 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,9 +87,13 @@ void 	display_entries_l(t_entry *list_start, t_shit *pShit, char *dirname)
 		print_type(list_current);
 		printf("%s  ", list_current->rights);
 		print_spaces(offsets[0] - (num_length(list_current->hard_links)));
-		printf("%d %s", list_current->hard_links, list_current->user);
-		print_spaces(offsets[3] - (ft_strlen(list_current->user)));
-		printf("  %s  ", list_current->group);
+		printf("%d", list_current->hard_links);
+		if (!ft_iscinstr(pShit->flags, 'g'))
+		{
+			printf(" %s ", list_current->user);
+			print_spaces(offsets[3] - (ft_strlen(list_current->user)));
+		}
+		printf(" %s  ", list_current->group);
 		print_spaces(offsets[4] - (ft_strlen(list_current->group)));
 		print_spaces(offsets[1] - (num_length(list_current->size)));
 		printf("%d %s", list_current->size, list_current->date_month_modified);
@@ -97,7 +101,7 @@ void 	display_entries_l(t_entry *list_start, t_shit *pShit, char *dirname)
 		printf(" %d %s ", list_current->date_day_modified,
 			   list_current->date_time_modified);
 		print_color_l(list_current->name, list_current->type, list_current->rights);
-		if (S_ISLNK(list_current->type))
+		if (S_ISLNK(list_current->type) && !ft_iscinstr(pShit->flags, 'g'))
 			printf(" -> %s", list_current->link_path);
 		printf("\n");
 		list_current = list_current->next;

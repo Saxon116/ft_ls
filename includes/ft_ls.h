@@ -6,7 +6,7 @@
 /*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/20 16:58:28 by jmondino          #+#    #+#             */
-/*   Updated: 2019/06/20 15:36:17 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/06/20 17:17:02 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 # include <sys/ioctl.h>
 # include "libft.h"
 
-# define OP(x) x == 'a' || x == 'r' || x == 'l' || x == 'R' || x == 't' || x == 'u' || x == '@'
+# define OP(x) x == 'a' || x == 'r' || x == 'l' || x == 'R' || x == 't' || x == 'u' || x == '@' || x == 'g'
 
 # define RESET          "\033[0m"
 # define RED            "\033[31m"
