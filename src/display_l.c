@@ -6,7 +6,7 @@
 /*   By: nkellum <nkellum@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/30 12:02:12 by nkellum           #+#    #+#             */
-/*   Updated: 2019/06/20 17:21:06 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/06/20 17:25:56 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ void 	display_entries_l(t_entry *list_start, t_shit *pShit, char *dirname)
 		printf(" %d %s ", list_current->date_day_modified,
 			   list_current->date_time_modified);
 		print_color_l(list_current->name, list_current->type, list_current->rights);
-		if (S_ISLNK(list_current->type) && !ft_iscinstr(pShit->flags, 'g'))
+		if (S_ISLNK(list_current->type))
 			printf(" -> %s", list_current->link_path);
 		printf("\n");
 		list_current = list_current->next;
