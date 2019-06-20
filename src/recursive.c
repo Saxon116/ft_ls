@@ -6,7 +6,7 @@
 /*   By: nkellum <nkellum@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/03 15:10:14 by nkellum           #+#    #+#             */
-/*   Updated: 2019/06/20 16:18:48 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/06/20 19:28:08 by nkellum          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,20 +94,104 @@ t_entry 	*add_new_entry2(char *entry_name)
 	ft_strsub(ctime(&pstat.st_mtimespec.tv_sec), 4, 3);
 	entry->date_time_modified =
 	ft_strsub(ctime(&pstat.st_mtimespec.tv_sec), 11, 5);
-	entry->date_accessed = pstat.st_atime;
+	entry->date_accessed = pstat.st_mtimespec.tv_sec;
 	entry->mtime = pstat.st_mtime;
 	entry->next = NULL;
 	return (entry);
+}
+
+int get_xattr_num(char *attributes, int size)
+{
+	int i;
+	int num;
+	int reset;
+
+	reset = 0;
+	num = 0;
+	i = 0;
+	while(i < size)
+	{
+		if(attributes[i] == '\0')
+			num++;
+		i++;
+	}
+	return (num);
+}
+
+char **get_xattr_list(char *attributes, int size)
+{
+	char **array;
+	int i;
+	int j;
+	int num_of_xattr;
+
+	i = 0;
+	j = 0;
+	num_of_xattr = get_xattr_num(attributes, size);
+	if((array = malloc((num_of_xattr + 1) * sizeof(char*))) == NULL)
+		return 0;
+	while(i < num_of_xattr)
+	{
+		array[i] = ft_strdup(attributes + j);
+		while((attributes[j]) != '\0')
+			j++;
+		j++;
+		i++;
+	}
+	array[i] = NULL;
+	return (array);
+}
+
+int *get_xattr_sizes(char **attributes, char *path, int length)
+{
+	int 		*sizes;
+	int			i;
+
+	i = 0;
+	if ((sizes = malloc(sizeof(int) * length)) == NULL)
+		return 0;
+	while(i < length)
+	{
+		sizes[i] = getxattr(path, attributes[i], NULL, 0, 0, XATTR_NOFOLLOW);
+		i++;
+	}
+	return (sizes);
+
+}
+
+int has_acl(char *path)
+{
+	acl_t acl = NULL;
+    acl_entry_t dummy;
+
+    acl = acl_get_link_np(path, ACL_TYPE_EXTENDED);
+    if (acl && acl_get_entry(acl, ACL_FIRST_ENTRY, &dummy) == -1) {
+        acl_free(acl);
+        acl = NULL;
+    }
+    if (acl != NULL)
+        return (1);
+    else
+        return (0);
 }
 
 t_entry 	*add_new_entry(char *path, char *entry_name)
 {
 	t_entry	*entry;
 	struct stat	pstat;
+	char  l[1024];
+
 
 	if ((entry = malloc(sizeof(t_entry))) == NULL)
 		return 0;
 	lstat(path, &pstat);
+	entry->has_xattr = listxattr(path, l, 1024,  XATTR_NOFOLLOW);
+	if(entry->has_xattr)
+	{
+		entry->xattr = get_xattr_list(l, entry->has_xattr);
+		entry->xattr_sizes = get_xattr_sizes(entry->xattr, path, get_xattr_num(l, entry->has_xattr));
+	}
+	entry->has_acl = has_acl(path);
 	entry->type = pstat.st_mode;
 	entry->link_path = get_link_path(path);
 	entry->name = ft_strdup(entry_name);
@@ -122,7 +206,7 @@ t_entry 	*add_new_entry(char *path, char *entry_name)
 	ft_strsub(ctime(&pstat.st_mtimespec.tv_sec), 4, 3);
 	entry->date_time_modified =
 	ft_strsub(ctime(&pstat.st_mtimespec.tv_sec), 11, 5);
-	entry->date_accessed = pstat.st_atime;
+	entry->date_accessed = pstat.st_atimespec.tv_sec;
 	entry->mtime = pstat.st_mtime;
 	entry->next = NULL;
 	return (entry);
@@ -228,6 +312,7 @@ t_entry		*ft_tri_ascii(t_entry *list, t_shit *pShit)
 	return (fresh);
 }
 
+
 void	ft_rev_list(t_entry **list)
 {
 	t_entry		*current;
@@ -272,13 +357,8 @@ void	list_dir_recursive(char *dirname, char *name, t_shit *pShit)
 		list_start = fill_list(pDir, pDirent, path, dirname);
 	list_start = ft_tri_ascii(list_start, pShit);
 	if (ft_iscinstr(pShit->flags, 't'))
-	{
-		if (ft_iscinstr(pShit->flags, 'u'))
-			list_start = ft_tri_access(list_start, pShit);
-		else
-			list_start = ft_tri_date(list_start, pShit);
-	}
-	if (ft_iscinstr(pShit->flags, 'l'))
+		list_start = ft_tri_date(list_start, pShit);
+	if (ft_iscinstr(pShit->flags, 'l') || ft_iscinstr(pShit->flags, 'g'))
 		display_entries_l(list_start, pShit, dirname);
 	else
 		ft_print_dir_name(list_start, pShit, dirname);

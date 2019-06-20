@@ -6,7 +6,7 @@
 /*   By: nkellum <nkellum@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/30 12:02:12 by nkellum           #+#    #+#             */
-/*   Updated: 2019/06/20 17:25:56 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/06/20 19:37:58 by nkellum          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,13 @@ void 	display_entries_l(t_entry *list_start, t_shit *pShit, char *dirname)
 	while (list_current)
 	{
 		print_type(list_current);
-		printf("%s  ", list_current->rights);
+		printf("%s", list_current->rights);
+		if(list_current->has_xattr > 0)
+			printf("@ ");
+		else if(list_current->has_acl)
+			printf("+ ");
+		else
+			printf("  ");
 		print_spaces(offsets[0] - (num_length(list_current->hard_links)));
 		printf("%d", list_current->hard_links);
 		if (!ft_iscinstr(pShit->flags, 'g'))
@@ -103,7 +109,20 @@ void 	display_entries_l(t_entry *list_start, t_shit *pShit, char *dirname)
 		print_color_l(list_current->name, list_current->type, list_current->rights);
 		if (S_ISLNK(list_current->type))
 			printf(" -> %s", list_current->link_path);
-		printf("\n");
+		if(list_current->has_xattr > 0 && ft_iscinstr(pShit->flags, '@'))
+		{
+			int i = 0;
+			printf("\n");
+			while(list_current->xattr[i])
+			{
+				printf("        %s", list_current->xattr[i]);
+				print_spaces(28 - ft_strlen(list_current->xattr[i]) - num_length(list_current->xattr_sizes[i]));
+				printf("%d\n", list_current->xattr_sizes[i]);
+				i++;
+			}
+		}
+		else
+			printf("\n");
 		list_current = list_current->next;
 	}
 	free(offsets);
