@@ -6,7 +6,7 @@
 /*   By: nkellum <nkellum@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/03 15:10:14 by nkellum           #+#    #+#             */
-/*   Updated: 2019/06/20 19:28:08 by nkellum          ###   ########.fr       */
+/*   Updated: 2019/06/20 19:54:09 by nkellum          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,17 @@ void	lstdel(t_entry **lst)
 	while (current)
 	{
 		next = current->next;
+		if(current->has_xattr)
+		{
+			int i = 0;
+			while(current->xattr[i])
+			{
+				free(current->xattr[i]);
+				i++;
+			}
+			free(current->xattr);
+			free(current->xattr_sizes);
+		}
 		free(current->link_path);
 		free(current->name);
 		free(current->rights);
@@ -170,9 +181,15 @@ int has_acl(char *path)
         acl = NULL;
     }
     if (acl != NULL)
+	{
+		acl_free(acl);
         return (1);
+	}
     else
+	{
+		acl_free(acl);
         return (0);
+	}
 }
 
 t_entry 	*add_new_entry(char *path, char *entry_name)
