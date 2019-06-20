@@ -6,7 +6,7 @@
 /*   By: nkellum <nkellum@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/03 15:10:14 by nkellum           #+#    #+#             */
-/*   Updated: 2019/06/20 16:18:48 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/06/20 16:17:01 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ t_entry 	*add_new_entry2(char *entry_name)
 	ft_strsub(ctime(&pstat.st_mtimespec.tv_sec), 4, 3);
 	entry->date_time_modified =
 	ft_strsub(ctime(&pstat.st_mtimespec.tv_sec), 11, 5);
-	entry->date_accessed = pstat.st_atime;
+	entry->date_accessed = pstat.st_atime);
 	entry->mtime = pstat.st_mtime;
 	entry->next = NULL;
 	return (entry);
@@ -122,7 +122,7 @@ t_entry 	*add_new_entry(char *path, char *entry_name)
 	ft_strsub(ctime(&pstat.st_mtimespec.tv_sec), 4, 3);
 	entry->date_time_modified =
 	ft_strsub(ctime(&pstat.st_mtimespec.tv_sec), 11, 5);
-	entry->date_accessed = pstat.st_atime;
+	entry->date_accessed = pstat.st_atime);
 	entry->mtime = pstat.st_mtime;
 	entry->next = NULL;
 	return (entry);
