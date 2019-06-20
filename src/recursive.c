@@ -6,7 +6,7 @@
 /*   By: nkellum <nkellum@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/03 15:10:14 by nkellum           #+#    #+#             */
-/*   Updated: 2019/06/20 14:57:23 by nkellum          ###   ########.fr       */
+/*   Updated: 2019/06/20 15:19:19 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ t_entry 	*add_new_entry2(char *entry_name)
 	if ((entry = malloc(sizeof(t_entry))) == NULL)
 		return 0;
 	lstat(entry_name, &pstat);
-	entry->type = S_ISLNK(pstat.st_mode) ? 10 : 8;
+	entry->type = pstat.st_mode;
 	entry->link_path = get_link_path(entry_name);
 	entry->name = ft_strdup(entry_name);
 	entry->rights = permissions(pstat.st_mode);
@@ -100,7 +100,7 @@ t_entry 	*add_new_entry2(char *entry_name)
 	return (entry);
 }
 
-t_entry 	*add_new_entry(char *path, char *entry_name, int type)
+t_entry 	*add_new_entry(char *path, char *entry_name)
 {
 	t_entry	*entry;
 	struct stat	pstat;
@@ -108,7 +108,7 @@ t_entry 	*add_new_entry(char *path, char *entry_name, int type)
 	if ((entry = malloc(sizeof(t_entry))) == NULL)
 		return 0;
 	lstat(path, &pstat);
-	entry->type = type;
+	entry->type = pstat.st_mode;
 	entry->link_path = get_link_path(path);
 	entry->name = ft_strdup(entry_name);
 	entry->rights = permissions(pstat.st_mode);
@@ -144,14 +144,14 @@ t_entry 	*fill_list(DIR *pDir, struct dirent *pDirent, char *path, char *dirname
 			ft_strcat(path, pDirent->d_name);
 			if (!list_current)
 			{
-				list_current = add_new_entry(path, pDirent->d_name,
-											 pDirent->d_type);
+				list_current = add_new_entry(path, pDirent->d_name);
+											 //pDirent->d_type);
 				list_start = list_current;
 			}
 			else
 			{
-				list_current->next = add_new_entry(path, pDirent->d_name,
-												   pDirent->d_type);
+				list_current->next = add_new_entry(path, pDirent->d_name);
+												   //pDirent->d_type);
 				list_current = list_current->next;
 			}
 			ft_bzero(path + ft_strlen(dirname),
@@ -177,14 +177,14 @@ t_entry 	*fill_list_a(DIR *pDir, struct dirent *pDirent, char *path, char *dirna
 		ft_strcat(path, pDirent->d_name);
 		if (!list_current)
 		{
-			list_current = add_new_entry(path, pDirent->d_name,
-										 pDirent->d_type);
+			list_current = add_new_entry(path, pDirent->d_name);
+										 //pDirent->d_type);
 			list_start = list_current;
 		}
 		else
 		{
-			list_current->next = add_new_entry(path, pDirent->d_name,
-											   pDirent->d_type);
+			list_current->next = add_new_entry(path, pDirent->d_name);
+											   //pDirent->d_type);
 			list_current = list_current->next;
 		}
 		ft_bzero(path + ft_strlen(dirname),

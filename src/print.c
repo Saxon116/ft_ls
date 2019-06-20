@@ -6,7 +6,7 @@
 /*   By: jmondino <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/19 18:23:54 by jmondino          #+#    #+#             */
-/*   Updated: 2019/06/19 18:25:52 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/06/20 15:15:08 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,50 +23,50 @@ void	print_return(t_shit *pShit)
 void    print_color_l(char *entry, int type, char *rights)
 {
     printf(RESET);
-    if (type == DT_DIR)
+    if (S_ISDIR(type))
         printf(BOLDCYAN"%s", entry);
-    if (type == DT_REG)
+    if (S_ISREG(type))
     {
         if (ft_iscinstr(rights, 'x'))
             printf(RED"%s", entry);
         else
             printf(RESET"%s", entry);
     }
-    if (type == DT_LNK)
+    if (S_ISLNK(type))
         printf(MAGENTA"%s", entry);
-    if (type == DT_BLK)
+    if (S_ISBLK(type))
         printf(BLUEBLUE"%s", entry);
-    if (type == DT_CHR)
+    if (S_ISCHR(type))
         printf(YELLOWBLUE"%s", entry);
-    if (type == DT_SOCK)
+    if (S_ISSOCK(type))
         printf(GREEN"%s", entry);
-    //if (type == DT_FIFO)
-    //printf(BOLDCYANGREEN"%s", entry);
+    if (S_ISFIFO(type))
+		printf(BOLDCYANGREEN"%s", entry);
     printf(RESET);
 }
 
 void    print_color(char *entry, int type, char *rights)
 {
-    printf(RESET);
-    if (type == DT_DIR)
+	printf(RESET);
+    if (S_ISDIR(type))
         printf(BOLDCYAN"%s  ", entry);
-    if (type == DT_REG)
+    if (S_ISREG(type))
     {
         if (ft_iscinstr(rights, 'x'))
             printf(RED"%s  ", entry);
         else
             printf(RESET"%s  ", entry);
     }
-    if (type == DT_LNK)
+    if (S_ISLNK(type))
         printf(MAGENTA"%s  ", entry);
-    if (type == DT_BLK)
+    if (S_ISBLK(type))
         printf(BLUEBLUE"%s  ", entry);
-    if (type == DT_CHR)
+    if (S_ISCHR(type))
         printf(YELLOWBLUE"%s  ", entry);
-    if (type == DT_SOCK)
+    if (S_ISSOCK(type))
         printf(GREEN"%s  ", entry);
-    //if (type == DT_FIFO)
-    //printf(BOLDCYANGREEN"%s", entry);
+    if (S_ISFIFO(type))
+		printf(BOLDCYANGREEN"%s  ", entry);
     printf(RESET);
 }
 

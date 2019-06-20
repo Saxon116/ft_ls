@@ -6,7 +6,7 @@
 /*   By: nkellum <nkellum@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/30 12:02:12 by nkellum           #+#    #+#             */
-/*   Updated: 2019/06/20 14:56:55 by nkellum          ###   ########.fr       */
+/*   Updated: 2019/06/20 15:22:22 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,17 +60,17 @@ int 	*get_offsets(t_entry *list_start)
 
 void	print_type(t_entry *list_current)
 {
-	if (list_current->type == DT_REG)
+	if (S_ISREG(list_current->type))
 		printf("-");
-	if (list_current->type == DT_DIR)
+	if (S_ISDIR(list_current->type))
 		printf("d");
-	if (list_current->type == DT_LNK)
+	if (S_ISLNK(list_current->type))
 		printf("l");
-	if (list_current->type == DT_BLK)
+	if (S_ISBLK(list_current->type))
 		printf("b");
-	if (list_current->type == DT_CHR)
+	if (S_ISCHR(list_current->type))
 		printf("c");
-	if (list_current->type == DT_SOCK)
+	if (S_ISSOCK(list_current->type))
 		printf("s");
 }
 

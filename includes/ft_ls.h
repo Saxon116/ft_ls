@@ -6,7 +6,7 @@
 /*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/20 16:58:28 by jmondino          #+#    #+#             */
-/*   Updated: 2019/06/19 21:44:01 by nkellum          ###   ########.fr       */
+/*   Updated: 2019/06/20 15:16:13 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ int 		*get_offsets(t_entry *list_start);
 t_shit		*initstru(void);
 t_entry 	*fill_list(DIR *pDir, struct dirent *pDirent, char *path, char *dirname);
 t_entry     *fill_list_a(DIR *pDir, struct dirent *pDirent, char *path, char *dirname);
-t_entry 	*add_new_entry(char *path, char *entry_name, int is_folder);
+t_entry 	*add_new_entry(char *path, char *entry_name);
 t_entry     *ft_tri_ascii(t_entry *list, t_shit *pShit);
 t_entry     *ft_tri_date(t_entry *list, t_shit *pShit);
 t_entry     *fill_tmp(void);
