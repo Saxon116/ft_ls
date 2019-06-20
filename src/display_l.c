@@ -6,7 +6,7 @@
 /*   By: nkellum <nkellum@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/30 12:02:12 by nkellum           #+#    #+#             */
-/*   Updated: 2019/06/19 18:09:37 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/06/20 14:56:55 by nkellum          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,13 @@ int 	*get_offsets(t_entry *list_start)
 	int 		*offsets;
 	t_entry 	*list_current;
 
-	if ((offsets = malloc(sizeof(int) * 3)) == NULL)
+	if ((offsets = malloc(sizeof(int) * 5)) == NULL)
 		return 0;
 	offsets[0] = 0;
 	offsets[1] = 0;
 	offsets[2] = 0;
+	offsets[3] = 0;
+	offsets[4] = 0;
 	list_current = list_start;
 	while (list_current)
 	{
@@ -47,6 +49,10 @@ int 	*get_offsets(t_entry *list_start)
 			offsets[1] = num_length(list_current->size);
 		if (num_length(list_current->date_day_modified) > offsets[2])
 			offsets[2] = num_length(list_current->date_day_modified);
+		if (ft_strlen(list_current->user) > (unsigned) offsets[3])
+			offsets[3] = ft_strlen(list_current->user);
+		if (ft_strlen(list_current->group) > (unsigned) offsets[4])
+			offsets[4] = ft_strlen(list_current->group);
 		list_current = list_current->next;
 	}
 	return (offsets);
@@ -81,7 +87,10 @@ void 	display_entries_l(t_entry *list_start, t_shit *pShit, char *dirname)
 		print_type(list_current);
 		printf("%s  ", list_current->rights);
 		print_spaces(offsets[0] - (num_length(list_current->hard_links)));
-		printf("%d %s  %s  ", list_current->hard_links, list_current->user, list_current->group);
+		printf("%d %s", list_current->hard_links, list_current->user);
+		print_spaces(offsets[3] - (ft_strlen(list_current->user)));
+		printf("  %s  ", list_current->group);
+		print_spaces(offsets[4] - (ft_strlen(list_current->group)));
 		print_spaces(offsets[1] - (num_length(list_current->size)));
 		printf("%d %s", list_current->size, list_current->date_month_modified);
 		print_spaces(offsets[2] - (num_length(list_current->date_day_modified)));
