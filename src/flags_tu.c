@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   flags_tu.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmondino <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/20 12:22:34 by jmondino          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2019/06/21 11:55:00 by jmondino         ###   ########.fr       */
+=======
+/*   Updated: 2019/06/20 18:20:58 by nkellum          ###   ########.fr       */
+>>>>>>> e6a64ddb237b6f462688d0c65335a967c478e107
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +116,10 @@ t_entry     *fill_tmp(void)
     tmp->link_path = NULL;
     tmp->next = NULL;
     tmp->mtime = 0;
+	tmp->has_xattr = 0;
+	tmp->has_acl = 0;
+	tmp->xattr = NULL;
+	tmp->xattr_sizes = NULL;
     return (tmp);
 }
 
@@ -131,4 +139,8 @@ void    ft_fill(t_entry *fill, t_entry *src)
     fill->date_accessed = src->date_accessed;
     fill->link_path = src->link_path;
     fill->mtime = src->mtime;
+	fill->has_xattr = src->has_xattr;
+	fill->has_acl = src->has_acl;
+	fill->xattr = src->xattr;
+	fill->xattr_sizes = src->xattr_sizes;
 }

@@ -6,7 +6,11 @@
 /*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/20 16:58:28 by jmondino          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2019/06/21 16:47:35 by jmondino         ###   ########.fr       */
+=======
+/*   Updated: 2019/06/20 19:29:15 by nkellum          ###   ########.fr       */
+>>>>>>> e6a64ddb237b6f462688d0c65335a967c478e107
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +30,15 @@
 # include <grp.h>
 # include <time.h>
 # include <sys/ioctl.h>
+# include <sys/xattr.h>
+# include <sys/acl.h>
 # include "libft.h"
 
+<<<<<<< HEAD
+=======
+# define OP(x) x == 'a' || x == 'r' || x == 'l' || x == 'R' || x == 't' || x =='@'
+
+>>>>>>> e6a64ddb237b6f462688d0c65335a967c478e107
 # define RESET          "\033[0m"
 # define RED            "\033[31m"
 # define GREEN          "\033[32m"
@@ -66,6 +77,10 @@ typedef struct 	s_entry
 	long			date_accessed;
 	char			*link_path;
 	long			mtime;
+	int				has_xattr;
+	int				has_acl;
+	char			**xattr;
+	int				*xattr_sizes;
 	struct s_entry	*next;
 }				t_entry;
 
@@ -104,7 +119,6 @@ t_entry     *fill_list_a(DIR *pDir, struct dirent *pDirent, char *path, char *di
 t_entry 	*add_new_entry(char *path, char *entry_name);
 t_entry     *ft_tri_ascii(t_entry *list, t_shit *pShit);
 t_entry     *ft_tri_date(t_entry *list, t_shit *pShit);
-t_entry     *ft_tri_access(t_entry *list, t_shit *pShit);
 t_entry     *fill_tmp(void);
 t_entry     *fill_list_d(t_shit *pShit);
 void		ft_print_column(t_entry *list_start);
@@ -114,5 +128,6 @@ char		**array_from_list(t_entry *list_start);
 int			*get_column_widths(char **str_array, int num_of_columns, int list_size);
 void		print_normally(t_entry *list_start);
 int			longest_in_column(char **str_array, int start, int end, int list_size);
+int			get_xattr_num(char *attributes, int size);
 
 #endif
