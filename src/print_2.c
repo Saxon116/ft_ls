@@ -6,7 +6,7 @@
 /*   By: jmondino <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/19 18:26:06 by jmondino          #+#    #+#             */
-/*   Updated: 2019/06/19 18:27:15 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/06/21 13:39:03 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ void    ft_print_column(t_entry *list_start)
     unsigned int list_size;
     unsigned int terminal_width;
     int columns;
+	int *column_widths;
     char **str_array;
     t_entry *list_current;
     struct winsize w;
@@ -73,18 +74,18 @@ void    ft_print_column(t_entry *list_start)
     }
     if (all_names_length + list_size * 2  > terminal_width)
     {
-        int *column_widths = get_column_widths(str_array,
+        column_widths = get_column_widths(str_array,
 											   columns, list_size);
         print_rows(str_array, column_widths, columns, list_start);
         free(column_widths);
     }
     else
         print_normally(list_start);
-    int i = 0;
-    while (str_array[i])
+    columns = 0;
+    while (str_array[columns])
     {
-        free(str_array[i]);
-        i++;
+        free(str_array[columns]);
+        columns++;
     }
     free(str_array);
 }

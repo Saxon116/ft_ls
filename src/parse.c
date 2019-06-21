@@ -6,7 +6,7 @@
 /*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/23 14:09:09 by jmondino          #+#    #+#             */
-/*   Updated: 2019/06/19 16:00:10 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/06/21 12:02:39 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,12 +140,14 @@ char	*ft_checkflags(char *str)
 	char	*tmp;
 
 	i = 1;
-	while (str[i])
+	while(str[i])
 	{
-		if (!(OP(str[i])))
+		if (str[i] != 'a' && str[i] != 'r' && str[i] != 'l' && str[i] != 'R'
+			&& str[i] != 't' && str[i] != 'u' && str[i] != '@' && str[i] != 'g'
+			&& str[i] != 'd')
 		{
 			printf("ft_ls: illegall option -- %c\n", str[i]);
-			printf("usage: ft_ls [-Ralrt] [file ...]\n");
+			printf("usage: ft_ls [-Radglrtu] [file ...]\n");
 			exit(1);
 		}
 		i++;

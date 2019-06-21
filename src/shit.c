@@ -6,7 +6,7 @@
 /*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/20 16:51:04 by jmondino          #+#    #+#             */
-/*   Updated: 2019/06/19 15:28:41 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/06/21 15:43:19 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ void    ft_fillpShit(char *flags, char **newav, int index, t_shit *pShit)
 		free(pShit->dirs);
 		if (!(pShit->dirs = (char **)malloc(sizeof(char *) * 2)))
 			return ;
-        pShit->dirs[0] = ft_strdup("./");
+        pShit->dirs[0] = ft_strdup(".");
         pShit->dirs[1] = NULL;
     }
     if (ft_iscinstr(pShit->flags, 'r'))

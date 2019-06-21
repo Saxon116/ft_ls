@@ -6,7 +6,7 @@
 /*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/31 14:03:11 by jmondino          #+#    #+#             */
-/*   Updated: 2019/06/19 18:29:12 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/06/21 14:02:09 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,22 @@
 
 void	ft_display(t_shit *pShit)
 {
-	int		i;
-	t_entry	*files_lst;
+	int			i;
+	t_entry		*files_lst;
 
-	i = 0;
-	while (pShit->files[i])
-    {
-		if (ft_iscinstr(pShit->flags, 'l'))
+	i = -1;
+	if (ft_iscinstr(pShit->flags, 'l'))
+	{
+		while (pShit->files[++i])
 		{
-			files_lst = add_new_entry2(pShit->files[i]);
+			files_lst = add_new_entry(pShit->files[i], pShit->files[i]);
 			display_entries_l(files_lst, pShit, pShit->files[i]);
 		}
-		else
-			printf("%s ", pShit->files[i]);
-        i++;
-    }
-    if (i != 0)
-		print_return(pShit);
+	}
+	else
+		display(pShit, i);
+    if (i != 0 && pShit->dirs[0])
+		printf("\n");
     i = 0;
     while (pShit->dirs[i])
     {
@@ -41,7 +40,7 @@ void	ft_display(t_shit *pShit)
     }
 }
 
-int get_list_size(t_entry *list_start)
+int 	get_list_size(t_entry *list_start)
 {
 	int size;
 

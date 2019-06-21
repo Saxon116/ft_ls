@@ -6,18 +6,34 @@
 /*   By: jmondino <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/19 18:23:54 by jmondino          #+#    #+#             */
-/*   Updated: 2019/06/20 15:15:08 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/06/21 16:29:45 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-void	print_return(t_shit *pShit)
+void    display(t_shit *pShit, int i)
 {
-    if (!ft_iscinstr(pShit->flags, 'l'))
-        printf("\n");
-    if (pShit->dirs[0])
-        printf("\n");
+    t_entry *start;
+	t_entry *browse;
+
+    browse = NULL;
+    start = browse;
+	while (pShit->files[++i])
+	{
+		if (!browse)
+		{
+			browse = add_new_entry(pShit->files[i], pShit->files[i]);
+			start = browse;
+		}
+        else
+		{
+			browse->next = add_new_entry(pShit->files[i], pShit->files[i]);
+			browse = browse->next;
+		}
+    }
+	if (start)
+		ft_print_column(start);
 }
 
 void    print_color_l(char *entry, int type, char *rights)

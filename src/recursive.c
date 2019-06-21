@@ -6,7 +6,7 @@
 /*   By: nkellum <nkellum@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/03 15:10:14 by nkellum           #+#    #+#             */
-/*   Updated: 2019/06/20 16:18:48 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/06/21 12:27:20 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,12 +55,13 @@ void	lstdel(t_entry **lst)
 
 char *get_link_path(char *path)
 {
-	char *buf;
+	char 		*buf;
+	ssize_t 	len;
 
-	if((buf = malloc(1024)) == NULL)
+	if ((buf = malloc(1024)) == NULL)
 		return 0;
-	ssize_t len = readlink(path, buf, 1023);
-	if(len != -1)
+	len = readlink(path, buf, 1023);
+	if (len != -1)
 	{
   		buf[len] = '\0';
 		return buf;
@@ -70,34 +71,6 @@ char *get_link_path(char *path)
 		free(buf);
 		return ft_strdup("");
 	}
-}
-
-t_entry 	*add_new_entry2(char *entry_name)
-{
-	t_entry			*entry;
-	struct stat		pstat;
-
-	if ((entry = malloc(sizeof(t_entry))) == NULL)
-		return 0;
-	lstat(entry_name, &pstat);
-	entry->type = pstat.st_mode;
-	entry->link_path = get_link_path(entry_name);
-	entry->name = ft_strdup(entry_name);
-	entry->rights = permissions(pstat.st_mode);
-	entry->hard_links = pstat.st_nlink;
-	entry->size = pstat.st_size;
-	entry->user = ft_strdup(getpwuid(pstat.st_uid)->pw_name);
-	entry->group = ft_strdup(getgrgid(pstat.st_gid)->gr_name);
-	entry->date_day_modified = get_day(ctime(&pstat.st_mtimespec.tv_sec));
-	entry->block_size = pstat.st_blocks;
-	entry->date_month_modified =
-	ft_strsub(ctime(&pstat.st_mtimespec.tv_sec), 4, 3);
-	entry->date_time_modified =
-	ft_strsub(ctime(&pstat.st_mtimespec.tv_sec), 11, 5);
-	entry->date_accessed = pstat.st_atime;
-	entry->mtime = pstat.st_mtime;
-	entry->next = NULL;
-	return (entry);
 }
 
 t_entry 	*add_new_entry(char *path, char *entry_name)
@@ -145,13 +118,11 @@ t_entry 	*fill_list(DIR *pDir, struct dirent *pDirent, char *path, char *dirname
 			if (!list_current)
 			{
 				list_current = add_new_entry(path, pDirent->d_name);
-											 //pDirent->d_type);
 				list_start = list_current;
 			}
 			else
 			{
 				list_current->next = add_new_entry(path, pDirent->d_name);
-												   //pDirent->d_type);
 				list_current = list_current->next;
 			}
 			ft_bzero(path + ft_strlen(dirname),
@@ -161,7 +132,6 @@ t_entry 	*fill_list(DIR *pDir, struct dirent *pDirent, char *path, char *dirname
 	}
 	return list_start;
 }
-
 
 t_entry 	*fill_list_a(DIR *pDir, struct dirent *pDirent, char *path, char *dirname)
 {
@@ -178,13 +148,11 @@ t_entry 	*fill_list_a(DIR *pDir, struct dirent *pDirent, char *path, char *dirna
 		if (!list_current)
 		{
 			list_current = add_new_entry(path, pDirent->d_name);
-										 //pDirent->d_type);
 			list_start = list_current;
 		}
 		else
 		{
 			list_current->next = add_new_entry(path, pDirent->d_name);
-											   //pDirent->d_type);
 			list_current = list_current->next;
 		}
 		ft_bzero(path + ft_strlen(dirname),
@@ -260,8 +228,8 @@ void	list_dir_recursive(char *dirname, char *name, t_shit *pShit)
 	pDir = opendir(dirname);
 	if (pDir == NULL)
 	{
-		if (ft_strcmp(dirname, "./") && (pShit->dirs[1] || pShit->files[0]
-										 || pShit->error != 0))
+		if (pShit->subdir != 0 || pShit->dirs[1] || pShit->files[0]
+			|| pShit->error != 0)
 			printf("%s:\n", path);
 		printf(RESET"ft_ls: %s: Permission denied\n", name);
 		return ;
@@ -278,7 +246,7 @@ void	list_dir_recursive(char *dirname, char *name, t_shit *pShit)
 		else
 			list_start = ft_tri_date(list_start, pShit);
 	}
-	if (ft_iscinstr(pShit->flags, 'l'))
+	if (ft_iscinstr(pShit->flags, 'l') || ft_iscinstr(pShit->flags, 'g'))
 		display_entries_l(list_start, pShit, dirname);
 	else
 		ft_print_dir_name(list_start, pShit, dirname);

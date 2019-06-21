@@ -6,7 +6,7 @@
 /*   By: nkellum <nkellum@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/03 15:10:14 by nkellum           #+#    #+#             */
-/*   Updated: 2019/06/18 17:34:14 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/06/21 16:37:05 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,13 @@ int 	main(int ac, char **av)
 	if (!(pShit = initstru()))
 		return (0);
 	ft_parseargs(av, pShit);
-	ft_display(pShit);
-	free_pShit(pShit);
-	free(pShit);
+	if (ft_iscinstr(pShit->flags, 'd'))
+		ft_display_d(pShit);
+	else
+	{
+		ft_display(pShit);
+		free_pShit(pShit);
+		free(pShit);
+	}
 	return (0);
 }

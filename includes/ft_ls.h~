@@ -6,7 +6,7 @@
 /*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/20 16:58:28 by jmondino          #+#    #+#             */
-/*   Updated: 2019/06/21 16:47:35 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/06/21 16:25:00 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,7 @@ t_entry     *ft_tri_date(t_entry *list, t_shit *pShit);
 t_entry     *ft_tri_access(t_entry *list, t_shit *pShit);
 t_entry     *fill_tmp(void);
 t_entry     *fill_list_d(t_shit *pShit);
+t_entry    	*fill(char  **entries);
 void		ft_print_column(t_entry *list_start);
 int			get_list_size(t_entry *list_start);
 int			num_of_columns(t_entry *list_start, int terminal_width);
