@@ -1,11 +1,8 @@
--l not that aligned in collunm
-(OP) macro
+
+
 sortie d'erreur pour les messages d'erreurs
-couleurs (FIFO and UNKNOWN missing)
 norme
-ACL attributes
--u -g -d -f
-
-
+-u (not that perfect i think)-f and why not some more
 minor(lstat->st_rdev)
 major(lstat->st_rdev)
+'t' in rights -l

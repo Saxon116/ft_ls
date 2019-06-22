@@ -6,7 +6,7 @@
 /*   By: jmondino <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/21 12:02:51 by jmondino          #+#    #+#             */
-/*   Updated: 2019/06/22 14:24:11 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/06/22 15:36:02 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,12 @@ void	ft_display_d(t_shit *pShit)
 
 	entries = fill_list_d(pShit);
 	if (entries)
-		ft_print_column(entries);
+	{
+		if (ft_iscinstr(pShit->flags, 'l'))
+		   	display_entries_l(entries, pShit, pShit->newav[0]);
+		else
+			ft_print_column(entries);
+	}
 }
 
 t_entry		*fill_list_d(t_shit *pShit)

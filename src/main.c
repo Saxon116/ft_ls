@@ -6,7 +6,7 @@
 /*   By: nkellum <nkellum@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/03 15:10:14 by nkellum           #+#    #+#             */
-/*   Updated: 2019/06/22 14:18:47 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/06/22 15:27:44 by jmondino         ###   ########.fr       */
 /*   Updated: 2019/06/20 18:01:43 by nkellum          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -15,22 +15,20 @@
 
 void	free_pShit(t_shit *pShit)
 {
-	int i = 0;
+	int 	i;
 	free(pShit->flags);
-	i = 0;
-	while (pShit->files[i])
-	{
+	i = -1;
+	while (pShit->files[++i])
 		free(pShit->files[i]);
-		i++;
-	}
 	free(pShit->files);
-	i = 0;
-	while(pShit->dirs[i])
-	{
+	i = -1;
+	while(pShit->dirs[++i])
 		free(pShit->dirs[i]);
-		i++;
-	}
 	free(pShit->dirs);
+	i = -1;
+	while (pShit->newav[++i])
+		free(pShit->newav[i]);
+	free(pShit->newav);
 }
 
 
@@ -46,10 +44,8 @@ int 	main(int ac, char **av)
 	if (ft_iscinstr(pShit->flags, 'd'))
 		ft_display_d(pShit);
 	else
-	{
 		ft_display(pShit);
-		free_pShit(pShit);
-		free(pShit);
-	}
+	free_pShit(pShit);
+	free(pShit);
 	return (0);
 }
