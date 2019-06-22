@@ -6,3 +6,4 @@ norme
 minor(lstat->st_rdev)
 major(lstat->st_rdev)
 't' in rights -l
+may have some leaks
