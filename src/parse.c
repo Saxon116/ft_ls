@@ -6,7 +6,7 @@
 /*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/23 14:09:09 by jmondino          #+#    #+#             */
-/*   Updated: 2019/06/21 12:02:39 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/06/22 14:20:56 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ void	ft_parseargs(char **av, t_shit *pShit)
 	int		j;
 	int		bool;
 	char	*tmp;
-	char	*newav[255];
 
 	i = 0;
 	j = 0;
@@ -32,16 +31,16 @@ void	ft_parseargs(char **av, t_shit *pShit)
 			tmp = ft_strjoin(tmp, ft_checkflags(av[i]));
 		else
 			if (ft_strcmp(av[i], "--"))
-				newav[j++] = av[i];
+				pShit->newav[j++] = ft_strdup(av[i]);
 	}
-	newav[j] = NULL;
-	if (newav[0])
+	pShit->newav[j] = NULL;
+	if (pShit->newav[0])
 	{
-		ft_asciiorder(newav);
+		ft_asciiorder(pShit->newav);
 		if (ft_iscinstr(tmp, 't'))
-			ft_timeorder(newav);
+			ft_timeorder(pShit->newav);
 	}
-	ft_fillpShit(tmp, newav, j, pShit);
+	ft_fillpShit(tmp, pShit->newav, j, pShit);
 }
 
 char	**ft_isdir(char **newav, int index)

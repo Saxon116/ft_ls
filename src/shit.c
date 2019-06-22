@@ -6,7 +6,7 @@
 /*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/20 16:51:04 by jmondino          #+#    #+#             */
-/*   Updated: 2019/06/21 15:43:19 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/06/22 14:24:05 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,16 +110,22 @@ void    ft_fillpShit(char *flags, char **newav, int index, t_shit *pShit)
     }
 }
 
-t_shit      *initstru(void)
+t_shit      *initstru(char **av)
 {
     t_shit      *pShit;
+	int			i;
 	
+	i = 1;
     if ((pShit = malloc(sizeof(t_shit))) == NULL)
         return (NULL);
+	while (av[i])
+		i++;
 	pShit->inex = NULL;
     pShit->flags = NULL;
     pShit->files = NULL;
     pShit->dirs = NULL;
+	if (!(pShit->newav = (char **)malloc(sizeof(char *) * i + 1)))
+		pShit->newav = NULL;
 	pShit->subdir = 0;
 	pShit->error = 0;
     return (pShit);

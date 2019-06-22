@@ -6,7 +6,7 @@
 /*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/31 14:03:11 by jmondino          #+#    #+#             */
-/*   Updated: 2019/06/21 14:02:09 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/06/22 13:57:11 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	ft_display(t_shit *pShit)
 	}
 	else
 		display(pShit, i);
-    if (i != 0 && pShit->dirs[0])
+    if (i != -1 && pShit->dirs[0])
 		printf("\n");
     i = 0;
     while (pShit->dirs[i])

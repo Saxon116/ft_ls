@@ -6,11 +6,8 @@
 /*   By: nkellum <nkellum@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/03 15:10:14 by nkellum           #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2019/06/21 12:27:20 by jmondino         ###   ########.fr       */
-=======
+/*   Updated: 2019/06/22 12:33:08 by jmondino         ###   ########.fr       */
 /*   Updated: 2019/06/20 19:54:09 by nkellum          ###   ########.fr       */
->>>>>>> e6a64ddb237b6f462688d0c65335a967c478e107
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +85,6 @@ char *get_link_path(char *path)
 	}
 }
 
-<<<<<<< HEAD
-=======
 t_entry 	*add_new_entry2(char *entry_name)
 {
 	t_entry			*entry;
@@ -199,7 +194,6 @@ int has_acl(char *path)
 	}
 }
 
->>>>>>> e6a64ddb237b6f462688d0c65335a967c478e107
 t_entry 	*add_new_entry(char *path, char *entry_name)
 {
 	t_entry	*entry;
@@ -377,16 +371,13 @@ void	list_dir_recursive(char *dirname, char *name, t_shit *pShit)
 		list_start = fill_list(pDir, pDirent, path, dirname);
 	list_start = ft_tri_ascii(list_start, pShit);
 	if (ft_iscinstr(pShit->flags, 't'))
-<<<<<<< HEAD
 	{
 		if (ft_iscinstr(pShit->flags, 'u'))
 			list_start = ft_tri_access(list_start, pShit);
 		else
 			list_start = ft_tri_date(list_start, pShit);
 	}
-=======
 		list_start = ft_tri_date(list_start, pShit);
->>>>>>> e6a64ddb237b6f462688d0c65335a967c478e107
 	if (ft_iscinstr(pShit->flags, 'l') || ft_iscinstr(pShit->flags, 'g'))
 		display_entries_l(list_start, pShit, dirname);
 	else

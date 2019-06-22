@@ -6,11 +6,8 @@
 /*   By: nkellum <nkellum@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/03 15:10:14 by nkellum           #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2019/06/21 16:37:05 by jmondino         ###   ########.fr       */
-=======
+/*   Updated: 2019/06/22 14:18:47 by jmondino         ###   ########.fr       */
 /*   Updated: 2019/06/20 18:01:43 by nkellum          ###   ########.fr       */
->>>>>>> e6a64ddb237b6f462688d0c65335a967c478e107
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +40,7 @@ int 	main(int ac, char **av)
 	t_shit		*pShit;
 
 	(void)ac;
-	if (!(pShit = initstru()))
+	if (!(pShit = initstru(av)))
 		return (0);
 	ft_parseargs(av, pShit);
 	if (ft_iscinstr(pShit->flags, 'd'))

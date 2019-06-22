@@ -6,11 +6,8 @@
 /*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/20 16:58:28 by jmondino          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2019/06/21 16:47:35 by jmondino         ###   ########.fr       */
-=======
+/*   Updated: 2019/06/22 14:21:42 by jmondino         ###   ########.fr       */
 /*   Updated: 2019/06/20 19:29:15 by nkellum          ###   ########.fr       */
->>>>>>> e6a64ddb237b6f462688d0c65335a967c478e107
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +31,6 @@
 # include <sys/acl.h>
 # include "libft.h"
 
-<<<<<<< HEAD
-=======
-# define OP(x) x == 'a' || x == 'r' || x == 'l' || x == 'R' || x == 't' || x =='@'
-
->>>>>>> e6a64ddb237b6f462688d0c65335a967c478e107
 # define RESET          "\033[0m"
 # define RED            "\033[31m"
 # define GREEN          "\033[32m"
@@ -55,6 +47,7 @@ typedef struct 		s_shit
 {
 	char			*flags;
 	char			*inex;
+	char			**newav;
 	char			**files;
 	char			**dirs;
 	int				subdir;
@@ -113,7 +106,7 @@ int			ft_existent2(char *str);
 int 		get_day(char *date);
 int 		num_length(long long num);
 int 		*get_offsets(t_entry *list_start);
-t_shit		*initstru(void);
+t_shit		*initstru(char **av);
 t_entry 	*fill_list(DIR *pDir, struct dirent *pDirent, char *path, char *dirname);
 t_entry     *fill_list_a(DIR *pDir, struct dirent *pDirent, char *path, char *dirname);
 t_entry 	*add_new_entry(char *path, char *entry_name);
@@ -121,6 +114,7 @@ t_entry     *ft_tri_ascii(t_entry *list, t_shit *pShit);
 t_entry     *ft_tri_date(t_entry *list, t_shit *pShit);
 t_entry     *fill_tmp(void);
 t_entry     *fill_list_d(t_shit *pShit);
+t_entry    	*ft_tri_access(t_entry *list, t_shit *pShit);
 void		ft_print_column(t_entry *list_start);
 int			get_list_size(t_entry *list_start);
 int			num_of_columns(t_entry *list_start, int terminal_width);
