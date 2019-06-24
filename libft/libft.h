@@ -6,7 +6,7 @@
 /*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/12 18:40:56 by jmondino          #+#    #+#             */
-/*   Updated: 2019/06/19 21:44:03 by nkellum          ###   ########.fr       */
+/*   Updated: 2019/01/24 16:57:45 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 
 typedef struct		s_list
 {
-	char			*content;
+	void			*content;
 	size_t			content_size;
 	struct s_list	*next;
 }					t_list;

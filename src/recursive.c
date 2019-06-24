@@ -6,7 +6,7 @@
 /*   By: nkellum <nkellum@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/03 15:10:14 by nkellum           #+#    #+#             */
-/*   Updated: 2019/06/22 12:33:08 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/06/24 17:04:51 by jmondino         ###   ########.fr       */
 /*   Updated: 2019/06/20 19:54:09 by nkellum          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -200,10 +200,10 @@ t_entry 	*add_new_entry(char *path, char *entry_name)
 	struct stat	pstat;
 	char  l[1024];
 
-
 	if ((entry = malloc(sizeof(t_entry))) == NULL)
 		return 0;
-	lstat(path, &pstat);
+	if (lstat(path, &pstat) == -1)
+		printf("Error\n");
 	entry->has_xattr = listxattr(path, l, 1024,  XATTR_NOFOLLOW);
 	if(entry->has_xattr)
 	{
@@ -222,9 +222,9 @@ t_entry 	*add_new_entry(char *path, char *entry_name)
 	entry->date_day_modified = get_day(ctime(&pstat.st_mtimespec.tv_sec));
 	entry->block_size = pstat.st_blocks;
 	entry->date_month_modified =
-	ft_strsub(ctime(&pstat.st_mtimespec.tv_sec), 4, 3);
+	ft_strsub(ctime(&pstat.st_ctimespec.tv_sec), 4, 3);
 	entry->date_time_modified =
-	ft_strsub(ctime(&pstat.st_mtimespec.tv_sec), 11, 5);
+	ft_strsub(ctime(&pstat.st_ctimespec.tv_sec), 11, 5);
 	entry->date_accessed = pstat.st_atimespec.tv_sec;
 	entry->mtime = pstat.st_mtime;
 	entry->next = NULL;
@@ -242,7 +242,8 @@ t_entry 	*fill_list(DIR *pDir, struct dirent *pDirent, char *path, char *dirname
 	{
 		if (pDirent->d_name[0] != '.')
 		{
-			if (dirname[ft_strlen(dirname) - 1] != '/')
+			//if (dirname[ft_strlen(dirname) - 1] != '/')
+			if (path[ft_strlen(path) - 1] != '/')
 				ft_strcat(path, "/");
 			ft_strcat(path, pDirent->d_name);
 			if (!list_current)
@@ -255,9 +256,8 @@ t_entry 	*fill_list(DIR *pDir, struct dirent *pDirent, char *path, char *dirname
 				list_current->next = add_new_entry(path, pDirent->d_name);
 				list_current = list_current->next;
 			}
-			ft_bzero(path + ft_strlen(dirname),
-					 ft_strlen(pDirent->d_name) +
-					 dirname[ft_strlen(dirname) - 1] != '/');
+			ft_bzero(path + ft_strlen(dirname), ft_strlen(pDirent->d_name));
+			// + dirname[ft_strlen(dirname) - 1] != '/');
 		}
 	}
 	return list_start;
@@ -286,8 +286,7 @@ t_entry 	*fill_list_a(DIR *pDir, struct dirent *pDirent, char *path, char *dirna
 			list_current = list_current->next;
 		}
 		ft_bzero(path + ft_strlen(dirname),
-				 ft_strlen(pDirent->d_name) +
-				 dirname[ft_strlen(dirname) - 1] != '/');
+				ft_strlen(pDirent->d_name));
 	}
 	return list_start;
 }
@@ -377,7 +376,6 @@ void	list_dir_recursive(char *dirname, char *name, t_shit *pShit)
 		else
 			list_start = ft_tri_date(list_start, pShit);
 	}
-		list_start = ft_tri_date(list_start, pShit);
 	if (ft_iscinstr(pShit->flags, 'l') || ft_iscinstr(pShit->flags, 'g'))
 		display_entries_l(list_start, pShit, dirname);
 	else

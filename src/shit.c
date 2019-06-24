@@ -6,7 +6,7 @@
 /*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/20 16:51:04 by jmondino          #+#    #+#             */
-/*   Updated: 2019/06/22 14:24:05 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/06/24 15:01:57 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,12 +131,16 @@ t_shit      *initstru(char **av)
     return (pShit);
 }
 
-int get_day(char *date)
+int 	get_day(char *date)
 {
     int i;
 
     i = 0;
-    while(!ft_isdigit(date[i]))
-        i++;
-    return (ft_atoi(date + i));
+	if (date)
+	{
+		while (!ft_isdigit(date[i]))
+			i++;
+		return (ft_atoi(date + i));
+	}
+	return 0;
 }

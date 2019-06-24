@@ -6,7 +6,7 @@
 /*   By: nkellum <nkellum@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/30 12:02:12 by nkellum           #+#    #+#             */
-/*   Updated: 2019/06/20 19:37:58 by nkellum          ###   ########.fr       */
+/*   Updated: 2019/06/24 13:30:20 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,6 +148,6 @@ void	ft_total(t_entry *list_start, t_shit *pShit, char *dirname)
 		browse = browse->next;
 		i++;
 	}
-	if (i != 0 && (!S_ISREG(pStat.st_mode)))
+	if (i != 0 && (!S_ISREG(pStat.st_mode)) && !ft_iscinstr(pShit->flags, 'd'))
 		printf("total %d\n", total);
 }

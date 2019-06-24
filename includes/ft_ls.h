@@ -6,7 +6,7 @@
 /*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/20 16:58:28 by jmondino          #+#    #+#             */
-/*   Updated: 2019/06/22 14:21:42 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/06/24 16:43:34 by jmondino         ###   ########.fr       */
 /*   Updated: 2019/06/20 19:29:15 by nkellum          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -43,49 +43,49 @@
 # define BLUEBLUE		"\033[34;46m"
 # define BOLDCYANGREEN	"\033[1;36;42m"
 
-typedef struct 		s_shit
+typedef struct 			s_shit
 {
-	char			*flags;
-	char			*inex;
-	char			**newav;
-	char			**files;
-	char			**dirs;
-	int				subdir;
-	int				error;
-}					t_shit;
+	char				*flags;
+	char				*inex;
+	char				**newav;
+	char				**files;
+	char				**dirs;
+	int					subdir;
+	int					error;
+}						t_shit;
 
-typedef struct 	s_entry
+typedef struct 			s_entry
 {
-	int				type;
-	char			*name;
-	char			*rights;
-	int				hard_links;
-	char			*user;
-	char			*group;
-	int				size;
-	int				block_size;
-	char			*date_month_modified;
-	int				date_day_modified;
-	char			*date_time_modified;
-	long			date_accessed;
-	char			*link_path;
-	long			mtime;
-	int				has_xattr;
-	int				has_acl;
-	char			**xattr;
-	int				*xattr_sizes;
-	struct s_entry	*next;
-}				t_entry;
+	int					type;
+	char				*name;
+	char				*rights;
+	int					hard_links;
+	char				*user;
+	char				*group;
+	int					size;
+	int					block_size;
+	char				*date_month_modified;
+	int					date_day_modified;
+	char				*date_time_modified;
+	long				date_accessed;
+	char				*link_path;
+	long				mtime;
+	int					has_xattr;
+	int					has_acl;
+	char				**xattr;
+	int					*xattr_sizes;
+	struct s_entry		*next;
+}						t_entry;
 
 void		ft_asciiorder(char **tab);
 void		ft_revtab(char **tab);
 void    	lstdel(t_entry **lst);
 void		ft_parseargs(char **av, t_shit *pShit);
 void		ft_fillpShit(char *flags, char **newav, int index, t_shit *pShit);
-void 		print_spaces(int num);
-void 		display_entries_l(t_entry *list_start, t_shit *pShit, char *dirname);
+void		print_spaces(int num);
+void		display_entries_l(t_entry *list_start, t_shit *pShit, char *dirname);
 void		ft_display(t_shit *pShit);
-void 		list_dir_recursive(char *dirname, char *name, t_shit *pShit);
+void		list_dir_recursive(char *dirname, char *name, t_shit *pShit);
 void		ft_print_dir_name(t_entry *list_start, t_shit *pShit, char *dirname);
 void		ft_total(t_entry *list_start, t_shit *pShit, char *dirname);
 void		ft_swap(t_entry *a, t_entry *b);
@@ -97,7 +97,7 @@ void    	print_color_l(char *entry, int type, char *rights);
 void    	display(t_shit *pShit, int i);
 void    	ft_display_d(t_shit *pShit);
 char		*ft_checkflags(char *str);
-char 		*permissions(mode_t perm);
+char		*permissions(mode_t perm);
 char		**ft_isfile(char **newav, int index, t_shit *pShit);
 char		**ft_isdir(char **newav, int index);
 char 		*get_link_path(char *path);
@@ -114,7 +114,7 @@ t_entry     *ft_tri_ascii(t_entry *list, t_shit *pShit);
 t_entry     *ft_tri_date(t_entry *list, t_shit *pShit);
 t_entry     *fill_tmp(void);
 t_entry     *fill_list_d(t_shit *pShit);
-t_entry    	*ft_tri_access(t_entry *list, t_shit *pShit);
+t_entry    *ft_tri_access(t_entry *list, t_shit *pShit);
 void		ft_print_column(t_entry *list_start);
 int			get_list_size(t_entry *list_start);
 int			num_of_columns(t_entry *list_start, int terminal_width);

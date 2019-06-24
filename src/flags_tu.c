@@ -6,7 +6,7 @@
 /*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/20 12:22:34 by jmondino          #+#    #+#             */
-/*   Updated: 2019/06/22 13:22:18 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/06/24 17:06:23 by jmondino         ###   ########.fr       */
 /*   Updated: 2019/06/20 18:20:58 by nkellum          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -18,28 +18,30 @@ t_entry     *ft_tri_date(t_entry *list, t_shit *pShit)
     t_entry		*start;
     t_entry 	*lstart;
     t_entry 	*fresh;
-    int     	swap;
 
     if (list == NULL)
         return NULL;
     start = list;
     fresh = start;
-    swap = 1;
-    lstart = NULL;
-    while (swap)
+	while (start)
+	{
+		printf("[%s]\n", start->name);
+		start = start->next;
+	}
+	start = list;
+    while (start)
     {
-        swap = 0;
-        start = list;
-        while (start->next != lstart)
+        lstart = start->next;
+        while (lstart)
         {
-            if (start->mtime < start->next->mtime)
-            {
+            if (start->mtime < lstart->mtime)
+			{
+				printf("[%s] <-> [%s]\n", start->name, lstart->name);
                 ft_swap(start, start->next);
-                swap = 1;
-            }
-            start = start->next;
+			}
+			lstart = lstart->next;
         }
-        lstart = start;
+        start = start->next;
     }
 	if (ft_iscinstr(pShit->flags, 'r'))
 		ft_rev_list(&list);
@@ -52,29 +54,22 @@ t_entry		*ft_tri_access(t_entry *list, t_shit *pShit)
     t_entry 	*start;
     t_entry 	*lstart;
     t_entry 	*fresh;
-    int     	swap;
 
     if (list == NULL)
         return NULL;
     start = list;
     fresh = start;
-    swap = 1;
-    lstart = NULL;
-    while (swap)
-    {
-        swap = 0;
-        start = list;
-        while (start->next != lstart)
-        {
-            if (start->date_accessed < start->next->date_accessed)
-            {
-                ft_swap(start, start->next);
-                swap = 1;
-            }
-            start = start->next;
-        }
-        lstart = start;
-    }
+	while (start)
+	{
+		lstart = start->next;
+		while (lstart)
+		{
+			if (start->date_accessed < lstart->date_accessed)
+				ft_swap(start, lstart);
+			lstart = lstart->next;
+		}
+		start = start->next;
+	}
 	if (ft_iscinstr(pShit->flags, 'r'))
         ft_rev_list(&list);
     fresh = list;

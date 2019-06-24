@@ -1,4 +1,4 @@
-# **************************************************************************** #
+#******************************************************************************#
 #                                                                              #
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
@@ -6,9 +6,9 @@
 #    By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/21 22:22:11 by jmondino          #+#    #+#              #
-#    Updated: 2019/05/30 17:51:11 by jmondino         ###   ########.fr        #
+#    Updated: 2019/01/24 16:58:04 by jmondino         ###   ########.fr        #
 #                                                                              #
-# **************************************************************************** #
+#******************************************************************************#
 
 NAME = libft.a
 
@@ -16,36 +16,17 @@ SRC = ft_atoi.c ft_bzero.c ft_isalnum.c ft_isalpha.c ft_isascii.c ft_isdigit.c f
 
 OBJ = $(SRC:.c=.o)
 
-# This is a minimal set of ANSI/VT100 color codes
-_END=\x1b[0m
-_BOLD=\x1b[1m
-_UNDER=\x1b[4m
-_REV=\x1b[7m
-
-# Colors
-_GREY=\x1b[30m
-_RED=\x1b[31m
-_GREEN=\x1b[32m
-_YELLOW=\x1b[33m
-_BLUE=\x1b[34m
-_PURPLE=\x1b[35m
-_CYAN=\x1b[36m
-_WHITE=\x1b[37m
-
 all: $(NAME)
 
-$(NAME): $(SRC)
-	@gcc -Wall -Wextra -Werror -c $(SRC)
-	@ar rc $(NAME) $(OBJ)
-	@ranlib $(NAME)
-	@echo "${_CYAN}Libft Compiled.${_END}"
-	@make clean
-
+$(NAME):
+	gcc -Wextra -Wall -Werror -c $(SRC)
+	ar rc $(NAME) $(OBJ)
+	ranlib $(NAME)
 
 clean:
-	@rm -f $(OBJ)
+	/bin/rm -f $(OBJ)
 
 fclean: clean
-	@rm -f $(NAME)
+	/bin/rm -f $(NAME)
 
 re: fclean all
