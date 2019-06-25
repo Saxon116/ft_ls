@@ -6,7 +6,7 @@
 /*   By: nkellum <nkellum@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/03 15:10:14 by nkellum           #+#    #+#             */
-/*   Updated: 2019/06/22 15:45:21 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/06/25 16:15:02 by jmondino         ###   ########.fr       */
 /*   Updated: 2019/06/20 18:01:43 by nkellum          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -29,6 +29,10 @@ void	free_pShit(t_shit *pShit)
 	while (pShit->newav[++i])
 		free(pShit->newav[i]);
 	free(pShit->newav);
+	i = -1;
+	while (pShit->dsfs[++i])
+		free(pShit->dsfs[i]);
+	free(pShit->dsfs);
 }
 
 

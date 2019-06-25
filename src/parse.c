@@ -6,7 +6,7 @@
 /*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/23 14:09:09 by jmondino          #+#    #+#             */
-/*   Updated: 2019/06/22 14:20:56 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/06/25 16:30:40 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	ft_parseargs(char **av, t_shit *pShit)
 				pShit->newav[j++] = ft_strdup(av[i]);
 	}
 	pShit->newav[j] = NULL;
-	if (pShit->newav[0])
+	if (pShit->newav[0] && !ft_iscinstr(tmp, 'f'))
 	{
 		ft_asciiorder(pShit->newav);
 		if (ft_iscinstr(tmp, 't'))
@@ -143,7 +143,7 @@ char	*ft_checkflags(char *str)
 	{
 		if (str[i] != 'a' && str[i] != 'r' && str[i] != 'l' && str[i] != 'R'
 			&& str[i] != 't' && str[i] != 'u' && str[i] != '@' && str[i] != 'g'
-			&& str[i] != 'd')
+			&& str[i] != 'd' && str[i] != 'f')
 		{
 			printf("ft_ls: illegall option -- %c\n", str[i]);
 			printf("usage: ft_ls [-Radglrtu] [file ...]\n");
