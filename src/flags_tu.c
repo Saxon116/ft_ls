@@ -6,10 +6,10 @@
 /*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/20 12:22:34 by jmondino          #+#    #+#             */
-/*   Updated: 2019/06/25 13:08:00 by jmondino         ###   ########.fr       */
-/*   Updated: 2019/06/20 18:20:58 by nkellum          ###   ########.fr       */
+/*   Updated: 2019/06/25 13:36:53 by nkellum          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "ft_ls.h"
 
@@ -31,7 +31,7 @@ t_entry     *ft_tri_date(t_entry *list, t_shit *pShit)
 		lstart = start->next;
 		while (lstart)
 		{
-			
+
 				ft_swap(start, lstart);
 			lstart = lstart->next;
 		}
@@ -113,6 +113,8 @@ t_entry     *fill_tmp(void)
 	tmp->has_acl = 0;
 	tmp->xattr = NULL;
 	tmp->xattr_sizes = NULL;
+	tmp->minor = 0;
+	tmp->major = 0;
     return (tmp);
 }
 
@@ -136,4 +138,6 @@ void    ft_fill(t_entry *fill, t_entry *src)
 	fill->has_acl = src->has_acl;
 	fill->xattr = src->xattr;
 	fill->xattr_sizes = src->xattr_sizes;
+	fill->minor = src->minor;
+	fill->major = src->major;
 }

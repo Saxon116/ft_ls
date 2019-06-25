@@ -6,10 +6,10 @@
 /*   By: nkellum <nkellum@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/03 15:10:14 by nkellum           #+#    #+#             */
-/*   Updated: 2019/06/25 11:43:36 by jmondino         ###   ########.fr       */
-/*   Updated: 2019/06/20 19:54:09 by nkellum          ###   ########.fr       */
+/*   Updated: 2019/06/25 14:34:13 by nkellum          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "ft_ls.h"
 
@@ -27,7 +27,10 @@ char *permissions(mode_t perm)
     modeval[5] = (perm & S_IXGRP) ? 'x' : '-';
     modeval[6] = (perm & S_IROTH) ? 'r' : '-';
     modeval[7] = (perm & S_IWOTH) ? 'w' : '-';
-    modeval[8] = (perm & S_IXOTH) ? 'x' : '-';
+	if((perm & S_ISVTX))
+		modeval[8] = 't';
+	else
+    	modeval[8] = (perm & S_IXOTH) ? 'x' : '-';
     modeval[9] = '\0';
     return modeval;
 }
@@ -212,6 +215,11 @@ t_entry 	*add_new_entry(char *path, char *entry_name)
 	}
 	entry->has_acl = has_acl(path);
 	entry->type = pstat.st_mode;
+	if (S_ISBLK(entry->type) || S_ISCHR(entry->type))
+	{
+		entry->minor = minor(pstat.st_rdev);
+		entry->major = major(pstat.st_rdev);
+	}
 	entry->link_path = get_link_path(path);
 	entry->name = ft_strdup(entry_name);
 	entry->rights = permissions(pstat.st_mode);

@@ -2,7 +2,5 @@ sortie d'erreur pour les messages d'erreurs
 norme
 sort is not ok
 -f and why not some more
-minor(lstat->st_rdev)
-major(lstat->st_rdev)
 't' in rights -l
 may have some leaks

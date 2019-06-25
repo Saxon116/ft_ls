@@ -6,10 +6,10 @@
 /*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/20 16:58:28 by jmondino          #+#    #+#             */
-/*   Updated: 2019/06/24 16:43:34 by jmondino         ###   ########.fr       */
-/*   Updated: 2019/06/20 19:29:15 by nkellum          ###   ########.fr       */
+/*   Updated: 2019/06/25 13:27:03 by nkellum          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #ifndef FT_LS_H
 # define FT_LS_H
@@ -74,6 +74,8 @@ typedef struct 			s_entry
 	int					has_acl;
 	char				**xattr;
 	int					*xattr_sizes;
+	int					minor;
+	int					major;
 	struct s_entry		*next;
 }						t_entry;
 

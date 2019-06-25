@@ -6,7 +6,7 @@
 /*   By: nkellum <nkellum@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/30 12:02:12 by nkellum           #+#    #+#             */
-/*   Updated: 2019/06/24 13:30:20 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/06/25 14:25:26 by nkellum          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,16 @@ int 	*get_offsets(t_entry *list_start)
 	int 		*offsets;
 	t_entry 	*list_current;
 
-	if ((offsets = malloc(sizeof(int) * 5)) == NULL)
+	if ((offsets = malloc(sizeof(int) * 8)) == NULL)
 		return 0;
 	offsets[0] = 0;
 	offsets[1] = 0;
 	offsets[2] = 0;
 	offsets[3] = 0;
 	offsets[4] = 0;
+	offsets[5] = 0;
+	offsets[6] = 0;
+	offsets[7] = 0;
 	list_current = list_start;
 	while (list_current)
 	{
@@ -53,6 +56,15 @@ int 	*get_offsets(t_entry *list_start)
 			offsets[3] = ft_strlen(list_current->user);
 		if (ft_strlen(list_current->group) > (unsigned) offsets[4])
 			offsets[4] = ft_strlen(list_current->group);
+		if (S_ISBLK(list_current->type) || S_ISCHR(list_current->type))
+		{
+			if (num_length(list_current->major) > offsets[5])
+				offsets[5] = num_length(list_current->major);
+			if (num_length(list_current->minor) > offsets[6])
+				offsets[6] = num_length(list_current->minor);
+			if (num_length(list_current->minor) + num_length(list_current->major) > offsets[7])
+				offsets[7] = num_length(list_current->minor) + num_length(list_current->major);
+		}
 		list_current = list_current->next;
 	}
 	return (offsets);
@@ -72,6 +84,8 @@ void	print_type(t_entry *list_current)
 		printf("c");
 	if (S_ISSOCK(list_current->type))
 		printf("s");
+	if (S_ISFIFO(list_current->type))
+		printf("p");
 }
 
 void 	display_entries_l(t_entry *list_start, t_shit *pShit, char *dirname)
@@ -102,7 +116,19 @@ void 	display_entries_l(t_entry *list_start, t_shit *pShit, char *dirname)
 		printf(" %s  ", list_current->group);
 		print_spaces(offsets[4] - (ft_strlen(list_current->group)));
 		print_spaces(offsets[1] - (num_length(list_current->size)));
-		printf("%d %s", list_current->size, list_current->date_month_modified);
+		if (S_ISBLK(list_current->type) || S_ISCHR(list_current->type))
+		{
+			print_spaces(offsets[5] - num_length(list_current->major));
+			printf("%d, ", list_current->major);
+			print_spaces(offsets[6] - num_length(list_current->minor));
+			printf("%d ", list_current->minor);
+		}
+		else
+		{
+			print_spaces(offsets[7] + 2);
+			printf("%d ", list_current->size);
+		}
+		printf("%s", list_current->date_month_modified);
 		print_spaces(offsets[2] - (num_length(list_current->date_day_modified)));
 		printf(" %d %s ", list_current->date_day_modified,
 			   list_current->date_time_modified);
