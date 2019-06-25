@@ -6,7 +6,7 @@
 /*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/20 12:22:34 by jmondino          #+#    #+#             */
-/*   Updated: 2019/06/25 13:36:53 by nkellum          ###   ########.fr       */
+/*   Updated: 2019/06/25 15:19:22 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 t_entry     *ft_tri_date(t_entry *list, t_shit *pShit)
 {
-    t_entry 	*start;
+	t_entry		*start;
     t_entry 	*lstart;
     t_entry 	*fresh;
 	int			swap;
@@ -26,20 +26,24 @@ t_entry     *ft_tri_date(t_entry *list, t_shit *pShit)
     fresh = start;
 	swap = 1;
 	lstart = NULL;
-	while (start)
-	{
-		lstart = start->next;
-		while (lstart)
-		{
-
-				ft_swap(start, lstart);
-			lstart = lstart->next;
-		}
-		start = start->next;
-	}
+    while (swap)
+    {
+		swap = 0;
+        start = list;
+        while (start->next != lstart)
+        {
+			if (start->mtime < start->next->mtime)
+			{
+                ft_swap(start, start->next);
+				swap = 1;
+			}
+			start = start->next;
+        }
+        lstart = start;
+    }
 	if (ft_iscinstr(pShit->flags, 'r'))
-        ft_rev_list(&list);
-    fresh = list;
+		ft_rev_list(&list);
+	fresh = list;
     return fresh;
 }
 
@@ -62,7 +66,7 @@ t_entry		*ft_tri_access(t_entry *list, t_shit *pShit)
         start = list;
         while (start->next != lstart)
         {
-			if (start->date_accessed < lstart->date_accessed)
+			if (start->date_accessed < start->next->date_accessed)
 			{
                 ft_swap(start, start->next);
 				swap = 1;

@@ -6,7 +6,7 @@
 /*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/20 16:58:28 by jmondino          #+#    #+#             */
-/*   Updated: 2019/06/25 13:27:03 by nkellum          ###   ########.fr       */
+/*   Updated: 2019/06/25 16:01:25 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,12 @@
 # define YELLOWBLUE		"\033[34;43m"
 # define BLUEBLUE		"\033[34;46m"
 # define BOLDCYANGREEN	"\033[1;36;42m"
+# define SIXMONTHS		15778800
 
 typedef struct 			s_shit
 {
 	char				*flags;
-	char				*inex;
+	char				**dsfs;
 	char				**newav;
 	char				**files;
 	char				**dirs;
