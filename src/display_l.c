@@ -6,7 +6,7 @@
 /*   By: nkellum <nkellum@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/30 12:02:12 by nkellum           #+#    #+#             */
-/*   Updated: 2019/06/25 14:25:26 by nkellum          ###   ########.fr       */
+/*   Updated: 2019/06/25 16:09:02 by nkellum          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,8 +130,10 @@ void 	display_entries_l(t_entry *list_start, t_shit *pShit, char *dirname)
 		}
 		printf("%s", list_current->date_month_modified);
 		print_spaces(offsets[2] - (num_length(list_current->date_day_modified)));
-		printf(" %d %s ", list_current->date_day_modified,
-			   list_current->date_time_modified);
+		printf(" %d", list_current->date_day_modified);
+		if(ft_strlen(list_current->date_time_modified) == 4)
+			print_spaces(1);
+		printf(" %s ",list_current->date_time_modified);
 		print_color_l(list_current->name, list_current->type, list_current->rights);
 		if (S_ISLNK(list_current->type))
 			printf(" -> %s", list_current->link_path);
