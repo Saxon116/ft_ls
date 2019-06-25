@@ -6,7 +6,7 @@
 /*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/20 16:51:04 by jmondino          #+#    #+#             */
-/*   Updated: 2019/06/24 15:01:57 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/06/25 14:57:40 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,11 @@ void    ft_revtab(char **tab)
 
 void    ft_fillpShit(char *flags, char **newav, int index, t_shit *pShit)
 {
+	int		i;
+	int		j;
+
+	i = 0;
+	j = 0;
     pShit->flags = flags;
     pShit->files = ft_isfile(newav, index, pShit);
 	pShit->dirs = ft_isdir(newav, index);
@@ -108,6 +113,12 @@ void    ft_fillpShit(char *flags, char **newav, int index, t_shit *pShit)
         ft_revtab(pShit->files);
         ft_revtab(pShit->dirs);
     }
+	while (pShit->files[i])
+		pShit->dsfs[j++] = ft_strdup(pShit->files[i++]);
+	i = 0;
+	while (pShit->dirs[i])
+		pShit->dsfs[j++] = ft_strdup(pShit->dirs[i++]);
+	pShit->dsfs[j] = NULL;
 }
 
 t_shit      *initstru(char **av)
@@ -120,7 +131,8 @@ t_shit      *initstru(char **av)
         return (NULL);
 	while (av[i])
 		i++;
-	pShit->inex = NULL;
+	if (!(pShit->dsfs = (char **)malloc(sizeof(char *) * i + 1)))
+		pShit->dsfs = NULL;
     pShit->flags = NULL;
     pShit->files = NULL;
     pShit->dirs = NULL;
