@@ -6,7 +6,7 @@
 /*   By: jmondino <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/21 12:02:51 by jmondino          #+#    #+#             */
-/*   Updated: 2019/06/22 15:36:02 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/06/25 13:11:05 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ t_entry		*fill_list_d(t_shit *pShit)
 	{
 		while (pShit->newav[++i])
 		{
+			printf("%s\n", pShit->newav[i]);
 			if (!browse)
 			{
 				browse = add_new_entry(pShit->newav[i], pShit->newav[i]);
@@ -50,6 +51,11 @@ t_entry		*fill_list_d(t_shit *pShit)
 				browse = browse->next;
 			}
 		}
+	}
+	else
+	{
+		browse = add_new_entry(".", ".");
+		start = browse;
 	}
 	return (start);
 }

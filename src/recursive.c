@@ -6,7 +6,7 @@
 /*   By: nkellum <nkellum@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/03 15:10:14 by nkellum           #+#    #+#             */
-/*   Updated: 2019/06/24 17:04:51 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/06/25 11:43:36 by jmondino         ###   ########.fr       */
 /*   Updated: 2019/06/20 19:54:09 by nkellum          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -242,7 +242,6 @@ t_entry 	*fill_list(DIR *pDir, struct dirent *pDirent, char *path, char *dirname
 	{
 		if (pDirent->d_name[0] != '.')
 		{
-			//if (dirname[ft_strlen(dirname) - 1] != '/')
 			if (path[ft_strlen(path) - 1] != '/')
 				ft_strcat(path, "/");
 			ft_strcat(path, pDirent->d_name);
@@ -257,7 +256,6 @@ t_entry 	*fill_list(DIR *pDir, struct dirent *pDirent, char *path, char *dirname
 				list_current = list_current->next;
 			}
 			ft_bzero(path + ft_strlen(dirname), ft_strlen(pDirent->d_name));
-			// + dirname[ft_strlen(dirname) - 1] != '/');
 		}
 	}
 	return list_start;
@@ -285,8 +283,7 @@ t_entry 	*fill_list_a(DIR *pDir, struct dirent *pDirent, char *path, char *dirna
 			list_current->next = add_new_entry(path, pDirent->d_name);
 			list_current = list_current->next;
 		}
-		ft_bzero(path + ft_strlen(dirname),
-				ft_strlen(pDirent->d_name));
+		ft_bzero(path + ft_strlen(dirname),	ft_strlen(pDirent->d_name));
 	}
 	return list_start;
 }
