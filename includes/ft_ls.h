@@ -6,7 +6,7 @@
 /*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/20 16:58:28 by jmondino          #+#    #+#             */
-/*   Updated: 2019/06/25 16:01:25 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/06/26 14:18:49 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,16 +99,20 @@ void    	print_color(char *entry, int type, char *rights);
 void    	print_color_l(char *entry, int type, char *rights);
 void    	display(t_shit *pShit, int i);
 void    	ft_display_d(t_shit *pShit);
+void    	print_type(t_entry *list_current);
 char		*ft_checkflags(char *str);
 char		*permissions(mode_t perm);
 char		**ft_isfile(char **newav, int index, t_shit *pShit);
 char		**ft_isdir(char **newav, int index);
 char 		*get_link_path(char *path);
+char 		**get_xattr_list(char *attributes, int size);
 int			ft_existent(char *str, t_shit *pShit);
 int			ft_existent2(char *str);
 int 		get_day(char *date);
 int 		num_length(long long num);
+int 		has_acl(char *path);
 int 		*get_offsets(t_entry *list_start);
+int 		*get_xattr_sizes(char **attributes, char *path, int length);
 t_shit		*initstru(char **av);
 t_entry 	*fill_list(DIR *pDir, struct dirent *pDirent, char *path, char *dirname);
 t_entry     *fill_list_a(DIR *pDir, struct dirent *pDirent, char *path, char *dirname);

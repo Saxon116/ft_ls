@@ -6,9 +6,11 @@
 /*   By: jmondino <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/26 13:35:01 by jmondino          #+#    #+#             */
-/*   Updated: 2019/06/26 13:39:05 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/06/26 14:16:25 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "ft_ls.h"
 
 int     *get_offsets(t_entry *list_start)
 {
@@ -44,10 +46,9 @@ int     *get_offsets(t_entry *list_start)
                 offsets[5] = num_length(list_current->major);
             if (num_length(list_current->minor) > offsets[6])
                 offsets[6] = num_length(list_current->minor);
-            if (num_length(list_current->minor) + num_length(list_current->major) > of\
-				fsets[7])
-                offsets[7] = num_length(list_current->minor) + num_length(list_current\
-																		  ->major);
+            if (num_length(list_current->minor) + num_length(list_current->major) > 
+				offsets[7])
+                offsets[7] = num_length(list_current->minor) + num_length(list_current->major);
         }
         list_current = list_current->next;
     }
@@ -110,8 +111,7 @@ void    display_entries_l(t_entry *list_start, t_shit *pShit, char *dirname)
             while(list_current->xattr[i])
             {
                 printf("        %s", list_current->xattr[i]);
-                print_spaces(28 - ft_strlen(list_current->xattr[i]) - num_length(list_\
-																				 current->xattr_sizes[i]));
+                print_spaces(28 - ft_strlen(list_current->xattr[i]) - num_length(list_current->xattr_sizes[i]));
                 printf("%d\n", list_current->xattr_sizes[i]);
                 i++;
             }
@@ -194,8 +194,7 @@ void print_rows(char **str_array, int *column_widths, int columns, t_entry *list
             {
                 while (ft_strcmp(browse->name, str_array[i + (j * (per_column))]))
                     browse = browse->next;
-                print_color(str_array[i + (j * (per_column))], browse->type, browse->r\
-							ights);
+                print_color(str_array[i + (j * (per_column))], browse->type, browse->rights);
                 print_spaces(column_widths[j] -
                              ft_strlen(str_array[i + (j * (per_column))]));
                 browse = list_start;
@@ -262,8 +261,7 @@ t_entry     *add_new_entry(char *path, char *entry_name)
     if(entry->has_xattr)
     {
         entry->xattr = get_xattr_list(l, entry->has_xattr);
-        entry->xattr_sizes = get_xattr_sizes(entry->xattr, path, get_xattr_num(l, entr\
-																			   y->has_xattr));
+        entry->xattr_sizes = get_xattr_sizes(entry->xattr, path, get_xattr_num(l, entry->has_xattr));
     }
     entry->has_acl = has_acl(path);
     entry->type = pstat.st_mode;
@@ -277,10 +275,8 @@ t_entry     *add_new_entry(char *path, char *entry_name)
     entry->rights = permissions(pstat.st_mode);
     entry->hard_links = pstat.st_nlink;
     entry->size = pstat.st_size;
-    entry->user = ft_strdup(getpwuid(pstat.st_uid) == NULL ? "" : getpwuid(pstat.st_ui\
-																		   d)->pw_name);
-    entry->group = ft_strdup(getgrgid(pstat.st_gid) == NULL ? "" : getgrgid(pstat.st_g\
-																			id)->gr_name);
+    entry->user = ft_strdup(getpwuid(pstat.st_uid) == NULL ? "" : getpwuid(pstat.st_uid)->pw_name);
+    entry->group = ft_strdup(getgrgid(pstat.st_gid) == NULL ? "" : getgrgid(pstat.st_gid)->gr_name);
     entry->date_day_modified = get_day(ctime(&pstat.st_mtimespec.tv_sec));
     entry->block_size = pstat.st_blocks;
     entry->date_month_modified =
