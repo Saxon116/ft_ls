@@ -6,7 +6,7 @@
 /*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/26 13:35:01 by jmondino          #+#    #+#             */
-/*   Updated: 2019/06/26 18:16:32 by nkellum          ###   ########.fr       */
+/*   Updated: 2019/06/26 20:18:08 by nkellum          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -300,6 +300,31 @@ void    ft_print_column(t_entry *list_start)
 	free_columns(str_array);
 }
 
+void fill_entry(t_entry *entry, struct stat pstat, int ut_flags)
+{
+	entry->type = pstat.st_mode;
+    if (S_ISBLK(entry->type) || S_ISCHR(entry->type))
+    {
+        entry->minor = minor(pstat.st_rdev);
+        entry->major = major(pstat.st_rdev);
+    }
+    entry->rights = permissions(pstat.st_mode);
+    entry->hard_links = pstat.st_nlink;
+    entry->size = pstat.st_size;
+    entry->user = ft_strdup(getpwuid(pstat.st_uid) == NULL ? "" : getpwuid(pstat.st_uid)->pw_name);
+    entry->group = ft_strdup(getgrgid(pstat.st_gid) == NULL ? "" : getgrgid(pstat.st_gid)->gr_name);
+    entry->date_day_modified = get_day(ctime(ut_flags ? &pstat.st_atimespec.tv_sec : &pstat.st_mtimespec.tv_sec));
+    entry->block_size = pstat.st_blocks;
+    entry->date_month_modified =
+		ft_strsub(ctime(ut_flags ? &pstat.st_atimespec.tv_sec : &pstat.st_mtimespec.tv_sec), 4, 3);
+    entry->mtime = pstat.st_mtime;
+    entry->date_time_modified = (time(0) - pstat.st_mtime) > SIXMONTHS ?
+		ft_strsub(ctime(ut_flags ? &pstat.st_atimespec.tv_sec : &pstat.st_mtimespec.tv_sec), 20, 4) :
+        ft_strsub(ctime(ut_flags ? &pstat.st_atimespec.tv_sec : &pstat.st_mtimespec.tv_sec), 11, 5);
+    entry->date_accessed = pstat.st_atimespec.tv_sec;
+    entry->next = NULL;
+}
+
 t_entry     *add_new_entry(char *path, char *entry_name, t_shit *pShit)
 {
     t_entry *entry;
@@ -319,29 +344,9 @@ t_entry     *add_new_entry(char *path, char *entry_name, t_shit *pShit)
         entry->xattr_sizes = get_xattr_sizes(entry->xattr, path, get_xattr_num(l, entry->has_xattr));
     }
     entry->has_acl = has_acl(path);
-    entry->type = pstat.st_mode;
-    if (S_ISBLK(entry->type) || S_ISCHR(entry->type))
-    {
-        entry->minor = minor(pstat.st_rdev);
-        entry->major = major(pstat.st_rdev);
-    }
-    entry->link_path = get_link_path(path);
-    entry->name = ft_strdup(entry_name);
-    entry->rights = permissions(pstat.st_mode);
-    entry->hard_links = pstat.st_nlink;
-    entry->size = pstat.st_size;
-    entry->user = ft_strdup(getpwuid(pstat.st_uid) == NULL ? "" : getpwuid(pstat.st_uid)->pw_name);
-    entry->group = ft_strdup(getgrgid(pstat.st_gid) == NULL ? "" : getgrgid(pstat.st_gid)->gr_name);
-    entry->date_day_modified = get_day(ctime(ut_flags ? &pstat.st_atimespec.tv_sec : &pstat.st_mtimespec.tv_sec));
-    entry->block_size = pstat.st_blocks;
-    entry->date_month_modified =
-		ft_strsub(ctime(ut_flags ? &pstat.st_atimespec.tv_sec : &pstat.st_mtimespec.tv_sec), 4, 3);
-    entry->mtime = pstat.st_mtime;
-    entry->date_time_modified = (time(0) - pstat.st_mtime) > SIXMONTHS ?
-		ft_strsub(ctime(ut_flags ? &pstat.st_atimespec.tv_sec : &pstat.st_mtimespec.tv_sec), 20, 4) :
-        ft_strsub(ctime(ut_flags ? &pstat.st_atimespec.tv_sec : &pstat.st_mtimespec.tv_sec), 11, 5);
-    entry->date_accessed = pstat.st_atimespec.tv_sec;
-    entry->next = NULL;
+	entry->link_path = get_link_path(path);
+	entry->name = ft_strdup(entry_name);
+    fill_entry(entry, pstat, ut_flags);
     return (entry);
 }
 
