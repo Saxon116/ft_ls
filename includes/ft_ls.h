@@ -6,7 +6,7 @@
 /*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/20 16:58:28 by jmondino          #+#    #+#             */
-/*   Updated: 2019/06/26 17:52:06 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/06/26 17:59:14 by nkellum          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,9 +80,7 @@ typedef struct 			s_entry
 	struct s_entry		*next;
 }						t_entry;
 
-int	    	fill_newav(char **av, t_shit *pShit, char **tmp, int j);
 void		ft_asciiorder(char **tab);
-void    	ft_accessorder(char **tab);
 void		ft_revtab(char **tab);
 void    	lstdel(t_entry **lst);
 void		ft_parseargs(char **av, t_shit *pShit);
@@ -116,9 +114,9 @@ int 		has_acl(char *path);
 int 		*get_offsets(t_entry *list_start);
 int 		*get_xattr_sizes(char **attributes, char *path, int length);
 t_shit		*initstru(char **av);
-t_entry 	*fill_list(DIR *pDir, struct dirent *pDirent, char *path, char *dirname);
-t_entry     *fill_list_a(DIR *pDir, struct dirent *pDirent, char *path, char *dirname);
-t_entry 	*add_new_entry(char *path, char *entry_name);
+t_entry 	*fill_list(DIR *pDir, t_shit *pShit, char *path, char *dirname);
+t_entry 	*fill_list_a(DIR *pDir, t_shit *pShit, char *path, char *dirname);
+t_entry 	*add_new_entry(char *path, char *entry_name, t_shit *pShit);
 t_entry     *ft_tri_ascii(t_entry *list, t_shit *pShit);
 t_entry     *ft_tri_date(t_entry *list, t_shit *pShit);
 t_entry     *fill_tmp(void);

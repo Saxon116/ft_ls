@@ -3,15 +3,42 @@
 /*                                                        :::      ::::::::   */
 /*   nicolas.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmondino <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/26 13:35:01 by jmondino          #+#    #+#             */
-/*   Updated: 2019/06/26 14:16:25 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/06/26 18:16:32 by nkellum          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
+void get_basic_offsets(int	**offsets, t_entry *list_current)
+{
+	if (num_length(list_current->hard_links) > offsets[0][0])
+		offsets[0][0] = num_length(list_current->hard_links);
+	if (num_length(list_current->size) > offsets[0][1])
+		offsets[0][1] = num_length(list_current->size);
+	if (num_length(list_current->date_day_modified) > offsets[0][2])
+		offsets[0][2] = num_length(list_current->date_day_modified);
+	if (ft_strlen(list_current->user) > (unsigned) offsets[0][3])
+		offsets[0][3] = ft_strlen(list_current->user);
+	if (ft_strlen(list_current->group) > (unsigned) offsets[0][4])
+		offsets[0][4] = ft_strlen(list_current->group);
+}
+
+void get_special_offsets(int **offsets, t_entry *list_current)
+{
+	if (S_ISBLK(list_current->type) || S_ISCHR(list_current->type))
+	{
+		if (num_length(list_current->major) > offsets[0][5])
+			offsets[0][5] = num_length(list_current->major);
+		if (num_length(list_current->minor) > offsets[0][6])
+			offsets[0][6] = num_length(list_current->minor);
+		if (num_length(list_current->minor) + num_length(list_current->major) >
+			offsets[0][7])
+			offsets[0][7] = num_length(list_current->minor) + num_length(list_current->major);
+	}
+}
 int     *get_offsets(t_entry *list_start)
 {
     int         *offsets;
@@ -30,30 +57,78 @@ int     *get_offsets(t_entry *list_start)
     list_current = list_start;
     while (list_current)
     {
-        if (num_length(list_current->hard_links) > offsets[0])
-            offsets[0] = num_length(list_current->hard_links);
-        if (num_length(list_current->size) > offsets[1])
-            offsets[1] = num_length(list_current->size);
-        if (num_length(list_current->date_day_modified) > offsets[2])
-            offsets[2] = num_length(list_current->date_day_modified);
-        if (ft_strlen(list_current->user) > (unsigned) offsets[3])
-            offsets[3] = ft_strlen(list_current->user);
-        if (ft_strlen(list_current->group) > (unsigned) offsets[4])
-            offsets[4] = ft_strlen(list_current->group);
-        if (S_ISBLK(list_current->type) || S_ISCHR(list_current->type))
-        {
-            if (num_length(list_current->major) > offsets[5])
-                offsets[5] = num_length(list_current->major);
-            if (num_length(list_current->minor) > offsets[6])
-                offsets[6] = num_length(list_current->minor);
-            if (num_length(list_current->minor) + num_length(list_current->major) > 
-				offsets[7])
-                offsets[7] = num_length(list_current->minor) + num_length(list_current->major);
-        }
+        get_basic_offsets(&offsets, list_current);
+        get_special_offsets(&offsets, list_current);
         list_current = list_current->next;
     }
     return (offsets);
 }
+
+void display_first_entries(t_entry *list_current, t_shit *pShit, int *offsets)
+{
+	print_type(list_current);
+	printf("%s", list_current->rights);
+	if(list_current->has_xattr > 0)
+		printf("@ ");
+	else if(list_current->has_acl)
+		printf("+ ");
+	else
+		printf("  ");
+	print_spaces(offsets[0] - (num_length(list_current->hard_links)));
+	printf("%d", list_current->hard_links);
+	if (!ft_iscinstr(pShit->flags, 'g'))
+	{
+		printf(" %s ", list_current->user);
+		print_spaces(offsets[3] - (ft_strlen(list_current->user)));
+	}
+	printf(" %s  ", list_current->group);
+	print_spaces(offsets[4] - (ft_strlen(list_current->group)));
+	print_spaces(offsets[1] - (num_length(list_current->size)));
+}
+
+void display_last_entries(t_entry *list_current, int *offsets)
+{
+	if (S_ISBLK(list_current->type) || S_ISCHR(list_current->type))
+	{
+		print_spaces(offsets[5] - num_length(list_current->major));
+		printf("%d, ", list_current->major);
+		print_spaces(offsets[6] - num_length(list_current->minor));
+		printf("%d ", list_current->minor);
+	}
+	else
+	{
+		print_spaces(offsets[7] + 2);
+		printf("%d ", list_current->size);
+	}
+	printf("%s", list_current->date_month_modified);
+	print_spaces(offsets[2] - (num_length(list_current->date_day_modified)));
+	printf(" %d", list_current->date_day_modified);
+	if(ft_strlen(list_current->date_time_modified) == 4)
+		print_spaces(1);
+	printf(" %s ",list_current->date_time_modified);
+	print_color_l(list_current->name, list_current->type, list_current->rights);
+	if (S_ISLNK(list_current->type))
+		printf(" -> %s", list_current->link_path);
+}
+
+void display_extended_attr(t_entry *list_current, t_shit *pShit)
+{
+	if(list_current->has_xattr > 0 && ft_iscinstr(pShit->flags, '@'))
+	{
+		int i = 0;
+		printf("\n");
+		while(list_current->xattr[i])
+		{
+			printf("        %s", list_current->xattr[i]);
+			print_spaces(28 - ft_strlen(list_current->xattr[i]) - num_length(list_current->xattr_sizes[i]));
+			printf("%d\n", list_current->xattr_sizes[i]);
+			i++;
+		}
+	}
+	else
+		printf("\n");
+}
+
 
 void    display_entries_l(t_entry *list_start, t_shit *pShit, char *dirname)
 {
@@ -65,84 +140,23 @@ void    display_entries_l(t_entry *list_start, t_shit *pShit, char *dirname)
     list_current = list_start;
     while (list_current)
     {
-        print_type(list_current);
-        printf("%s", list_current->rights);
-        if(list_current->has_xattr > 0)
-            printf("@ ");
-        else if(list_current->has_acl)
-            printf("+ ");
-        else
-            printf("  ");
-        print_spaces(offsets[0] - (num_length(list_current->hard_links)));
-        printf("%d", list_current->hard_links);
-        if (!ft_iscinstr(pShit->flags, 'g'))
-        {
-            printf(" %s ", list_current->user);
-            print_spaces(offsets[3] - (ft_strlen(list_current->user)));
-        }
-        printf(" %s  ", list_current->group);
-        print_spaces(offsets[4] - (ft_strlen(list_current->group)));
-        print_spaces(offsets[1] - (num_length(list_current->size)));
-        if (S_ISBLK(list_current->type) || S_ISCHR(list_current->type))
-        {
-            print_spaces(offsets[5] - num_length(list_current->major));
-            printf("%d, ", list_current->major);
-            print_spaces(offsets[6] - num_length(list_current->minor));
-            printf("%d ", list_current->minor);
-        }
-        else
-        {
-            print_spaces(offsets[7] + 2);
-            printf("%d ", list_current->size);
-        }
-        printf("%s", list_current->date_month_modified);
-        print_spaces(offsets[2] - (num_length(list_current->date_day_modified)));
-		printf(" %d", list_current->date_day_modified);
-        if(ft_strlen(list_current->date_time_modified) == 4)
-            print_spaces(1);
-        printf(" %s ",list_current->date_time_modified);
-        print_color_l(list_current->name, list_current->type, list_current->rights);
-        if (S_ISLNK(list_current->type))
-            printf(" -> %s", list_current->link_path);
-        if(list_current->has_xattr > 0 && ft_iscinstr(pShit->flags, '@'))
-        {
-            int i = 0;
-            printf("\n");
-            while(list_current->xattr[i])
-            {
-                printf("        %s", list_current->xattr[i]);
-                print_spaces(28 - ft_strlen(list_current->xattr[i]) - num_length(list_current->xattr_sizes[i]));
-                printf("%d\n", list_current->xattr_sizes[i]);
-                i++;
-            }
-        }
-        else
-            printf("\n");
+		display_first_entries(list_current, pShit, offsets);
+		display_last_entries(list_current, offsets);
+		display_extended_attr(list_current, pShit);
         list_current = list_current->next;
     }
     free(offsets);
 }
 
-int     num_of_columns(t_entry *list_start, int terminal_width)
+void sort_longest_entries(int n, int *longest_entries)
 {
-    int longest_entries[get_list_size(list_start)];
-    t_entry *list_current;
-    int i, j, n, a;
-    int spaces;
+	int i;
+	int j;
+	int a;
 
-    list_current = list_start;
-    i = 0;
-    j = 0;
-    a = 0;
-    n = get_list_size(list_start);
-    spaces = 0;
-    while (list_current)
-    {
-        longest_entries[i] = ft_strlen(list_current->name);
-        list_current = list_current->next;
-        i++;
-    }
-    i = 0;
+	i = 0;
+	j = 0;
+	a = 0;
     while (i < n)
     {
         j = i + 1;
@@ -158,6 +172,27 @@ int     num_of_columns(t_entry *list_start, int terminal_width)
         }
         i++;
     }
+}
+
+int     num_of_columns(t_entry *list_start, int terminal_width)
+{
+    int longest_entries[get_list_size(list_start)];
+    t_entry *list_current;
+    int i;
+	int n;
+    int spaces;
+
+    list_current = list_start;
+    n = get_list_size(list_start);
+    spaces = 0;
+	i = 0;
+    while (list_current)
+    {
+        longest_entries[i] = ft_strlen(list_current->name);
+        list_current = list_current->next;
+        i++;
+    }
+    sort_longest_entries(n, longest_entries);
     i = 0;
     spaces += longest_entries[i] + 2;
     while (spaces < terminal_width)
@@ -168,42 +203,74 @@ int     num_of_columns(t_entry *list_start, int terminal_width)
     return (i == 0 ? 1 : i);
 }
 
+void print_row_entries(t_entry *list_start, int ijpercol, char **str_array, int column_widths_j)
+{
+	t_entry *browse;
+	int length;
+
+    browse = list_start;
+	length = 0;
+	while (str_array[length])
+        length++;
+	if (ijpercol < length
+		&& str_array[ijpercol])
+	{
+		while (ft_strcmp(browse->name, str_array[ijpercol]))
+			browse = browse->next;
+		print_color(str_array[ijpercol], browse->type, browse->rights);
+		print_spaces(column_widths_j - ft_strlen(str_array[ijpercol]));
+		browse = list_start;
+	}
+}
+
 void print_rows(char **str_array, int *column_widths, int columns, t_entry *list_start\
 	)
 {
     int i;
     int j;
-    int length;
     int per_column;
-    t_entry *browse;
 
-    browse = list_start;
     i = 0;
     j = 0;
-    length = 0;
     per_column = get_list_size(list_start) / columns + 1;
-    while (str_array[length])
-        length++;
     while (i < per_column)
     {
         j = 0;
         while (j < columns)
         {
-            if (i + (j * (per_column)) < length
-                && str_array[i + (j * (per_column))])
-            {
-                while (ft_strcmp(browse->name, str_array[i + (j * (per_column))]))
-                    browse = browse->next;
-                print_color(str_array[i + (j * (per_column))], browse->type, browse->rights);
-                print_spaces(column_widths[j] -
-                             ft_strlen(str_array[i + (j * (per_column))]));
-                browse = list_start;
-            }
+            print_row_entries(list_start, i + (j * (per_column)),
+			str_array, column_widths[j]);
             j++;
         }
         printf("\n");
         i++;
     }
+}
+
+int get_all_names_length(t_entry *list_start)
+{
+	int all_names_length;
+
+	all_names_length = 0;
+	while (list_start)
+    {
+        all_names_length += ft_strlen(list_start->name);
+        list_start = list_start->next;
+    }
+	return (all_names_length);
+}
+
+void free_columns(char **str_array)
+{
+	int columns;
+
+	columns = 0;
+    while (str_array[columns])
+    {
+        free(str_array[columns]);
+        columns++;
+    }
+    free(str_array);
 }
 
 void    ft_print_column(t_entry *list_start)
@@ -214,45 +281,33 @@ void    ft_print_column(t_entry *list_start)
     int columns;
     int *column_widths;
     char **str_array;
-    t_entry *list_current;
     struct winsize w;
 
     ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
     terminal_width = w.ws_col;
-    all_names_length = 0;
+    all_names_length = get_all_names_length(list_start);
     list_size = get_list_size(list_start);
     columns = num_of_columns(list_start, terminal_width);
-    list_current = list_start;
     str_array = array_from_list(list_start);
-    while (list_current)
-    {
-        all_names_length += ft_strlen(list_current->name);
-        list_current = list_current->next;
-    }
     if (all_names_length + list_size * 2  > terminal_width)
     {
-        column_widths = get_column_widths(str_array,
-										  columns, list_size);
+        column_widths = get_column_widths(str_array, columns, list_size);
         print_rows(str_array, column_widths, columns, list_start);
         free(column_widths);
     }
     else
         print_normally(list_start);
-    columns = 0;
-    while (str_array[columns])
-    {
-        free(str_array[columns]);
-        columns++;
-    }
-    free(str_array);
+	free_columns(str_array);
 }
 
-t_entry     *add_new_entry(char *path, char *entry_name)
+t_entry     *add_new_entry(char *path, char *entry_name, t_shit *pShit)
 {
     t_entry *entry;
     struct stat pstat;
     char  l[1024];
+	int ut_flags;
 
+	ut_flags = (ft_iscinstr(pShit->flags, 't') && ft_iscinstr(pShit->flags, 'u'));
     if ((entry = malloc(sizeof(t_entry))) == NULL)
         return 0;
     if (lstat(path, &pstat) == -1)
@@ -277,14 +332,14 @@ t_entry     *add_new_entry(char *path, char *entry_name)
     entry->size = pstat.st_size;
     entry->user = ft_strdup(getpwuid(pstat.st_uid) == NULL ? "" : getpwuid(pstat.st_uid)->pw_name);
     entry->group = ft_strdup(getgrgid(pstat.st_gid) == NULL ? "" : getgrgid(pstat.st_gid)->gr_name);
-    entry->date_day_modified = get_day(ctime(&pstat.st_mtimespec.tv_sec));
+    entry->date_day_modified = get_day(ctime(ut_flags ? &pstat.st_atimespec.tv_sec : &pstat.st_mtimespec.tv_sec));
     entry->block_size = pstat.st_blocks;
     entry->date_month_modified =
-		ft_strsub(ctime(&pstat.st_mtimespec.tv_sec), 4, 3);
+		ft_strsub(ctime(ut_flags ? &pstat.st_atimespec.tv_sec : &pstat.st_mtimespec.tv_sec), 4, 3);
     entry->mtime = pstat.st_mtime;
     entry->date_time_modified = (time(0) - pstat.st_mtime) > SIXMONTHS ?
-		ft_strsub(ctime(&pstat.st_mtimespec.tv_sec), 20, 4) :
-        ft_strsub(ctime(&pstat.st_mtimespec.tv_sec), 11, 5);
+		ft_strsub(ctime(ut_flags ? &pstat.st_atimespec.tv_sec : &pstat.st_mtimespec.tv_sec), 20, 4) :
+        ft_strsub(ctime(ut_flags ? &pstat.st_atimespec.tv_sec : &pstat.st_mtimespec.tv_sec), 11, 5);
     entry->date_accessed = pstat.st_atimespec.tv_sec;
     entry->next = NULL;
     return (entry);
@@ -310,9 +365,9 @@ void    list_dir_recursive(char *dirname, char *name, t_shit *pShit)
         return ;
     }
     if (ft_iscinstr(pShit->flags, 'a') || ft_iscinstr(pShit->flags, 'f'))
-        list_start = fill_list_a(pDir, pDirent, path, dirname);
+        list_start = fill_list_a(pDir, pShit, path, dirname);
     else
-        list_start = fill_list(pDir, pDirent, path, dirname);
+        list_start = fill_list(pDir, pShit, path, dirname);
     if (!ft_iscinstr(pShit->flags, 'f'))
         list_start = ft_tri_ascii(list_start, pShit);
     if (ft_iscinstr(pShit->flags, 't'))

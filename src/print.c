@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmondino <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/19 18:23:54 by jmondino          #+#    #+#             */
-/*   Updated: 2019/06/26 13:21:25 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/06/26 18:02:01 by nkellum          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,12 @@ void    display(t_shit *pShit, int i)
 	{
 		if (!browse)
 		{
-			browse = add_new_entry(pShit->files[i], pShit->files[i]);
+			browse = add_new_entry(pShit->files[i], pShit->files[i], pShit);
 			start = browse;
 		}
         else
 		{
-			browse->next = add_new_entry(pShit->files[i], pShit->files[i]);
+			browse->next = add_new_entry(pShit->files[i], pShit->files[i], pShit);
 			browse = browse->next;
 		}
     }
@@ -99,4 +99,3 @@ void    print_normally(t_entry *list_start)
     if (list_start)
         printf("\n");
 }
-

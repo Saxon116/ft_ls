@@ -6,7 +6,7 @@
 /*   By: nkellum <nkellum@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/03 15:10:14 by nkellum           #+#    #+#             */
-/*   Updated: 2019/06/26 13:39:03 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/06/26 18:02:45 by nkellum          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,10 +197,11 @@ int has_acl(char *path)
 	}
 }
 
-t_entry 	*fill_list(DIR *pDir, struct dirent *pDirent, char *path, char *dirname)
+t_entry 	*fill_list(DIR *pDir, t_shit *pShit, char *path, char *dirname)
 {
 	t_entry	*list_start;
 	t_entry	*list_current;
+	struct dirent *pDirent;
 
 	list_current = NULL;
 	list_start = NULL;
@@ -212,25 +213,20 @@ t_entry 	*fill_list(DIR *pDir, struct dirent *pDirent, char *path, char *dirname
 				ft_strcat(path, "/");
 			ft_strcat(path, pDirent->d_name);
 			if (!list_current)
-			{
-				list_current = add_new_entry(path, pDirent->d_name);
-				list_start = list_current;
-			}
+				list_start = list_current = add_new_entry(path, pDirent->d_name, pShit);
 			else
-			{
-				list_current->next = add_new_entry(path, pDirent->d_name);
-				list_current = list_current->next;
-			}
+				list_current = list_current->next = add_new_entry(path, pDirent->d_name, pShit);
 			ft_bzero(path + ft_strlen(dirname), ft_strlen(pDirent->d_name));
 		}
 	}
 	return list_start;
 }
 
-t_entry 	*fill_list_a(DIR *pDir, struct dirent *pDirent, char *path, char *dirname)
+t_entry 	*fill_list_a(DIR *pDir, t_shit *pShit, char *path, char *dirname)
 {
 	t_entry	*list_start;
 	t_entry	*list_current;
+	struct dirent *pDirent;
 
 	list_current = NULL;
 	list_start = NULL;
@@ -241,12 +237,12 @@ t_entry 	*fill_list_a(DIR *pDir, struct dirent *pDirent, char *path, char *dirna
 		ft_strcat(path, pDirent->d_name);
 		if (!list_current)
 		{
-			list_current = add_new_entry(path, pDirent->d_name);
+			list_current = add_new_entry(path, pDirent->d_name, pShit);
 			list_start = list_current;
 		}
 		else
 		{
-			list_current->next = add_new_entry(path, pDirent->d_name);
+			list_current->next = add_new_entry(path, pDirent->d_name, pShit);
 			list_current = list_current->next;
 		}
 		ft_bzero(path + ft_strlen(dirname),	ft_strlen(pDirent->d_name));
