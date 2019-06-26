@@ -6,7 +6,7 @@
 /*   By: nkellum <nkellum@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/30 12:02:12 by nkellum           #+#    #+#             */
-/*   Updated: 2019/06/26 13:35:49 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/06/26 18:51:19 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,8 @@ void	ft_total(t_entry *list_start, t_shit *pShit, char *dirname)
 	i = 0;
 	browse = list_start;
 	if ((pShit->error != 0 || pShit->subdir != 0 || pShit->dirs[1]
-		 || pShit->files[0]) && (!S_ISREG(pStat.st_mode)))
+		 || pShit->files[0]) && (!S_ISREG(pStat.st_mode)) 
+		&& !ft_iscinstr(pShit->flags, 'd'))
 		printf("%s:\n", dirname);
 	while (browse)
 	{

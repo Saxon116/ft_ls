@@ -6,7 +6,7 @@
 /*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/23 14:09:09 by jmondino          #+#    #+#             */
-/*   Updated: 2019/06/26 13:12:09 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/06/26 18:47:32 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,33 +14,45 @@
 
 void	ft_parseargs(char **av, t_shit *pShit)
 {
-	int		i;
 	int		j;
-	int		bool;
 	char	*tmp;
 
-	i = 0;
 	j = 0;
-	bool = 0;
 	tmp = NULL;
+	j = fill_newav(av, pShit, &tmp, j);
+	if (pShit->newav[0] && !ft_iscinstr(tmp, 'f'))
+	{
+		ft_asciiorder(pShit->newav);
+		if (ft_iscinstr(tmp, 't'))
+		{
+			if (ft_iscinstr(tmp, 'u'))
+				ft_accessorder(pShit->newav);
+			else
+				ft_timeorder(pShit->newav);
+		}
+	}
+	ft_fillpShit(tmp, pShit->newav, j, pShit);
+}
+
+int		fill_newav(char **av, t_shit *pShit, char **tmp, int j)
+{
+	int		i;
+	int		bool;
+
+	bool = 0;
+	i = 0;
 	while (av[++i])
 	{
 		if (!(ft_strcmp(av[i],  "--")) || av[i][0] != '-')
 			bool = 1;
 		if ((av[i][0] == '-' && av[i][1]) && bool == 0)
-			tmp = ft_strjoin(tmp, ft_checkflags(av[i]));
+			*tmp = ft_strjoin(*tmp, ft_checkflags(av[i]));
 		else
 			if (ft_strcmp(av[i], "--"))
 				pShit->newav[j++] = ft_strdup(av[i]);
 	}
 	pShit->newav[j] = NULL;
-	if (pShit->newav[0] && !ft_iscinstr(tmp, 'f'))
-	{
-		ft_asciiorder(pShit->newav);
-		if (ft_iscinstr(tmp, 't'))
-			ft_timeorder(pShit->newav);
-	}
-	ft_fillpShit(tmp, pShit->newav, j, pShit);
+	return (j);
 }
 
 char	**ft_isdir(char **newav, int index)
@@ -148,7 +160,7 @@ char	*ft_checkflags(char *str)
 			&& str[i] != 'd' && str[i] != 'f')
 		{
 			printf("ft_ls: illegall option -- %c\n", str[i]);
-			printf("usage: ft_ls [-Radglrtu] [file ...]\n");
+			printf("usage: ft_ls [-Radfglrtu] [file ...]\n");
 			exit(1);
 		}
 		i++;

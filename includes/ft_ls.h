@@ -6,7 +6,7 @@
 /*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/20 16:58:28 by jmondino          #+#    #+#             */
-/*   Updated: 2019/06/26 17:59:14 by nkellum          ###   ########.fr       */
+/*   Updated: 2019/06/26 18:33:56 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,8 @@ typedef struct 			s_entry
 }						t_entry;
 
 void		ft_asciiorder(char **tab);
+void		ft_accessorder(char **tab);
+int			fill_newav(char **av, t_shit *pShit, char **tmp, int j);
 void		ft_revtab(char **tab);
 void    	lstdel(t_entry **lst);
 void		ft_parseargs(char **av, t_shit *pShit);
