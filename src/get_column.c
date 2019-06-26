@@ -6,7 +6,7 @@
 /*   By: jmondino <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/19 18:27:25 by jmondino          #+#    #+#             */
-/*   Updated: 2019/06/19 18:29:07 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/06/26 13:36:30 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,49 +45,4 @@ int 	longest_in_column(char **str_array, int start, int end, int list_size)
         i++;
     }
     return (longest_name);
-}
-
-int		num_of_columns(t_entry *list_start, int terminal_width)
-{
-    int longest_entries[get_list_size(list_start)];
-    t_entry *list_current;
-    int i, j, n, a;
-    int spaces;
-
-    list_current = list_start;
-    i = 0;
-    j = 0;
-    a = 0;
-    n = get_list_size(list_start);
-    spaces = 0;
-    while (list_current)
-    {
-        longest_entries[i] = ft_strlen(list_current->name);
-        list_current = list_current->next;
-        i++;
-    }
-    i = 0;
-    while (i < n)
-    {
-        j = i + 1;
-        while (j < n)
-        {
-            if (longest_entries[i] < longest_entries[j])
-            {
-                a = longest_entries[i];
-                longest_entries[i] = longest_entries[j];
-                longest_entries[j] = a;
-            }
-            j++;
-        }
-        i++;
-    }
-    i = 0;
-    spaces += longest_entries[i] + 2;
-    while (spaces < terminal_width)
-    {
-        i++;
-        spaces += longest_entries[i] + 2;
-    }
-    return (i == 0 ? 1 : i);
 }

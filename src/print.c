@@ -6,7 +6,7 @@
 /*   By: jmondino <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/19 18:23:54 by jmondino          #+#    #+#             */
-/*   Updated: 2019/06/25 11:29:35 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/06/26 13:21:25 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,11 +78,11 @@ void    print_color(char *entry, int type, char *rights)
     if (S_ISBLK(type))
         printf(BLUEBLUE"%s  ", entry);
     if (S_ISCHR(type))
-        printf(YELLOWBLUE"%s  ", entry);
+        printf(YELLOWBLUE"%s\033[0m  ", entry);
     if (S_ISSOCK(type))
         printf(GREEN"%s  ", entry);
     if (S_ISFIFO(type))
-		printf(BOLDCYANGREEN"%s  ", entry);
+		printf(BOLDCYANGREEN"%s\033[0m  ", entry);
     printf(RESET);
 }
 

@@ -6,7 +6,7 @@
 /*   By: nkellum <nkellum@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/03 15:10:14 by nkellum           #+#    #+#             */
-/*   Updated: 2019/06/25 16:15:02 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/06/26 13:16:30 by jmondino         ###   ########.fr       */
 /*   Updated: 2019/06/20 18:01:43 by nkellum          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -34,8 +34,6 @@ void	free_pShit(t_shit *pShit)
 		free(pShit->dsfs[i]);
 	free(pShit->dsfs);
 }
-
-
 
 int 	main(int ac, char **av)
 {

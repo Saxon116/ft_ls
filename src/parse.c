@@ -6,7 +6,7 @@
 /*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/23 14:09:09 by jmondino          #+#    #+#             */
-/*   Updated: 2019/06/25 16:30:40 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/06/26 13:12:09 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,9 @@ int		ft_existent(char *str, t_shit *pShit)
 		pShit->error++;
 		return (0);
 	}
-	if (S_ISREG(pStat.st_mode) || S_ISLNK(pStat.st_mode))
+	if (S_ISREG(pStat.st_mode) || S_ISLNK(pStat.st_mode) || S_ISBLK(pStat.st_mode)
+		|| S_ISFIFO(pStat.st_mode) || S_ISCHR(pStat.st_mode) 
+		|| S_ISSOCK(pStat.st_mode))
 		return (1);
 	return (0);
 }

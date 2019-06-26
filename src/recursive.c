@@ -6,7 +6,7 @@
 /*   By: nkellum <nkellum@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/03 15:10:14 by nkellum           #+#    #+#             */
-/*   Updated: 2019/06/25 16:24:43 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/06/26 13:39:03 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,49 +197,6 @@ int has_acl(char *path)
 	}
 }
 
-t_entry 	*add_new_entry(char *path, char *entry_name)
-{
-	t_entry	*entry;
-	struct stat	pstat;
-	char  l[1024];
-
-	if ((entry = malloc(sizeof(t_entry))) == NULL)
-		return 0;
-	if (lstat(path, &pstat) == -1)
-		printf("Error\n");
-	entry->has_xattr = listxattr(path, l, 1024,  XATTR_NOFOLLOW);
-	if(entry->has_xattr)
-	{
-		entry->xattr = get_xattr_list(l, entry->has_xattr);
-		entry->xattr_sizes = get_xattr_sizes(entry->xattr, path, get_xattr_num(l, entry->has_xattr));
-	}
-	entry->has_acl = has_acl(path);
-	entry->type = pstat.st_mode;
-	if (S_ISBLK(entry->type) || S_ISCHR(entry->type))
-	{
-		entry->minor = minor(pstat.st_rdev);
-		entry->major = major(pstat.st_rdev);
-	}
-	entry->link_path = get_link_path(path);
-	entry->name = ft_strdup(entry_name);
-	entry->rights = permissions(pstat.st_mode);
-	entry->hard_links = pstat.st_nlink;
-	entry->size = pstat.st_size;
-	entry->user = ft_strdup(getpwuid(pstat.st_uid) == NULL ? "" : getpwuid(pstat.st_uid)->pw_name);
-	entry->group = ft_strdup(getgrgid(pstat.st_gid) == NULL ? "" : getgrgid(pstat.st_gid)->gr_name);
-	entry->date_day_modified = get_day(ctime(&pstat.st_mtimespec.tv_sec));
-	entry->block_size = pstat.st_blocks;
-	entry->date_month_modified =
-	ft_strsub(ctime(&pstat.st_mtimespec.tv_sec), 4, 3);
-	entry->mtime = pstat.st_mtime;
-	entry->date_time_modified = (time(0) - pstat.st_mtime) > SIXMONTHS ? 
-		ft_strsub(ctime(&pstat.st_mtimespec.tv_sec), 20, 4) :
-		ft_strsub(ctime(&pstat.st_mtimespec.tv_sec), 11, 5); 
-	entry->date_accessed = pstat.st_atimespec.tv_sec;
-	entry->next = NULL;
-	return (entry);
-}
-
 t_entry 	*fill_list(DIR *pDir, struct dirent *pDirent, char *path, char *dirname)
 {
 	t_entry	*list_start;
@@ -349,67 +306,4 @@ void	ft_rev_list(t_entry **list)
 		current = next;
 	}
 	*list = prev;
-}
-
-void	list_dir_recursive(char *dirname, char *name, t_shit *pShit)
-{
-	struct dirent *pDirent;
-	t_entry	*list_start;
-	DIR *pDir;
-	char path[ft_strlen(dirname) + 255];
-
-	pDirent = NULL;
-	list_start = NULL;
-	ft_strcpy(path, dirname);
-	pDir = opendir(dirname);
-	if (pDir == NULL)
-	{
-		if (pShit->subdir != 0 || pShit->dirs[1] || pShit->files[0]
-			|| pShit->error != 0)
-			printf("%s:\n", path);
-		printf(RESET"ft_ls: %s: Permission denied\n", name);
-		return ;
-	}
-	if (ft_iscinstr(pShit->flags, 'a') || ft_iscinstr(pShit->flags, 'f'))
-		list_start = fill_list_a(pDir, pDirent, path, dirname);
-	else
-		list_start = fill_list(pDir, pDirent, path, dirname);
-	if (!ft_iscinstr(pShit->flags, 'f'))
-		list_start = ft_tri_ascii(list_start, pShit);
-	if (ft_iscinstr(pShit->flags, 't'))
-	{
-		if (ft_iscinstr(pShit->flags, 'u'))
-			list_start = ft_tri_access(list_start, pShit);
-		else
-			list_start = ft_tri_date(list_start, pShit);
-	}
-	if (ft_iscinstr(pShit->flags, 'l') || ft_iscinstr(pShit->flags, 'g'))
-		display_entries_l(list_start, pShit, dirname);
-	else
-		ft_print_dir_name(list_start, pShit, dirname);
-	lstdel(&list_start);
-	closedir(pDir);
-	if (ft_iscinstr(pShit->flags, 'R'))
-	{
-		pDir = opendir(dirname);
-		while ((pDirent = readdir(pDir)) != NULL)
-		{
-			if (pDirent->d_name[0] != '.')
-			{
-				if (pDirent->d_type == DT_DIR)
-				{
-					pShit->subdir++;
-					printf("\n");
-					if (dirname[ft_strlen(dirname) - 1] != '/')
-						ft_strcat(path, "/");
-					ft_strcat(path, pDirent->d_name);
-					list_dir_recursive(path, pDirent->d_name, pShit);
-					ft_bzero(path + ft_strlen(dirname),
-							 ft_strlen(pDirent->d_name) +
-							 dirname[ft_strlen(dirname) - 1] != '/');
-				}
-			}
-		}
-	closedir(pDir);
-	}
 }
