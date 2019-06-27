@@ -6,7 +6,7 @@
 /*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/26 13:35:01 by jmondino          #+#    #+#             */
-/*   Updated: 2019/06/26 20:18:08 by nkellum          ###   ########.fr       */
+/*   Updated: 2019/06/27 21:03:10 by nkellum          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -350,10 +350,53 @@ t_entry     *add_new_entry(char *path, char *entry_name, t_shit *pShit)
     return (entry);
 }
 
+int check_dir_a(char *name)
+{
+	if(ft_strcmp(name, ".") == 0 || ft_strcmp(name, "..") == 0)
+		return (0);
+	return (1);
+}
+
+t_entry 	*fill_list_rdir(DIR *pDir, t_shit *pShit, char *path, char *dirname)
+{
+	t_entry	*list_start;
+	t_entry	*list_current;
+	struct dirent *pDirent;
+
+	list_current = NULL;
+	list_start = NULL;
+	while ((pDirent = readdir(pDir)) != NULL)
+	{
+		if (pDirent->d_type == DT_DIR)
+		{
+			if((!ft_iscinstr(pShit->flags, 'a') && pDirent->d_name[0] != '.') ||
+			(ft_iscinstr(pShit->flags, 'a') && check_dir_a(pDirent->d_name)))
+			{
+				if (dirname[ft_strlen(dirname) - 1] != '/')
+					ft_strcat(path, "/");
+				ft_strcat(path, pDirent->d_name);
+				if (!list_current)
+				{
+					list_current = add_new_entry(path, pDirent->d_name, pShit);
+					list_start = list_current;
+				}
+				else
+				{
+					list_current->next = add_new_entry(path, pDirent->d_name, pShit);
+					list_current = list_current->next;
+				}
+				ft_bzero(path + ft_strlen(dirname),	ft_strlen(pDirent->d_name));
+			}
+		}
+	}
+	return list_start;
+}
+
 void    list_dir_recursive(char *dirname, char *name, t_shit *pShit)
 {
     struct dirent *pDirent;
     t_entry *list_start;
+	t_entry *list_current;
     DIR *pDir;
     char path[ft_strlen(dirname) + 255];
 
@@ -391,24 +434,32 @@ void    list_dir_recursive(char *dirname, char *name, t_shit *pShit)
     if (ft_iscinstr(pShit->flags, 'R'))
     {
         pDir = opendir(dirname);
-        while ((pDirent = readdir(pDir)) != NULL)
-        {
-            if (pDirent->d_name[0] != '.')
-            {
-                if (pDirent->d_type == DT_DIR)
-                {
-                    pShit->subdir++;
-                    printf("\n");
-                    if (dirname[ft_strlen(dirname) - 1] != '/')
-                        ft_strcat(path, "/");
-                    ft_strcat(path, pDirent->d_name);
-                    list_dir_recursive(path, pDirent->d_name, pShit);
-                    ft_bzero(path + ft_strlen(dirname),
-                             ft_strlen(pDirent->d_name) +
-                             dirname[ft_strlen(dirname) - 1] != '/');
-                }
-            }
-        }
+        list_start = fill_list_rdir(pDir, pShit, path, dirname);
 		closedir(pDir);
-    }
+		if(list_start == NULL)
+			return ;
+		if (!ft_iscinstr(pShit->flags, 'f'))
+        	list_start = ft_tri_ascii(list_start, pShit);
+    	if (ft_iscinstr(pShit->flags, 't'))
+    	{
+        	if (ft_iscinstr(pShit->flags, 'u'))
+            	list_start = ft_tri_access(list_start, pShit);
+        	else
+            	list_start = ft_tri_date(list_start, pShit);
+    	}
+		list_current = list_start;
+		while(list_current)
+		{
+			pShit->subdir++;
+            printf("\n");
+            if (dirname[ft_strlen(dirname) - 1] != '/')
+                ft_strcat(path, "/");
+            ft_strcat(path, list_current->name);
+            list_dir_recursive(path, list_current->name, pShit);
+            ft_bzero(path + ft_strlen(dirname),
+                     ft_strlen(list_current->name));
+			list_current = list_current->next;
+		}
+		lstdel(&list_start);
+	}
 }
