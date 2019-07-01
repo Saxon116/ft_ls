@@ -6,7 +6,7 @@
 /*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/26 13:35:01 by jmondino          #+#    #+#             */
-/*   Updated: 2019/06/27 21:03:10 by nkellum          ###   ########.fr       */
+/*   Updated: 2019/07/01 10:46:13 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -336,7 +336,7 @@ t_entry     *add_new_entry(char *path, char *entry_name, t_shit *pShit)
     if ((entry = malloc(sizeof(t_entry))) == NULL)
         return 0;
     if (lstat(path, &pstat) == -1)
-        printf("Error\n");
+        return 0;
     entry->has_xattr = listxattr(path, l, 1024,  XATTR_NOFOLLOW);
     if(entry->has_xattr)
     {
@@ -417,14 +417,16 @@ void    list_dir_recursive(char *dirname, char *name, t_shit *pShit)
     else
         list_start = fill_list(pDir, pShit, path, dirname);
     if (!ft_iscinstr(pShit->flags, 'f'))
+	{
         list_start = ft_tri_ascii(list_start, pShit);
-    if (ft_iscinstr(pShit->flags, 't'))
-    {
-        if (ft_iscinstr(pShit->flags, 'u'))
-            list_start = ft_tri_access(list_start, pShit);
-        else
-            list_start = ft_tri_date(list_start, pShit);
-    }
+		if (ft_iscinstr(pShit->flags, 't'))
+		{
+			if (ft_iscinstr(pShit->flags, 'u'))
+				list_start = ft_tri_access(list_start, pShit);
+			else
+				list_start = ft_tri_date(list_start, pShit);
+		}
+	}
     if (ft_iscinstr(pShit->flags, 'l') || ft_iscinstr(pShit->flags, 'g'))
         display_entries_l(list_start, pShit, dirname);
     else
