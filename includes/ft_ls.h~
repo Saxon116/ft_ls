@@ -6,7 +6,7 @@
 /*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/20 16:58:28 by jmondino          #+#    #+#             */
-/*   Updated: 2019/07/02 15:14:17 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/07/02 15:10:25 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,6 @@ typedef struct 			s_entry
 	struct s_entry		*next;
 }						t_entry;
 
-void		get_basic_offsets(int  **offsets, t_entry *list_curr);
 void		free_columns(char **str_array);
 void		print(t_entry *list_start);
 int			get_all_names_lentgh(t_entry *list_start);
