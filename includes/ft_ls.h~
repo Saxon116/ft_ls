@@ -6,7 +6,7 @@
 /*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/20 16:58:28 by jmondino          #+#    #+#             */
-/*   Updated: 2019/07/02 15:20:50 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/07/02 15:14:17 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,16 +80,6 @@ typedef struct 			s_entry
 	struct s_entry		*next;
 }						t_entry;
 
-int			get_xattr_num(char *attributes, int size);
-void		print_row_entries(t_entry *list_start, int ijpercol, char **str_array, int column_widths_j);
-void		display_extended_attr(t_entry *list_curr, t_args *pargs);
-void		display_last_entries(t_entry *list_curr, int *offsets);
-void		display_first_entries(t_entry *list_curr, t_args *pargs, int *offsets);
-void		free_pargs(t_args *pargs);
-int			check_dir_a(char *name);
-void		print_rows(char **str_array, int *column_widths, int columns, t_entry *list_start);
-void		sort_longest_entries(int n, int *longest_entries);
-int			get_all_names_length(t_entry *list_start);
 void		get_basic_offsets(int  **offsets, t_entry *list_curr);
 void		free_columns(char **str_array);
 void		print(t_entry *list_start);
