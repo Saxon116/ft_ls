@@ -6,7 +6,7 @@
 /*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/20 16:58:28 by jmondino          #+#    #+#             */
-/*   Updated: 2019/07/02 15:20:50 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/07/02 16:14:47 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,21 +80,23 @@ typedef struct 			s_entry
 	struct s_entry		*next;
 }						t_entry;
 
+void		fill_date_time(t_entry *entry, struct stat pstat, int ut_flags);
+t_entry    	*fill_list_rdir(DIR *pdir, t_args *pargs, char *path, char *dirname);
 int			get_xattr_num(char *attributes, int size);
-void		print_row_entries(t_entry *list_start, int ijpercol, char **str_array, int column_widths_j);
+void		print_row(t_entry *lst_st, int ijpercol, char **array, int col_wid_j);
 void		display_extended_attr(t_entry *list_curr, t_args *pargs);
 void		display_last_entries(t_entry *list_curr, int *offsets);
 void		display_first_entries(t_entry *list_curr, t_args *pargs, int *offsets);
 void		free_pargs(t_args *pargs);
 int			check_dir_a(char *name);
-void		print_rows(char **str_array, int *column_widths, int columns, t_entry *list_start);
+void		print_rows(char **array, int *wds, int col, t_entry *lst_st);
 void		sort_longest_entries(int n, int *longest_entries);
-int			get_all_names_length(t_entry *list_start);
+int			get_all_names_length(t_entry *lst_st);
 void		get_basic_offsets(int  **offsets, t_entry *list_curr);
-void		free_columns(char **str_array);
-void		print(t_entry *list_start);
-int			get_all_names_lentgh(t_entry *list_start);
-void		print_rows(char **str_array, int *column_widths, int columns, t_entry *list_start);
+void		free_columns(char **array);
+void		print(t_entry *lst_st);
+int			get_all_names_lentgh(t_entry *lst_st);
+void		print_rows(char **array, int *wds, int col, t_entry *lst_st);
 void		ft_asciiorder(char **tab);
 void		ft_accessorder(char **tab);
 int			fill_newav(char **av, t_args *pargs, char **tmp, int j);
@@ -103,11 +105,11 @@ void    	lstdel(t_entry **lst);
 void		ft_parseargs(char **av, t_args *pargs);
 void		ft_fillpargs(char *flags, char **newav, int index, t_args *pargs);
 void		print_spaces(int num);
-void		display_entries_l(t_entry *list_start, t_args *pargs, char *dirname);
+void		display_entries_l(t_entry *lst_st, t_args *pargs, char *dirname);
 void		ft_display(t_args *pargs);
 void		list_dir_recursive(char *dirname, char *name, t_args *pargs);
-void		ft_print_dir_name(t_entry *list_start, t_args *pargs, char *dirname);
-void		ft_total(t_entry *list_start, t_args *pargs, char *dirname);
+void		ft_print_dir_name(t_entry *lst_st, t_args *pargs, char *dirname);
+void		ft_total(t_entry *lst_st, t_args *pargs, char *dirname);
 void		ft_swap(t_entry *a, t_entry *b);
 void		ft_rev_list(t_entry **list);
 void		ft_fill(t_entry *fill, t_entry *src);
@@ -128,7 +130,7 @@ int			ft_existent2(char *str);
 int 		get_day(char *date);
 int 		num_length(long long num);
 int 		has_acl(char *path);
-int 		*get_offsets(t_entry *list_start);
+int 		*get_offsets(t_entry *lst_st);
 int 		*get_xattr_sizes(char **attributes, char *path, int length);
 t_args		*initstru(char **av);
 t_entry 	*fill_list(DIR *pdir, t_args *pargs, char *path, char *dirname);
@@ -139,13 +141,13 @@ t_entry     *ft_tri_date(t_entry *list, t_args *pargs);
 t_entry     *fill_tmp(void);
 t_entry     *fill_list_d(t_args *pargs);
 t_entry    *ft_tri_access(t_entry *list, t_args *pargs);
-void		ft_print_column(t_entry *list_start);
-int			get_list_size(t_entry *list_start);
-int			num_of_columns(t_entry *list_start, int terminal_width);
-char		**array_from_list(t_entry *list_start);
-int			*get_column_widths(char **str_array, int num_of_columns, int list_size);
-void		print_normally(t_entry *list_start);
-int			longest_in_column(char **str_array, int start, int end, int list_size);
+void		ft_print_column(t_entry *lst_st);
+int			get_list_size(t_entry *lst_st);
+int			num_columns(t_entry *lst_st, int terminal_width);
+char		**array_from_list(t_entry *lst_st);
+int			*get_column_widths(char **array, int num_columns, int list_size);
+void		print_normally(t_entry *lst_st);
+int			longest_in_column(char **array, int start, int end, int list_size);
 int			get_xattr_num(char *attributes, int size);
 
 #endif

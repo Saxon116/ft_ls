@@ -6,24 +6,24 @@
 /*   By: jmondino <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/02 13:33:12 by jmondino          #+#    #+#             */
-/*   Updated: 2019/07/02 13:33:13 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/07/02 17:02:54 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-void    print(t_entry *list_start)
+void	print(t_entry *lst_st)
 {
-    t_entry     *browse;
+	t_entry		*browse;
 
-    browse = list_start;
-    while (browse)
-    {
-        print_color(browse->name, browse->type, browse->rights);
-        browse = browse->next;
-    }
-    if (list_start)
-        printf("\n");
+	browse = lst_st;
+	while (browse)
+	{
+		print_color(browse->name, browse->type, browse->rights);
+		browse = browse->next;
+	}
+	if (lst_st)
+		printf("\n");
 }
 
 void	print_color_l(char *entry, int type, char *rights)

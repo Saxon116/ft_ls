@@ -1,48 +1,47 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   acl.c                                              :+:      :+:    :+:   */
+/*   add_new_entry_aux.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jmondino <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/07/02 13:45:29 by jmondino          #+#    #+#             */
-/*   Updated: 2019/07/02 16:04:26 by jmondino         ###   ########.fr       */
+/*   Created: 2019/07/02 16:19:18 by jmondino          #+#    #+#             */
+/*   Updated: 2019/07/02 16:24:37 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-int		has_acl(char *path)
+char		*get_link_path(char *path)
 {
-	acl_t			acl;
-	acl_entry_t		dummy;
+	char		*buf;
+	ssize_t		len;
 
-	acl = acl_get_link_np(path, ACL_TYPE_EXTENDED);
-	if (acl && acl_get_entry(acl, ACL_FIRST_ENTRY, &dummy) == -1)
+	if ((buf = malloc(1024)) == NULL)
+		return (NULL);
+	len = readlink(path, buf, 1023);
+	if (len != -1)
 	{
-		acl_free(acl);
-		acl = NULL;
-	}
-	if (acl != NULL)
-	{
-		acl_free(acl);
-		return (1);
+		buf[len] = '\0';
+		return (buf);
 	}
 	else
 	{
-		acl_free(acl);
-		return (0);
+		free(buf);
+		return (ft_strdup(""));
 	}
 }
 
-void	print_spaces(int num)
+int			get_day(char *date)
 {
-	int				i;
+	int			i;
 
 	i = 0;
-	while (i < num)
+	if (date)
 	{
-		printf(" ");
-		i++;
+		while (!ft_isdigit(date[i]))
+			i++;
+		return (ft_atoi(date + i));
 	}
+	return (0);
 }

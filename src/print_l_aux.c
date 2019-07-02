@@ -12,7 +12,7 @@
 
 #include "ft_ls.h"
 
-void    ft_total(t_entry *list_start, t_args *pargs, char *dirname)
+void    ft_total(t_entry *lst_st, t_args *pargs, char *dirname)
 {
     struct stat     pstat;
     t_entry         *browse;
@@ -22,7 +22,7 @@ void    ft_total(t_entry *list_start, t_args *pargs, char *dirname)
     lstat(dirname, &pstat);
     total = 0;
     i = 0;
-    browse = list_start;
+    browse = lst_st;
     if ((pargs->error != 0 || pargs->subdir != 0 || pargs->dirs[1]
 		 || pargs->files[0]) && (!S_ISREG(pstat.st_mode))
         && !ft_iscinstr(pargs->flags, 'd'))

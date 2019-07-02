@@ -6,7 +6,7 @@
 /*   By: jmondino <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/02 13:32:58 by jmondino          #+#    #+#             */
-/*   Updated: 2019/07/02 13:32:59 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/07/02 16:58:28 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ char	**ft_isdir(char **newav, int index)
 	j = 0;
 	while (newav[i])
 	{
-		if (ft_strcmp(newav[i],  "--"))
+		if (ft_strcmp(newav[i], "--"))
 		{
 			if (ft_existent2(newav[i]))
 			{
@@ -76,7 +76,7 @@ char	**ft_isfile(char **newav, int index, t_args *pargs)
 	j = 0;
 	while (newav[i])
 	{
-		if (ft_strcmp(newav[i],  "--"))
+		if (ft_strcmp(newav[i], "--"))
 		{
 			if (ft_existent(newav[i], pargs))
 			{

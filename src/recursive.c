@@ -12,7 +12,7 @@
 
 #include "ft_ls.h"
 
-void	ft_print_dir_name(t_entry *list_start, t_args *pargs, char *dirname)
+void	ft_print_dir_name(t_entry *lst_st, t_args *pargs, char *dirname)
 {
 	if (!(ft_iscinstr(pargs->flags, 'R')))
 	{
@@ -24,19 +24,19 @@ void	ft_print_dir_name(t_entry *list_start, t_args *pargs, char *dirname)
 		if (pargs->subdir != 0 || pargs->dirs[1] || pargs->files[0]
 			|| pargs->error != 0)
 			printf(RESET"%s:\n", dirname);
-	ft_print_column(list_start);
+	ft_print_column(lst_st);
 }
 
 void    list_dir_recursive(char *dirname, char *name, t_args *pargs)
 {
     struct dirent *pdirent;
-    t_entry *list_start;
+    t_entry *lst_st;
 	t_entry *list_current;
     DIR *pdir;
     char path[ft_strlen(dirname) + 255];
 
     pdirent = NULL;
-    list_start = NULL;
+    lst_st = NULL;
     ft_strcpy(path, dirname);
     pdir = opendir(dirname);
     if (pdir == NULL)
@@ -48,43 +48,43 @@ void    list_dir_recursive(char *dirname, char *name, t_args *pargs)
         return ;
     }
     if (ft_iscinstr(pargs->flags, 'a') || ft_iscinstr(pargs->flags, 'f'))
-        list_start = fill_list_a(pdir, pargs, path, dirname);
+        lst_st = fill_list_a(pdir, pargs, path, dirname);
     else
-        list_start = fill_list(pdir, pargs, path, dirname);
+        lst_st = fill_list(pdir, pargs, path, dirname);
     if (!ft_iscinstr(pargs->flags, 'f'))
 	{
-        list_start = ft_tri_ascii(list_start, pargs);
+        lst_st = ft_tri_ascii(lst_st, pargs);
 		if (ft_iscinstr(pargs->flags, 't'))
 		{
 			if (ft_iscinstr(pargs->flags, 'u'))
-				list_start = ft_tri_access(list_start, pargs);
+				lst_st = ft_tri_access(lst_st, pargs);
 			else
-				list_start = ft_tri_date(list_start, pargs);
+				lst_st = ft_tri_date(lst_st, pargs);
 		}
 	}
     if (ft_iscinstr(pargs->flags, 'l') || ft_iscinstr(pargs->flags, 'g'))
-        display_entries_l(list_start, pargs, dirname);
+        display_entries_l(lst_st, pargs, dirname);
     else
-        ft_print_dir_name(list_start, pargs, dirname);
-    lstdel(&list_start);
+        ft_print_dir_name(lst_st, pargs, dirname);
+    lstdel(&lst_st);
     closedir(pdir);
     if (ft_iscinstr(pargs->flags, 'R'))
     {
         pdir = opendir(dirname);
-        list_start = fill_list_rdir(pdir, pargs, path, dirname);
+        lst_st = fill_list_rdir(pdir, pargs, path, dirname);
 		closedir(pdir);
-		if(list_start == NULL)
+		if(lst_st == NULL)
 			return ;
 		if (!ft_iscinstr(pargs->flags, 'f'))
-			list_start = ft_tri_ascii(list_start, pargs);
+			lst_st = ft_tri_ascii(lst_st, pargs);
 		if (ft_iscinstr(pargs->flags, 't'))
 		{
 			if (ft_iscinstr(pargs->flags, 'u'))
-				list_start = ft_tri_access(list_start, pargs);
+				lst_st = ft_tri_access(lst_st, pargs);
 			else
-				list_start = ft_tri_date(list_start, pargs);
+				lst_st = ft_tri_date(lst_st, pargs);
 		}
-		list_current = list_start;
+		list_current = lst_st;
 		while(list_current)
 		{
 			pargs->subdir++;
@@ -97,6 +97,6 @@ void    list_dir_recursive(char *dirname, char *name, t_args *pargs)
                      ft_strlen(list_current->name));
 			list_current = list_current->next;
 		}
-		lstdel(&list_start);
+		lstdel(&lst_st);
 	}
 }
