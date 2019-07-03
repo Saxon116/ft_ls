@@ -6,7 +6,7 @@
 /*   By: jmondino <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/02 10:39:52 by jmondino          #+#    #+#             */
-/*   Updated: 2019/07/02 17:01:01 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/07/03 11:31:44 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,11 +59,6 @@ int			fill_newav(char **av, t_args *pargs, char **tmp, int j)
 
 void		ft_fillpargs(char *flags, char **newav, int index, t_args *pargs)
 {
-	int			i;
-	int			j;
-
-	i = 0;
-	j = 0;
 	pargs->flags = flags;
 	pargs->files = ft_isfile(newav, index, pargs);
 	pargs->dirs = ft_isdir(newav, index);
@@ -80,6 +75,16 @@ void		ft_fillpargs(char *flags, char **newav, int index, t_args *pargs)
 		ft_revtab(pargs->files);
 		ft_revtab(pargs->dirs);
 	}
+	fill_dsfs(pargs);
+}
+
+void		fill_dsfs(t_args *pargs)
+{
+	int			i;
+	int			j;
+
+	i = 0;
+	j = 0;
 	while (pargs->files[i])
 		pargs->dsfs[j++] = ft_strdup(pargs->files[i++]);
 	i = 0;

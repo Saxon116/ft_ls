@@ -1,48 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   acl.c                                              :+:      :+:    :+:   */
+/*   fill_list_aux.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jmondino <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/07/02 13:45:29 by jmondino          #+#    #+#             */
-/*   Updated: 2019/07/03 14:04:00 by jmondino         ###   ########.fr       */
+/*   Created: 2019/07/03 11:39:30 by jmondino          #+#    #+#             */
+/*   Updated: 2019/07/03 15:22:28 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-int		has_acl(char *path)
+t_entry		*fill_it(t_args *pargs)
 {
-	acl_t			acl;
-	acl_entry_t		dummy;
+	t_entry		*start;
+	t_entry		*browse;
+	int			i;
 
-	acl = acl_get_link_np(path, ACL_TYPE_EXTENDED);
-	if (acl && acl_get_entry(acl, ACL_FIRST_ENTRY, &dummy) == -1)
+	i = -1;
+	browse = NULL;
+	while (pargs->dsfs[++i])
 	{
-		acl_free(acl);
-		acl = NULL;
+		if (!browse)
+		{
+			browse = add_new_entry(pargs->dsfs[i], pargs->dsfs[i], pargs);
+			start = browse;
+		}
+		else
+		{
+			browse->next = add_new_entry(pargs->dsfs[i], pargs->dsfs[i],
+										pargs);
+			browse = browse->next;
+		}
 	}
-	if (acl != NULL)
-	{
-		acl_free(acl);
-		return (1);
-	}
-	else
-	{
-		acl_free(acl);
-		return (0);
-	}
-}
-
-void	print_spaces(int num)
-{
-	int				i;
-
-	i = 0;
-	while (i < num)
-	{
-		printf(" ");
-		i++;
-	}
+	return (start);
 }

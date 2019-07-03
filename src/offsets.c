@@ -6,7 +6,7 @@
 /*   By: jmondino <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/02 14:34:22 by jmondino          #+#    #+#             */
-/*   Updated: 2019/07/02 16:57:44 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/07/03 13:40:30 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,17 +30,18 @@ void	get_special_offsets(int **offsets, t_entry *list_curr)
 int		*get_offsets(t_entry *lst_st)
 {
 	int			*offsets;
-	int			i;
 	t_entry		*list_curr;
 
 	if ((offsets = malloc(sizeof(int) * 8)) == NULL)
 		return (0);
-	i = 0;
-	while (i != 7)
-	{
-		offsets[i] = 0;
-		i++;
-	}
+	offsets[0] = 0;
+	offsets[1] = 0;
+	offsets[2] = 0;
+	offsets[3] = 0;
+	offsets[4] = 0;
+	offsets[5] = 0;
+	offsets[6] = 0;
+	offsets[7] = 0;
 	list_curr = lst_st;
 	while (list_curr)
 	{

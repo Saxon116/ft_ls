@@ -6,7 +6,7 @@
 /*   By: jmondino <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/02 12:22:33 by jmondino          #+#    #+#             */
-/*   Updated: 2019/07/02 16:23:13 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/07/03 15:19:23 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,7 @@ void		fill_entry(t_entry *entry, struct stat pstat, int ut_flags)
 	entry->rights = permissions(pstat.st_mode);
 	entry->hard_links = pstat.st_nlink;
 	entry->size = pstat.st_size;
-	entry->user = ft_strdup(getpwuid(pstat.st_uid) == NULL ?
-							"" : getpwuid(pstat.st_uid)->pw_name);
-	entry->group = ft_strdup(getgrgid(pstat.st_gid) == NULL ?
-							"" : getgrgid(pstat.st_gid)->gr_name);
+	fill_usr_grp(entry, pstat);
 	entry->date_day_modified = get_day(ctime(ut_flags ?
 			&pstat.st_atimespec.tv_sec : &pstat.st_mtimespec.tv_sec));
 	entry->block_size = pstat.st_blocks;
@@ -36,6 +33,18 @@ void		fill_entry(t_entry *entry, struct stat pstat, int ut_flags)
 	fill_date_time(entry, pstat, ut_flags);
 	entry->date_accessed = pstat.st_atimespec.tv_sec;
 	entry->next = NULL;
+}
+
+void		fill_usr_grp(t_entry *entry, struct stat pstat)
+{
+	if (getpwuid(pstat.st_uid))
+		entry->user = ft_strdup(getpwuid(pstat.st_uid)->pw_name);
+	else
+		entry->user = ft_itoa(pstat.st_uid);
+	if (getgrgid(pstat.st_gid))
+		entry->group = ft_strdup(getgrgid(pstat.st_gid)->gr_name);
+	else
+		entry->group = ft_itoa(pstat.st_gid);
 }
 
 void		fill_date_time(t_entry *entry, struct stat pstat, int ut_flags)

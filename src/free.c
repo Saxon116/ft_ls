@@ -6,7 +6,7 @@
 /*   By: jmondino <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/02 13:30:21 by jmondino          #+#    #+#             */
-/*   Updated: 2019/07/02 16:52:21 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/07/03 14:01:10 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,11 @@
 void	lstdel(t_entry **lst)
 {
 	t_entry		*curr;
-	t_entry		*next;
 	int			i;
 
 	curr = *lst;
 	while (curr)
 	{
-		next = curr->next;
 		if (curr->has_xattr)
 		{
 			i = -1;
@@ -38,7 +36,7 @@ void	lstdel(t_entry **lst)
 		free(curr->date_month_modified);
 		free(curr->date_time_modified);
 		free(curr);
-		curr = next;
+		curr = curr->next;
 	}
 	*lst = NULL;
 }

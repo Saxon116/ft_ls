@@ -6,7 +6,7 @@
 /*   By: jmondino <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/02 12:15:22 by jmondino          #+#    #+#             */
-/*   Updated: 2019/07/02 16:50:43 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/07/03 11:40:44 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,34 +15,11 @@
 t_entry		*fill_list_d(t_args *pargs)
 {
 	t_entry			*start;
-	t_entry			*browse;
-	int				i;
 
-	i = -1;
-	browse = NULL;
-	start = browse;
 	if (pargs->dsfs[0])
-	{
-		while (pargs->dsfs[++i])
-		{
-			if (!browse)
-			{
-				browse = add_new_entry(pargs->dsfs[i], pargs->dsfs[i], pargs);
-				start = browse;
-			}
-			else
-			{
-				browse->next = add_new_entry(pargs->dsfs[i], pargs->dsfs[i],
-											pargs);
-				browse = browse->next;
-			}
-		}
-	}
+		start = fill_it(pargs);
 	else
-	{
-		browse = add_new_entry(".", ".", pargs);
-		start = browse;
-	}
+		start = add_new_entry(".", ".", pargs);
 	return (start);
 }
 

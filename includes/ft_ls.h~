@@ -6,7 +6,7 @@
 /*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/20 16:58:28 by jmondino          #+#    #+#             */
-/*   Updated: 2019/07/03 15:22:05 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/07/03 15:20:03 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ void					fill_date_time(t_entry *entry, struct stat pstat,
 t_entry					*add_new_entry(char *path, char *entry_name,
 										t_args *pargs);
 char					*permissions(mode_t perm);
+
 
 /*
 **						add_new_entry_aux.c
