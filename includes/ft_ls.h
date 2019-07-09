@@ -6,7 +6,7 @@
 /*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/20 16:58:28 by jmondino          #+#    #+#             */
-/*   Updated: 2019/07/03 15:22:05 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/07/09 13:02:51 by nkellum          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,7 @@ char					*permissions(mode_t perm);
 */
 char					*get_link_path(char *path);
 int						get_day(char *date);
+void					p_denied(t_args *pargs, char *path, char *name);
 
 /*
 **						column.c
@@ -214,6 +215,8 @@ void					ft_print_dir_name(t_entry *lst_st, t_args *pargs,
 											char *dirname);
 void					list_dir_recursive(char *dirname, char *name,
 											t_args *pargs);
+void					cycle_subdirs(t_args *pargs,
+												char *path, char *dirname);
 
 /*
 **						sort_list.c

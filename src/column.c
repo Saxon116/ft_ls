@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   column.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmondino <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/02 13:49:13 by jmondino          #+#    #+#             */
-/*   Updated: 2019/07/02 16:34:40 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/07/09 11:37:31 by nkellum          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,22 +15,18 @@
 void		ft_print_column(t_entry *lst_st)
 {
 	unsigned int	all_names_length;
-	unsigned int	list_size;
-	unsigned int	terminal_width;
 	int				col;
 	int				*wds;
 	char			**array;
 	struct winsize	w;
 
 	ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
-	terminal_width = w.ws_col;
 	all_names_length = get_all_names_length(lst_st);
-	list_size = get_list_size(lst_st);
-	col = num_columns(lst_st, terminal_width);
+	col = num_columns(lst_st, w.ws_col);
 	array = array_from_list(lst_st);
-	if (all_names_length + list_size * 2 > terminal_width)
+	if (all_names_length + get_list_size(lst_st) * 2 > w.ws_col)
 	{
-		wds = get_column_widths(array, col, list_size);
+		wds = get_column_widths(array, col, get_list_size(lst_st));
 		print_rows(array, wds, col, lst_st);
 		free(wds);
 	}
