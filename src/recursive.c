@@ -6,7 +6,7 @@
 /*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/02 15:36:34 by jmondino          #+#    #+#             */
-/*   Updated: 2019/07/09 13:02:14 by nkellum          ###   ########.fr       */
+/*   Updated: 2019/07/09 16:14:50 by nkellum          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,18 +18,18 @@ void	ft_print_dir_name(t_entry *lst_st, t_args *pargs, char *dirname)
 	{
 		if (ft_strcmp(dirname, "./") && (pargs->dirs[1] || pargs->files[0]
 										|| pargs->error != 0))
-			printf(RESET"%s:\n", dirname);
+			ft_printf(RESET"%s:\n", dirname);
 	}
 	else
 	{
 		if (pargs->subdir != 0 || pargs->dirs[1] || pargs->files[0]
 			|| pargs->error != 0)
-			printf(RESET"%s:\n", dirname);
+			ft_printf(RESET"%s:\n", dirname);
 	}
 	ft_print_column(lst_st);
 }
 
-void get_and_display_entries(DIR *pdir, t_args *pargs,
+void	get_and_display_entries(DIR *pdir, t_args *pargs,
 	char *path, char *dirname)
 {
 	t_entry			*lst_st;
@@ -57,7 +57,7 @@ void get_and_display_entries(DIR *pdir, t_args *pargs,
 	lstdel(&lst_st);
 }
 
-t_entry *sort_list_r(t_entry *lst_st, t_args *pargs)
+t_entry	*sort_list_r(t_entry *lst_st, t_args *pargs)
 {
 	if (!ft_iscinstr(pargs->flags, 'f'))
 		lst_st = ft_tri_ascii(lst_st, pargs);
@@ -71,12 +71,12 @@ t_entry *sort_list_r(t_entry *lst_st, t_args *pargs)
 	return (lst_st);
 }
 
-void cycle_subdirs(t_args *pargs,
+void	cycle_subdirs(t_args *pargs,
 	char *path, char *dirname)
 {
 	t_entry			*lst_st;
 	t_entry			*list_current;
-	DIR *pdir;
+	DIR				*pdir;
 
 	pdir = opendir(dirname);
 	lst_st = fill_list_rdir(pdir, pargs, path, dirname);
@@ -87,7 +87,7 @@ void cycle_subdirs(t_args *pargs,
 	while (list_current)
 	{
 		pargs->subdir++;
-		printf("\n");
+		ft_printf("\n");
 		if (dirname[ft_strlen(dirname) - 1] != '/')
 			ft_strcat(path, "/");
 		ft_strcat(path, list_current->name);
@@ -109,7 +109,7 @@ void	list_dir_recursive(char *dirname, char *name, t_args *pargs)
 	ft_strcpy(path, dirname);
 	pdir = opendir(dirname);
 	if (pdir == NULL)
-		return p_denied(pargs, path, name);
+		return (p_denied(pargs, path, name));
 	get_and_display_entries(pdir, pargs, path, dirname);
 	closedir(pdir);
 	if (ft_iscinstr(pargs->flags, 'R'))

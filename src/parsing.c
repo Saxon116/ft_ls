@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmondino <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/02 13:32:58 by jmondino          #+#    #+#             */
-/*   Updated: 2019/07/02 16:58:28 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/07/09 16:14:37 by nkellum          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ int		ft_existent(char *str, t_args *pargs)
 
 	if (lstat(str, &pstat))
 	{
-		printf("ft_ls: %s: No such file or directory\n", str);
+		ft_printf("ft_ls: %s: No such file or directory\n", str);
 		pargs->error++;
 		return (0);
 	}

@@ -6,7 +6,7 @@
 /*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/02 16:19:18 by jmondino          #+#    #+#             */
-/*   Updated: 2019/07/09 13:03:36 by nkellum          ###   ########.fr       */
+/*   Updated: 2019/07/09 16:14:02 by nkellum          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,6 @@ void		p_denied(t_args *pargs, char *path, char *name)
 {
 	if (pargs->subdir != 0 || pargs->dirs[1] || pargs->files[0]
 		|| pargs->error != 0)
-		printf("%s:\n", path);
-	printf(RESET"ft_ls: %s: Permission denied\n", name);
+		ft_printf("%s:\n", path);
+	ft_printf(RESET"ft_ls: %s: Permission denied\n", name);
 }

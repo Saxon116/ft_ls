@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   acl.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmondino <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/02 13:45:29 by jmondino          #+#    #+#             */
-/*   Updated: 2019/07/03 14:04:00 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/07/09 16:14:03 by nkellum          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	print_spaces(int num)
 	i = 0;
 	while (i < num)
 	{
-		printf(" ");
+		ft_printf(" ");
 		i++;
 	}
 }

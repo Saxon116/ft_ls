@@ -6,7 +6,7 @@
 /*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/31 14:03:11 by jmondino          #+#    #+#             */
-/*   Updated: 2019/07/02 16:44:01 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/07/09 16:14:14 by nkellum          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,14 @@ void		ft_display(t_args *pargs)
 	else
 		display_normally(pargs, i);
 	if (pargs->files[0] && pargs->dirs[0])
-		printf("\n");
+		ft_printf("\n");
 	i = 0;
 	while (pargs->dirs[i])
 	{
 		list_dir_recursive(pargs->dirs[i], pargs->dirs[i], pargs);
 		i++;
 		if (pargs->dirs[i])
-			printf("\n");
+			ft_printf("\n");
 	}
 }
 

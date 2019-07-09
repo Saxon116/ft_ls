@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jmondino <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/07/02 14:59:03 by jmondino          #+#    #+#              #
-#    Updated: 2019/07/03 13:16:43 by jmondino         ###   ########.fr        #
+#    Updated: 2019/07/09 16:10:09 by nkellum          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,16 +24,18 @@ all:$(NAME)
 
 $(NAME): $(SRC)
 	make -C libft
-	gcc $(FLAGS) -o $(NAME) $(SRC) libft/libft.a
+	make -C ft_printf
+	gcc $(FLAGS) -o $(NAME) $(SRC) libft/libft.a ft_printf/libftprintf.a
 	echo "\033[32m$(NAME) compiled.\033[0m"
 
 clean:
 	make -C libft clean
-	echo "\033[32mObjects files deleted.\033[0m"
+	make -C ft_printf clean
+	echo "\033[32mObject files deleted.\033[0m"
 
 fclean: clean
 	make -C libft fclean
+	make -C ft_printf fclean
 	rm -f ft_ls
 
 re: fclean all
-

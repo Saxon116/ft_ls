@@ -6,14 +6,13 @@
 /*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/20 16:58:28 by jmondino          #+#    #+#             */
-/*   Updated: 2019/07/09 13:02:51 by nkellum          ###   ########.fr       */
+/*   Updated: 2019/07/09 16:21:06 by nkellum          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_LS_H
 # define FT_LS_H
 
-# include <stdio.h>
 # include <dirent.h>
 # include <stdlib.h>
 # include <string.h>
@@ -29,6 +28,7 @@
 # include <sys/xattr.h>
 # include <sys/acl.h>
 # include "libft.h"
+# include "../ft_printf/ft_printf.h"
 
 # define RESET			"\033[0m"
 # define RED			"\033[31m"
