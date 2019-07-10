@@ -6,7 +6,7 @@
 /*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/02 13:32:58 by jmondino          #+#    #+#             */
-/*   Updated: 2019/07/09 16:14:37 by nkellum          ###   ########.fr       */
+/*   Updated: 2019/07/10 12:46:30 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,9 @@ int		ft_existent(char *str, t_args *pargs)
 
 	if (lstat(str, &pstat))
 	{
-		ft_printf("ft_ls: %s: No such file or directory\n", str);
+		ft_putstr_fd("ft_ls: ", 2);
+		ft_putstr_fd(str, 2);
+		ft_putstr_fd(": No such file or directory\n", 2);
 		pargs->error++;
 		return (0);
 	}

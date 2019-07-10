@@ -6,13 +6,14 @@
 /*   By: nkellum <nkellum@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/07 15:52:58 by nkellum           #+#    #+#             */
-/*   Updated: 2019/07/10 12:30:39 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/07/09 15:51:34 by nkellum          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_PRINTF_H
 # define FT_PRINTF_H
 
+# include <stdio.h>
 # include <stdarg.h>
 # include "libftprintf/libftprintf.h"
 

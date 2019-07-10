@@ -6,7 +6,7 @@
 /*   By: jmondino <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/02 10:39:52 by jmondino          #+#    #+#             */
-/*   Updated: 2019/07/03 11:31:44 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/07/10 12:40:15 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,9 @@ char		*ft_checkflags(char *str)
 			&& str[i] != 't' && str[i] != 'u' && str[i] != '@' && str[i] != 'g'
 			&& str[i] != 'd' && str[i] != 'f')
 		{
-			printf("ft_ls: illegall option -- %c\n", str[i]);
-			printf("usage: ft_ls [-Radfglrtu] [file ...]\n");
+			ft_putstr_fd("ft_ls: illegall option -- ", 2);
+			ft_putstr_fd(str + i, 2);
+			ft_putstr_fd("\nusage: ft_ls [-Radfglrtu] [file ...]\n", 2);
 			exit(1);
 		}
 		i++;

@@ -6,7 +6,7 @@
 /*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/02 13:49:13 by jmondino          #+#    #+#             */
-/*   Updated: 2019/07/09 11:37:31 by nkellum          ###   ########.fr       */
+/*   Updated: 2019/07/10 12:31:52 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ void		print_rows(char **array, int *wds, int col, t_entry *lst_st)
 							array, wds[j]);
 			j++;
 		}
-		printf("\n");
+		ft_printf("\n");
 		i++;
 	}
 }
