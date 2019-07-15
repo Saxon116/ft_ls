@@ -6,7 +6,7 @@
 /*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/02 12:15:22 by jmondino          #+#    #+#             */
-/*   Updated: 2019/07/09 11:53:53 by nkellum          ###   ########.fr       */
+/*   Updated: 2019/07/15 12:43:10 by nkellum          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,16 @@ t_entry		*fill_list_d(t_args *pargs)
 
 int			check_a(t_args *pargs, char *name)
 {
-	return (!ft_iscinstr(pargs->flags, 'a')
-	&& name[0] != '.') ||
-	(ft_iscinstr(pargs->flags, 'a')
-	&& (ft_strcmp(name, ".") == 0
-	|| ft_strcmp(name, "..") == 0));
+	if ((!ft_iscinstr(pargs->flags, 'a') && name[0] != '.'))
+		return (1);
+	if (ft_iscinstr(pargs->flags, 'a'))
+	{
+		if ((ft_strcmp(name, ".") == 0 || ft_strcmp(name, "..") == 0))
+			return (0);
+		else
+			return (1);
+	}
+	return (0);
 }
 
 t_entry		*fill_list_rdir(DIR *pdir, t_args *pargs, char *path, char *dirname)
