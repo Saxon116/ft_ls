@@ -6,7 +6,7 @@
 /*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/02 15:36:34 by jmondino          #+#    #+#             */
-/*   Updated: 2019/07/09 16:14:50 by nkellum          ###   ########.fr       */
+/*   Updated: 2019/07/15 14:15:09 by jmondino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ void	ft_print_dir_name(t_entry *lst_st, t_args *pargs, char *dirname)
 {
 	if (!(ft_iscinstr(pargs->flags, 'R')))
 	{
-		if (ft_strcmp(dirname, "./") && (pargs->dirs[1] || pargs->files[0]
-										|| pargs->error != 0))
+		if ((pargs->dirs[1] || pargs->files[0]
+			|| pargs->error != 0))
 			ft_printf(RESET"%s:\n", dirname);
 	}
 	else

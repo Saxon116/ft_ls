@@ -3,23 +3,36 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmondino <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/02 13:30:21 by jmondino          #+#    #+#             */
-/*   Updated: 2019/07/03 14:01:10 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/07/15 17:57:40 by nkellum          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
+void	free_data(t_entry *entry)
+{
+	free(entry->link_path);
+	free(entry->name);
+	free(entry->rights);
+	free(entry->user);
+	free(entry->group);
+	free(entry->date_month_modified);
+	free(entry->date_time_modified);
+}
+
 void	lstdel(t_entry **lst)
 {
 	t_entry		*curr;
+	t_entry		*temp;
 	int			i;
 
 	curr = *lst;
 	while (curr)
 	{
+		temp = curr->next;
 		if (curr->has_xattr)
 		{
 			i = -1;
@@ -28,15 +41,9 @@ void	lstdel(t_entry **lst)
 			free(curr->xattr);
 			free(curr->xattr_sizes);
 		}
-		free(curr->link_path);
-		free(curr->name);
-		free(curr->rights);
-		free(curr->user);
-		free(curr->group);
-		free(curr->date_month_modified);
-		free(curr->date_time_modified);
+		free_data(curr);
 		free(curr);
-		curr = curr->next;
+		curr = temp;
 	}
 	*lst = NULL;
 }

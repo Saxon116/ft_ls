@@ -6,11 +6,30 @@
 /*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/02 16:19:18 by jmondino          #+#    #+#             */
-/*   Updated: 2019/07/10 12:44:14 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/07/15 18:34:21 by nkellum          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
+
+char		ext_permissions(mode_t perm, int modeval)
+{
+	if (modeval == 2)
+	{
+		if (perm & S_IXUSR)
+			return ((perm & S_ISUID) ? 's' : 'x');
+		else
+			return ((perm & S_ISUID) ? 'S' : '-');
+	}
+	if (modeval == 5)
+	{
+		if (perm & S_IXGRP)
+			return ((perm & S_ISGID) ? 's' : 'x');
+		else
+			return ((perm & S_ISGID) ? 'S' : '-');
+	}
+	return ('-');
+}
 
 char		*get_link_path(char *path)
 {

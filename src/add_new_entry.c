@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   add_new_entry.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmondino <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/02 12:22:33 by jmondino          #+#    #+#             */
-/*   Updated: 2019/07/03 15:19:23 by jmondino         ###   ########.fr       */
+/*   Updated: 2019/07/15 18:34:09 by nkellum          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,16 +96,16 @@ char		*permissions(mode_t perm)
 		return (NULL);
 	modeval[0] = (perm & S_IRUSR) ? 'r' : '-';
 	modeval[1] = (perm & S_IWUSR) ? 'w' : '-';
-	modeval[2] = (perm & S_IXUSR) ? 'x' : '-';
+	modeval[2] = ext_permissions(perm, 2);
 	modeval[3] = (perm & S_IRGRP) ? 'r' : '-';
 	modeval[4] = (perm & S_IWGRP) ? 'w' : '-';
-	modeval[5] = (perm & S_IXGRP) ? 'x' : '-';
+	modeval[5] = ext_permissions(perm, 5);
 	modeval[6] = (perm & S_IROTH) ? 'r' : '-';
 	modeval[7] = (perm & S_IWOTH) ? 'w' : '-';
-	if ((perm & S_ISVTX))
-		modeval[8] = 't';
+	if (perm & S_IXOTH)
+		modeval[8] = (perm & S_ISVTX) ? 't' : 'x';
 	else
-		modeval[8] = (perm & S_IXOTH) ? 'x' : '-';
+		modeval[8] = (perm & S_ISVTX) ? 'T' : '-';
 	modeval[9] = '\0';
 	return (modeval);
 }

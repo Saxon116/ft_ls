@@ -6,7 +6,7 @@
 /*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/20 16:58:28 by jmondino          #+#    #+#             */
-/*   Updated: 2019/07/09 16:21:06 by nkellum          ###   ########.fr       */
+/*   Updated: 2019/07/15 18:33:15 by nkellum          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@
 # define YELLOWBLUE		"\033[34;43m"
 # define BLUEBLUE		"\033[34;46m"
 # define BOLDCYANGREEN	"\033[1;36;42m"
+# define REDBLACK		"\033[30;41m"
 # define SIXMONTHS		15778800
 
 typedef struct			s_args
@@ -103,6 +104,7 @@ char					*permissions(mode_t perm);
 char					*get_link_path(char *path);
 int						get_day(char *date);
 void					p_denied(t_args *pargs, char *path, char *name);
+char					ext_permissions(mode_t perm, int modeval);
 
 /*
 **						column.c
