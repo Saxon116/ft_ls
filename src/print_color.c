@@ -6,7 +6,7 @@
 /*   By: jmondino <jmondino@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/02 13:33:12 by jmondino          #+#    #+#             */
-/*   Updated: 2019/07/15 18:30:23 by nkellum          ###   ########.fr       */
+/*   Updated: 2019/07/15 18:43:58 by nkellum          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,10 @@ void	print_color_l(char *entry, int type, char *rights)
 		ft_printf(BOLDCYAN"%s", entry);
 	if (S_ISREG(type))
 	{
-		if (ft_iscinstr(rights, 'x'))
-			ft_printf(RED"%s  ", entry);
-		else if (ft_iscinstr(rights, 's'))
+		if (ft_iscinstr(rights, 's'))
 			ft_printf(REDBLACK"%s\033[0m  ", entry);
+		else if (ft_iscinstr(rights, 'x'))
+			ft_printf(RED"%s  ", entry);
 		else
 			ft_printf(RESET"%s  ", entry);
 	}
@@ -60,10 +60,10 @@ void	print_color(char *entry, int type, char *rights)
 		ft_printf(BOLDCYAN"%s  ", entry);
 	if (S_ISREG(type))
 	{
-		if (ft_iscinstr(rights, 'x'))
-			ft_printf(RED"%s  ", entry);
-		else if (ft_iscinstr(rights, 's'))
+		if (ft_iscinstr(rights, 's'))
 			ft_printf(REDBLACK"%s\033[0m  ", entry);
+		else if (ft_iscinstr(rights, 'x'))
+			ft_printf(RED"%s  ", entry);
 		else
 			ft_printf(RESET"%s  ", entry);
 	}
